@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -123,6 +124,7 @@
                 <div class="text-left md:text-right">
                     <div id="resScore" class="text-4xl font-black text-white tracking-tighter">0</div>
                     <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Görünürlük Skoru</div>
+                    <p id="resScoreExplanation" class="text-xs text-slate-400 mt-2 max-w-xs leading-relaxed"></p>
                 </div>
             </div>
 
@@ -221,59 +223,8 @@
     // İkonları başlat
     lucide.createIcons();
 
-    // ----------------------------------------------------
-    // CONFIG (DOĞRUDAN VERCEL MİMARİSİ)
-    // ----------------------------------------------------
-    
-    // ⚠️ VERCEL GÜVENLİK AYARI: Bu URL, API anahtarını güvenli arka uca gönderir.
-    const VERCEL_BACKEND_URL = "https://irisai-one.vercel.app/api/analyze";
-    
-    // ----------------------------------------------------
-    // SYSTEM INSTRUCTION (PROMPT - Backend'e gönderilir)
-    // ----------------------------------------------------
-    const SYSTEM_INSTRUCTION = `
-    Sen Iris, Gemini Teknolojisiyle çalışan en gelişmiş Marka İstihbarat Analistisin.
-    Görevin: Markayı analiz etmek ve sadece aşağıdaki JSON formatında çıktı vermek. Başka hiçbir şey yazma.
-
-    KURALLAR:
-    1. GERÇEKLİK: Marka hakkında yeterli veri yoksa dürüstçe "Yetersiz Veri" de.
-    2. KİMLİK KONTROLÜ: Kullanıcının beyanı ile dijital ayak izi uyuşmuyorsa "ALGI SAPMASI" uyarısı ver.
-    3. FORMAT: Sadece geçerli JSON döndür.
-
-    Marka: {brand}
-    Sektör: {industry}
-
-    JSON ŞEMASI:
-    {
-      "score": (0-100 arası sayı),
-      "identityAnalysis": {
-        "claimedSector": (str),
-        "detectedSector": (str),
-        "matchStatus": ("EŞLEŞME DOĞRULANDI" veya "ALGI SAPMASI" veya "Yetersiz Veri"),
-        "insight": (str)
-      },
-      "competitors": {
-        "direct": [{"name": "str", "status": "str"}], 
-        "leaders": [{"name": "str", "status": "str"}]
-      },
-      "strategicSummary": (str),
-      "strengths": [(str), (str)],
-      "weaknesses": [(str), (str)],
-      "optimization": {
-        "objective": (str),
-        "rationale": (str),
-        "text": (str)
-      },
-      "platforms": [
-        {"name": "Gemini", "status": "Analiz Edildi"}, 
-        {"name": "GPT-5", "status": "Simüle Edildi"},
-        {"name": "Claude", "status": "Tarandı"}
-      ]
-    }`;
-
-    // ----------------------------------------------------
-    // UI VE ANALİZ FONKSİYONLARI
-    // ----------------------------------------------------
+    // CONFIG - VERCEL URL'İNİ BURAYA YAZ
+    const VERCEL_BACKEND_URL = "https://iris-intel.vercel.app/api/analyze";
     
     function showSection(id) {
         ['section-input', 'section-loading', 'section-results'].forEach(sec => {
@@ -311,11 +262,6 @@
             alert("Lütfen marka ve sektör girin.");
             return;
         }
-        
-        if (VERCEL_BACKEND_URL.includes("SENIN-PROJE-ADIN")) {
-            alert("Lütfen index.html içindeki Vercel URL'ini güncelleyin!");
-            return;
-        }
 
         showSection('section-loading');
         
@@ -326,27 +272,19 @@
         }, 1500);
 
         try {
-            // BACKEND'E MARKA VE SEKTÖRÜ GÖNDERME
             const response = await fetch(VERCEL_BACKEND_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ 
-                    brand: brand, 
-                    industry: industry,
-                    // SYSTEM_INSTRUCTION'ı backend'e gönderir (Çünkü backend'de JSON schema'sı var)
-                    systemInstruction: SYSTEM_INSTRUCTION
-                }),
+                body: JSON.stringify({ brand: brand, industry: industry }),
             });
 
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error("Backend Hatası:", errorData);
-                throw new Error(errorData.error || "Sunucu Hatası: Ağ veya Vercel hatası.");
+                throw new Error(errorData.error || "Sunucu Hatası");
             }
 
             const resultJson = await response.json();
-            
-            // Sonuçları Ekrana Bas
             renderResults(resultJson);
 
         } catch (error) {
@@ -359,11 +297,10 @@
     }
 
     function renderResults(data) {
-        // Verileri Yerleştir
         document.getElementById('resBrandName').innerText = document.getElementById('brandInput').value.toUpperCase();
         document.getElementById('resScore').innerText = data.score;
+        document.getElementById('resScoreExplanation').innerText = data.scoreExplanation || "Skor analizi yapılıyor...";
         
-        // Kimlik
         document.getElementById('resClaimedSector').innerText = data.identityAnalysis.claimedSector;
         document.getElementById('resDetectedSector').innerText = data.identityAnalysis.detectedSector;
         
@@ -380,10 +317,9 @@
         }
         document.getElementById('resInsight').innerHTML = `<i data-lucide="search" class="w-4 h-4 text-emerald-500 shrink-0"></i> ${data.identityAnalysis.insight}`;
 
-        // Platformlar
         const platformsDiv = document.getElementById('resPlatforms');
         platformsDiv.innerHTML = "";
-        data.platforms.forEach((p, index) => {
+        data.platforms.forEach((p) => {
             platformsDiv.innerHTML += `
                 <div class="flex items-center justify-between text-sm p-3 bg-slate-900 rounded border border-slate-800 hover:border-emerald-800 transition-colors">
                     <div>
@@ -394,7 +330,6 @@
                 </div>`;
         });
 
-        // SWOT
         document.getElementById('resSummary').innerText = data.strategicSummary;
         
         const strList = document.getElementById('resStrengths');
@@ -405,7 +340,6 @@
         weakList.innerHTML = "";
         data.weaknesses.forEach(w => weakList.innerHTML += `<li class="text-xs font-medium text-slate-400 flex items-start gap-2"><span class="text-rose-500">•</span> ${w}</li>`);
 
-        // Rakipler
         const compList = document.getElementById('resCompetitors');
         compList.innerHTML = "";
         
@@ -421,11 +355,9 @@
         compList.innerHTML += `<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 mt-4">PAZAR LİDERLERİ</p>`;
         data.competitors.leaders.forEach(c => compList.innerHTML += renderCompetitor(c));
 
-        // Optimizasyon
         document.getElementById('resOptRationale').innerText = `HEDEF: ${data.optimization.objective}\n\nANALİZ: ${data.optimization.rationale}`;
         document.getElementById('resOptText').innerText = data.optimization.text;
 
-        // İkonları yenile
         lucide.createIcons();
         showSection('section-results');
     }
