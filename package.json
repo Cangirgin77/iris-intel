@@ -1,7 +1,12 @@
 {
   "name": "iris-intel",
   "version": "1.0.0",
+  "description": "AI Marka Görünürlük Analizi",
+  "main": "index.html",
   "dependencies": {
     "@google/generative-ai": "^0.21.0"
+  },
+  "scripts": {
+    "start": "node api/analyze.js"
   }
 }
