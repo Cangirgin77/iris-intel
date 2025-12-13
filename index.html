@@ -74,7 +74,6 @@
       flex-direction: column;
     }
 
-    /* Menu Styles */
     .menu-overlay {
       position: fixed;
       top: 0;
@@ -127,15 +126,12 @@
 </head>
 <body class="min-h-screen text-white">
 
-  <!-- Hamburger Menu Button -->
   <button id="menuToggle" class="fixed top-6 left-6 z-50 w-12 h-12 bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-xl flex items-center justify-center hover:bg-slate-700 transition">
     <i data-lucide="menu" class="w-6 h-6 text-white"></i>
   </button>
 
-  <!-- Menu Overlay -->
   <div id="menuOverlay" class="menu-overlay"></div>
 
-  <!-- Menu Sidebar -->
   <div id="menuSidebar" class="menu-sidebar">
     <div class="p-6 border-b border-slate-700">
       <h2 class="text-2xl font-black gradient-text">IRIS</h2>
@@ -143,7 +139,7 @@
     </div>
     
     <nav class="py-4">
-      <div class="menu-item active" onclick="navigateTo('analysis')">
+      <div class="menu-item active" data-page="analysis">
         <i data-lucide="search" class="w-5 h-5 text-blue-400"></i>
         <div>
           <div class="font-semibold text-sm">Marka Analizi</div>
@@ -151,7 +147,7 @@
         </div>
       </div>
       
-      <div class="menu-item" onclick="navigateTo('market')">
+      <div class="menu-item" data-page="market">
         <i data-lucide="trending-up" class="w-5 h-5 text-green-400"></i>
         <div>
           <div class="font-semibold text-sm">Pazar Araştırması</div>
@@ -167,10 +163,8 @@
     </div>
   </div>
 
-  <!-- PAGE: MARKA ANALİZİ -->
   <div id="page-analysis" class="page-content">
     
-    <!-- INPUT SECTION -->
     <div id="section-input" class="container mx-auto px-4 py-12 max-w-6xl">
       
       <div class="text-center mb-16 fade-in ml-16">
@@ -178,8 +172,7 @@
           <span class="gradient-text">IRIS</span>
         </h1>
         <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
-          Markanızın <strong>ChatGPT, Gemini, Claude</strong> gibi yapay zeka platformlarında ne kadar görünür olduğunu keşfedin. 
-          Rakiplerinizi analiz edin ve <strong>AI çağında öne çıkmanız için</strong> stratejik öneriler alın.
+          Markanızın <strong>ChatGPT, Gemini, Claude</strong> gibi yapay zeka platformlarında ne kadar görünür olduğunu keşfedin.
         </p>
         <div class="flex items-center justify-center gap-2 mt-6">
           <span class="inline-block w-2 h-2 bg-green-500 rounded-full pulse-slow"></span>
@@ -209,7 +202,7 @@
         </div>
 
         <button 
-          onclick="startAnalysis()"
+          id="analyzeBtn"
           class="w-full py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl font-bold text-white hover:scale-[1.02] transition-transform shadow-lg"
         >
           🔍 ANALİZİ BAŞLAT
@@ -218,7 +211,6 @@
 
     </div>
 
-    <!-- LOADING SECTION -->
     <div id="section-loading" class="hidden-section container mx-auto px-4 py-12 max-w-2xl">
       <div class="glass-card rounded-3xl p-12 text-center fade-in">
         <div class="score-circle mx-auto mb-6" style="--score: 50;">
@@ -238,10 +230,8 @@
       </div>
     </div>
 
-    <!-- RESULTS SECTION -->
     <div id="section-results" class="hidden-section container mx-auto px-4 py-12 max-w-7xl ml-20">
       
-      <!-- Header -->
       <div class="glass-card rounded-3xl p-8 mb-6 fade-in">
         <div class="flex flex-col md:flex-row items-center justify-between gap-6">
           <div class="flex-1">
@@ -249,7 +239,7 @@
               Analiz Raporu
               <span class="inline-block px-3 py-1 ml-3 text-xs font-bold bg-green-500/20 text-green-400 rounded-full">CONFIDENTIAL</span>
             </h2>
-            <p id="resBrandName" class="text-slate-400 text-lg">TESLA | OTOMOTİV</p>
+            <p id="resBrandName" class="text-slate-400 text-lg">-</p>
           </div>
           <div class="text-center">
             <div class="score-circle mx-auto mb-2" id="scoreCircle" style="--score: 0;">
@@ -259,20 +249,17 @@
               </div>
             </div>
             <div id="scoreCategory" class="inline-block px-3 py-1 text-xs font-bold rounded-full bg-slate-800 text-slate-400 mb-2">
-              Değerlendiriliyor
+              -
             </div>
             <p id="resScoreExplanation" class="text-xs text-slate-400 max-w-xs leading-relaxed"></p>
           </div>
         </div>
       </div>
 
-      <!-- Main Grid -->
       <div class="grid lg:grid-cols-2 gap-6">
         
-        <!-- LEFT COLUMN -->
         <div class="space-y-6">
           
-          <!-- Kimlik Tespiti -->
           <div class="glass-card rounded-3xl p-6 fade-in">
             <div class="flex items-center gap-3 mb-4">
               <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
@@ -289,33 +276,29 @@
               <div class="grid grid-cols-2 gap-3">
                 <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
                   <div class="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Beyan</div>
-                  <div id="resClaimedSector" class="text-sm font-semibold text-slate-300">Otomotiv</div>
+                  <div id="resClaimedSector" class="text-sm font-semibold text-slate-300">-</div>
                 </div>
                 <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
                   <div class="text-[9px] text-slate-500 uppercase tracking-wider mb-1">AI Tespiti</div>
-                  <div id="resDetectedSector" class="text-sm font-semibold text-slate-300">Elektrikli Araçlar</div>
+                  <div id="resDetectedSector" class="text-sm font-semibold text-slate-300">-</div>
                 </div>
               </div>
               <div class="mt-3 flex items-center justify-between">
                 <span class="text-xs text-slate-500">Durum:</span>
-                <span id="resMatchStatus" class="text-[9px] font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-900">EŞLEŞME DOĞRULANDI</span>
+                <span id="resMatchStatus" class="text-[9px] font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-900">-</span>
               </div>
             </div>
 
             <div id="resInsight" class="bg-slate-800/30 rounded-lg p-3 border-l-2 border-blue-500 text-xs text-slate-300 leading-relaxed">
-              <span>AI platformlarının marka algısı analiz ediliyor...</span>
+              <span>-</span>
             </div>
           </div>
 
-          <!-- Platforms -->
           <div class="glass-card rounded-3xl p-6 fade-in">
             <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Taranan Platformlar</h3>
-            <div id="resPlatforms" class="space-y-2">
-              <!-- Dinamik içerik -->
-            </div>
+            <div id="resPlatforms" class="space-y-2"></div>
           </div>
 
-          <!-- Yönetici Özeti -->
           <div class="glass-card rounded-3xl p-6 fade-in">
             <div class="flex items-center gap-3 mb-4">
               <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
@@ -323,39 +306,30 @@
               </div>
               <h3 class="text-lg font-bold">Yönetici Özeti</h3>
             </div>
-            <p id="resSummary" class="text-sm text-slate-300 leading-relaxed">
-              Stratejik özet hazırlanıyor...
-            </p>
+            <p id="resSummary" class="text-sm text-slate-300 leading-relaxed">-</p>
           </div>
 
-          <!-- Güçlü/Zayıf Yönler -->
           <div class="grid grid-cols-2 gap-4">
             <div class="glass-card rounded-2xl p-4 fade-in">
               <h3 class="text-sm font-bold mb-3 flex items-center gap-2">
                 <i data-lucide="thumbs-up" class="w-4 h-4 text-emerald-400"></i>
                 <span>Güçlü Yönler</span>
               </h3>
-              <ul id="resStrengths" class="space-y-2 text-xs text-slate-400">
-                <!-- Dinamik içerik -->
-              </ul>
+              <ul id="resStrengths" class="space-y-2 text-xs text-slate-400"></ul>
             </div>
             <div class="glass-card rounded-2xl p-4 fade-in">
               <h3 class="text-sm font-bold mb-3 flex items-center gap-2">
                 <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400"></i>
                 <span>Zayıf Yönler</span>
               </h3>
-              <ul id="resWeaknesses" class="space-y-2 text-xs text-slate-400">
-                <!-- Dinamik içerik -->
-              </ul>
+              <ul id="resWeaknesses" class="space-y-2 text-xs text-slate-400"></ul>
             </div>
           </div>
 
         </div>
 
-        <!-- RIGHT COLUMN -->
         <div class="space-y-6">
           
-          <!-- Rakipler -->
           <div class="glass-card rounded-3xl p-6 fade-in">
             <div class="flex items-center gap-3 mb-4">
               <div class="w-10 h-10 rounded-xl bg-pink-500/20 flex items-center justify-center">
@@ -363,12 +337,9 @@
               </div>
               <h3 class="text-lg font-bold">Rakip Analizi</h3>
             </div>
-            <div id="resCompetitors" class="space-y-3">
-              <!-- Dinamik içerik -->
-            </div>
+            <div id="resCompetitors" class="space-y-3"></div>
           </div>
 
-          <!-- Daha Görünür Olmak İçin Tavsiyeler -->
           <div class="glass-card rounded-3xl p-6 fade-in">
             <div class="flex items-center gap-3 mb-4">
               <div class="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center">
@@ -377,13 +348,10 @@
               <h3 class="text-lg font-bold">Daha Görünür Olmak İçin Tavsiyeler</h3>
             </div>
             <div class="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-lg p-4 border border-yellow-500/20">
-              <ul id="resVisibilityRecommendations" class="space-y-2 text-xs text-slate-200">
-                <!-- Dinamik içerik -->
-              </ul>
+              <ul id="resVisibilityRecommendations" class="space-y-2 text-xs text-slate-200"></ul>
             </div>
           </div>
 
-          <!-- Algı Optimizasyonu -->
           <div class="glass-card rounded-3xl p-6 fade-in">
             <div class="flex items-center gap-3 mb-4">
               <div class="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center">
@@ -393,9 +361,7 @@
             </div>
             
             <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
-              <p id="resOptRationale" class="text-xs text-slate-400 leading-relaxed whitespace-pre-line">
-                Optimizasyon hedefi hazırlanıyor...
-              </p>
+              <p id="resOptRationale" class="text-xs text-slate-400 leading-relaxed whitespace-pre-line">-</p>
             </div>
           </div>
 
@@ -403,10 +369,9 @@
 
       </div>
 
-      <!-- Reset Button -->
       <div class="text-center mt-8">
         <button 
-          onclick="resetApp()"
+          id="resetBtn"
           class="px-6 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl font-semibold text-white transition"
         >
           🔄 Yeni Analiz Yap
@@ -417,7 +382,6 @@
 
   </div>
 
-  <!-- PAGE: PAZAR ARAŞTIRMASI -->
   <div id="page-market" class="page-content hidden-section">
     <div class="container mx-auto px-4 py-12 max-w-7xl ml-20">
       
@@ -428,15 +392,12 @@
         </p>
       </div>
 
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="marketResearch">
-        <!-- Dinamik içerik buraya gelecek -->
-      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="marketResearch"></div>
 
     </div>
   </div>
 
   <script>
-    // Initialize Lucide icons
     lucide.createIcons();
 
     const VERCEL_BACKEND_URL = "https://iris-intel.vercel.app/api/analyze";
@@ -450,11 +411,16 @@
     ];
 
     let loadingInterval;
-    let currentPage = 'analysis';
 
-    // Menu Toggle
     document.getElementById('menuToggle').addEventListener('click', toggleMenu);
     document.getElementById('menuOverlay').addEventListener('click', toggleMenu);
+
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', function() {
+        const page = this.getAttribute('data-page');
+        navigateTo(page);
+      });
+    });
 
     function toggleMenu() {
       document.getElementById('menuSidebar').classList.toggle('active');
@@ -462,25 +428,17 @@
     }
 
     function navigateTo(page) {
-      // Hide all pages
       document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden-section'));
-      
-      // Show selected page
       document.getElementById(`page-${page}`).classList.remove('hidden-section');
       
-      // Update menu active state
       document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
-      event.currentTarget.classList.add('active');
+      document.querySelector(`[data-page="${page}"]`).classList.add('active');
       
-      // Close menu
       toggleMenu();
       
-      // Load market research if navigating there
       if (page === 'market') {
         loadMarketResearch();
       }
-      
-      currentPage = page;
     }
 
     function loadMarketResearch() {
@@ -622,3 +580,54 @@
         alert("⚠️ Lütfen marka ve sektör bilgilerini girin!");
         return;
       }
+
+      showSection('section-loading');
+      
+      let i = 0;
+      loadingInterval = setInterval(() => {
+        document.getElementById('loadingText').innerText = loadingMessages[i % loadingMessages.length];
+        i++;
+      }, 2500);
+
+      try {
+        const response = await fetch(VERCEL_BACKEND_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ brand, industry }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Sunucu Hatası");
+        }
+
+        const data = await response.json();
+        renderResults(data, brand, industry);
+
+      } catch (error) {
+        console.error("Hata:", error);
+        alert("❌ Analiz başarısız: " + error.message);
+        resetApp();
+      } finally {
+        clearInterval(loadingInterval);
+      }
+    }
+
+    function renderResults(data, brand, industry) {
+      document.getElementById('resBrandName').innerText = `${brand.toUpperCase()} | ${industry.toUpperCase()}`;
+      
+      const score = data.score || 0;
+      document.getElementById('resScore').innerText = score;
+      document.getElementById('scoreCircle').style.setProperty('--score', score);
+      document.getElementById('resScoreExplanation').innerText = data.scoreExplanation || "Detaylı skor açıklaması hazırlanıyor...";
+      
+      const categoryBadge = document.getElementById('scoreCategory');
+      const category = data.scoreCategory || "Değerlendiriliyor";
+      categoryBadge.innerText = category;
+      
+      if (score >= 90) {
+        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-green-500/20 text-green-400 border border-green-500/50";
+      } else if (score >= 80) {
+        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/50";
+      } else if (score >= 60) {
+        categoryBadge.className =
