@@ -26,21 +26,15 @@
     
     .hidden-section { display: none; }
     
-    .shimmer {
-      animation: shimmer 2s infinite;
-    }
+    .shimmer { animation: shimmer 2s infinite; }
     @keyframes shimmer {
       0%, 100% { opacity: 0.3; }
       50% { opacity: 1; }
     }
     
-    .pulse-slow {
-      animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
+    .pulse-slow { animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
     
-    .fade-in {
-      animation: fadeIn 0.5s ease-in;
-    }
+    .fade-in { animation: fadeIn 0.5s ease-in; }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -50,17 +44,10 @@
       width: 140px;
       height: 140px;
       border-radius: 50%;
-      background: conic-gradient(
-        from 0deg,
-        #ef4444 0deg,
-        #f59e0b calc(var(--score) * 3.6deg),
-        #10b981 calc(var(--score) * 3.6deg),
-        #334155 360deg
-      );
+      background: conic-gradient(from 0deg, #ef4444 0deg, #f59e0b calc(var(--score) * 3.6deg), #10b981 calc(var(--score) * 3.6deg), #334155 360deg);
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
     }
     
     .score-inner {
@@ -122,12 +109,23 @@
       background: rgba(59, 130, 246, 0.15);
       border-left-color: #3b82f6;
     }
+
+    .menu-btn {
+      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+      animation: pulse-glow 2s infinite;
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3); }
+      50% { box-shadow: 0 8px 48px rgba(59, 130, 246, 0.5); }
+    }
   </style>
 </head>
 <body class="min-h-screen text-white">
 
-  <button id="menuToggle" class="fixed top-6 left-6 z-50 w-12 h-12 bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-xl flex items-center justify-center hover:bg-slate-700 transition">
-    <i data-lucide="menu" class="w-6 h-6 text-white"></i>
+  <button id="menuToggle" class="menu-btn fixed top-6 left-6 z-50 w-14 h-14 backdrop-blur-sm rounded-2xl flex items-center justify-center hover:scale-110 transition-transform">
+    <i data-lucide="menu" class="w-7 h-7 text-white"></i>
   </button>
 
   <div id="menuOverlay" class="menu-overlay"></div>
@@ -248,9 +246,7 @@
                 <div class="text-[9px] text-slate-500 uppercase tracking-wider">Skor</div>
               </div>
             </div>
-            <div id="scoreCategory" class="inline-block px-3 py-1 text-xs font-bold rounded-full bg-slate-800 text-slate-400 mb-2">
-              -
-            </div>
+            <div id="scoreCategory" class="inline-block px-3 py-1 text-xs font-bold rounded-full bg-slate-800 text-slate-400 mb-2">-</div>
             <p id="resScoreExplanation" class="text-xs text-slate-400 max-w-xs leading-relaxed"></p>
           </div>
         </div>
@@ -394,14 +390,17 @@
 
       <div class="max-w-2xl mx-auto mb-8">
         <div class="glass-card rounded-2xl p-6">
-          <label class="block text-sm font-semibold text-slate-300 mb-3">🔍 Sektör Ara</label>
+          <label class="block text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+            <i data-lucide="search" class="w-5 h-5 text-blue-400"></i>
+            Sektör Ara
+          </label>
           <input 
             id="sectorSearch" 
             type="text" 
-            placeholder="Örn: Otomotiv, Teknoloji, Gıda, E-Ticaret..."
+            placeholder="Örn: Otomotiv, Teknoloji, Gıda, E-Ticaret, Spor..."
             class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           >
-          <p class="text-xs text-slate-500 mt-2">Sektör yazın, önde gelen markaları keşfedin!</p>
+          <p class="text-xs text-slate-500 mt-2">💡 Sektör yazın, önde gelen markaları keşfedin!</p>
         </div>
       </div>
 
@@ -410,7 +409,6 @@
     </div>
   </div>
 
-  <!-- DETAYLI ANALİZ MODAL -->
   <div id="detailModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[1000] hidden items-center justify-center p-4">
     <div class="glass-card rounded-3xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
       <div class="sticky top-0 bg-slate-900/95 backdrop-blur-sm p-6 border-b border-slate-700 flex items-center justify-between z-10">
@@ -428,13 +426,11 @@
 
       <div class="p-6 space-y-6">
         
-        <!-- Skor -->
         <div class="glass-card rounded-2xl p-6 text-center">
           <div class="text-6xl font-black gradient-text mb-2" id="modalScore">0</div>
           <div class="text-sm text-slate-400">AI Görünürlük Skoru</div>
         </div>
 
-        <!-- Başarı Faktörleri -->
         <div class="glass-card rounded-2xl p-6">
           <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
             <i data-lucide="star" class="w-5 h-5 text-yellow-400"></i>
@@ -443,7 +439,6 @@
           <ul id="modalFactors" class="space-y-3"></ul>
         </div>
 
-        <!-- İyi Yaptıkları -->
         <div class="glass-card rounded-2xl p-6">
           <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
             <i data-lucide="thumbs-up" class="w-5 h-5 text-emerald-400"></i>
@@ -452,7 +447,6 @@
           <ul id="modalStrengths" class="space-y-3"></ul>
         </div>
 
-        <!-- Kötü Yaptıkları / Gelişim Alanları -->
         <div class="glass-card rounded-2xl p-6">
           <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
             <i data-lucide="alert-triangle" class="w-5 h-5 text-orange-400"></i>
@@ -461,7 +455,6 @@
           <ul id="modalWeaknesses" class="space-y-3"></ul>
         </div>
 
-        <!-- Rakipler -->
         <div class="glass-card rounded-2xl p-6">
           <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
             <i data-lucide="users" class="w-5 h-5 text-pink-400"></i>
@@ -470,7 +463,6 @@
           <div id="modalCompetitors" class="grid md:grid-cols-2 gap-3"></div>
         </div>
 
-        <!-- Stratejik Öneriler -->
         <div class="glass-card rounded-2xl p-6">
           <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
             <i data-lucide="lightbulb" class="w-5 h-5 text-yellow-400"></i>
@@ -485,42 +477,20 @@
 
   <script>
     lucide.createIcons();
-
     const VERCEL_BACKEND_URL = "https://iris-intel.vercel.app/api/analyze";
-
-    const loadingMessages = [
-      "🔍 AI platformları taranıyor...",
-      "🤖 ChatGPT, Claude, Gemini sorgulanıyor...",
-      "📊 Rakip analizi yapılıyor...",
-      "💡 Detaylı öneriler hazırlanıyor...",
-      "🎯 Veriler işleniyor..."
-    ];
-
+    const loadingMessages = ["🔍 AI platformları taranıyor...","🤖 ChatGPT, Claude, Gemini sorgulanıyor...","📊 Rakip analizi yapılıyor...","💡 Detaylı öneriler hazırlanıyor...","🎯 Veriler işleniyor..."];
     let loadingInterval;
 
-    // MENÜ EVENT LİSTENERLARI
     document.getElementById('menuToggle').addEventListener('click', toggleMenu);
     document.getElementById('menuOverlay').addEventListener('click', toggleMenu);
-
     document.querySelectorAll('.menu-item').forEach(item => {
       item.addEventListener('click', function() {
-        const page = this.getAttribute('data-page');
-        navigateTo(page);
+        navigateTo(this.getAttribute('data-page'));
       });
     });
-
-    // ÖNEMLİ: ANALİZİ BAŞLAT BUTONUNA EVENT LİSTENER EKLEME
     document.getElementById('analyzeBtn').addEventListener('click', startAnalysis);
-    
-    // ENTER TUŞU İLE DE ÇALIŞABİLSİN
-    document.getElementById('brandInput').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') startAnalysis();
-    });
-    document.getElementById('industryInput').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') startAnalysis();
-    });
-
-    // RESET BUTONU
+    document.getElementById('brandInput').addEventListener('keypress', e => { if(e.key==='Enter') startAnalysis(); });
+    document.getElementById('industryInput').addEventListener('keypress', e => { if(e.key==='Enter') startAnalysis(); });
     document.getElementById('resetBtn').addEventListener('click', resetApp);
 
     function toggleMenu() {
@@ -531,445 +501,63 @@
     function navigateTo(page) {
       document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden-section'));
       document.getElementById(`page-${page}`).classList.remove('hidden-section');
-      
       document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
       document.querySelector(`[data-page="${page}"]`).classList.add('active');
-      
       toggleMenu();
-      
-      if (page === 'market') {
-        loadMarketResearch();
-      }
+      if (page === 'market') loadMarketResearch();
     }
 
     const allMarketData = [
-      {
-        name: "Tesla",
-        score: 95,
-        industry: "Otomotiv",
-        logo: "⚡",
-        factors: [
-          "Güçlü marka ismi ve CEO vizyonu (Elon Musk)",
-          "Yüksek medya görünürlüğü ve haber değeri",
-          "Teknik dokümantasyon ve açık kaynak stratejisi",
-          "Sosyal medya dominansı ve viral pazarlama",
-          "İnovasyon odaklı marka algısı"
-        ],
-        strengths: [
-          "Elektrikli araç pazarında öncü ve lider konumu",
-          "Teknoloji ve yazılım entegrasyonunda üstünlük",
-          "Over-the-air güncellemeler ile sürekli iyileştirme",
-          "Supercharger ağı ile altyapı avantajı",
-          "Güçlü marka sadakati ve topluluk desteği",
-          "Otonom sürüş teknolojisinde ileri seviye AR-GE"
-        ],
-        weaknesses: [
-          "Üretim kapasitesi bazen talebi karşılamada zorlanıyor",
-          "Kalite kontrol ve müşteri hizmetlerinde şikayetler",
-          "Geleneksel otomotiv üreticilerine göre az servis noktası",
-          "CEO'nun sosyal medya kullanımı bazen markaya zarar verebiliyor",
-          "Premium fiyatlandırma geniş kitleye ulaşmayı zorlaştırıyor"
-        ],
-        competitors: [
-          { name: "BYD", score: 87 },
-          { name: "Rivian", score: 78 },
-          { name: "Lucid Motors", score: 72 },
-          { name: "NIO", score: 81 }
-        ],
-        learnings: [
-          "Teknoloji ve otomotivi birleştirerek yeni bir kategori yaratın",
-          "CEO'yu marka elçisi olarak kullanın ama dikkatli olun",
-          "Açık kaynak ve topluluk odaklı yaklaşım güven oluşturur",
-          "Sürekli yenilik ve güncelleme müşteri memnuniyetini artırır",
-          "Altyapı yatırımları (Supercharger gibi) rekabet avantajı sağlar"
-        ]
-      },
-      {
-        name: "BYD",
-        score: 87,
-        industry: "Otomotiv",
-        logo: "🔋",
-        factors: [
-          "Düşük maliyetli üretim gücü",
-          "Batarya teknolojisinde dikey entegrasyon",
-          "Çin pazarında güçlü konum",
-          "Hem elektrikli hem hibrit model çeşitliliği",
-          "Hızlı global genişleme"
-        ],
-        strengths: [
-          "Kendi bataryalarını üretme kabiliyeti (maliyet avantajı)",
-          "Geniş araç yelpazesi (otobüs, kamyon, sedan)",
-          "Hızlı üretim ve ölçeklenme kapasitesi",
-          "Fiyat-performans dengesi çok iyi",
-          "Çin devlet desteği"
-        ],
-        weaknesses: [
-          "Global marka bilinirliği Tesla'ya göre düşük",
-          "Batı pazarlarında algı sorunu",
-          "Yazılım ve otonom sürüş geride",
-          "Premium segment algısı zayıf",
-          "Servis ağı yurtdışında yetersiz"
-        ],
-        competitors: [
-          { name: "Tesla", score: 95 },
-          { name: "SAIC Motor", score: 73 },
-          { name: "Geely", score: 69 },
-          { name: "XPeng", score: 75 }
-        ],
-        learnings: [
-          "Dikey entegrasyon maliyetleri düşürür ve kontrolü artırır",
-          "Geniş ürün yelpazesi farklı segmentlere hitap eder",
-          "Yerel pazar hakimiyeti global genişleme için güçlü temel",
-          "Hız ve ölçek modern pazarda kritik",
-          "Fiyat-performans dengesi kitle pazarı için önemli"
-        ]
-      },
-      {
-        name: "Apple",
-        score: 98,
-        industry: "Teknoloji",
-        logo: "🍎",
-        factors: [
-          "Premium marka konumlandırması",
-          "Tutarlı ve minimalist marka dili",
-          "Developer community ve ekosistem",
-          "Yüksek müşteri sadakati ve advocacy",
-          "Etkinlik ve ürün lansmanlarının viral gücü"
-        ],
-        strengths: [
-          "Ekosistem (iPhone, iPad, Mac, Watch) birbirini tamamlıyor",
-          "Privacy ve güvenlik odaklı pazarlama",
-          "Perakende deneyimi (Apple Store) eşsiz",
-          "Marka sadakati ve müşteri memnuniyeti çok yüksek",
-          "Ürün tasarımı ve kullanıcı deneyimi sektör standardı",
-          "Developer ekosistemi güçlü ve karlı"
-        ],
-        weaknesses: [
-          "Yüksek fiyatlandırma geniş kitleye ulaşmayı zorlaştırıyor",
-          "Kapalı ekosistem bazı kullanıcıları uzaklaştırıyor",
-          "Siri gibi AI ürünleri rakiplerin gerisinde",
-          "AB'de rekabet soruşturmaları",
-          "Yenilikçilik konusunda eleştiriler (son yıllarda iteratif değişiklikler)"
-        ],
-        competitors: [
-          { name: "Samsung", score: 91 },
-          { name: "Microsoft", score: 92 },
-          { name: "Google", score: 89 },
-          { name: "Huawei", score: 76 }
-        ],
-        learnings: [
-          "Ekosistem stratejisi müşterileri içeride tutar",
-          "Premium fiyatlandırma kalite algısını güçlendirir",
-          "Minimalist tasarım ve kullanıcı deneyimi fark yaratır",
-          "Fiziksel perakende mekanları marka deneyimini güçlendirir",
-          "Privacy gibi değerlere vurgu yaparak farklılaşın"
-        ]
-      },
-      {
-        name: "Nike",
-        score: 94,
-        industry: "Spor & Moda",
-        logo: "👟",
-        factors: [
-          "İkonik slogan: 'Just Do It'",
-          "Sporcu sponsorlukları ve hikaye anlatımı",
-          "Sosyal sorumluluk kampanyaları",
-          "Güçlü görsel kimlik ve logo",
-          "Global kültürel etki"
-        ],
-        strengths: [
-          "Duygusal bağ kuran etkili pazarlama kampanyaları",
-          "Michael Jordan, Cristiano Ronaldo gibi global yıldız sponsorlukları",
-          "Nike+ ve SNKRS app ile dijital entegrasyon",
-          "Sürdürülebilirlik ve çevre dostu ürün geliştirme",
-          "Sokak kültürü ve streetwear'de güçlü konum",
-          "Limited edition stratejisi ile talep yaratma"
-        ],
-        weaknesses: [
-          "Sweatshop skandalları ve üretim koşulları eleştirileri (geçmişte)",
-          "Yüksek fiyatlar orta gelir grubuna hitap etmiyor",
-          "Çin pazarında Adidas ile rekabet",
-          "Bazı ürün kategorilerinde kalite şikayetleri",
-          "Aşırı sponsorluk bağımlılığı"
-        ],
-        competitors: [
-          { name: "Adidas", score: 88 },
-          { name: "Puma", score: 79 },
-          { name: "Under Armour", score: 71 },
-          { name: "New Balance", score: 74 }
-        ],
-        learnings: [
-          "Güçlü bir slogan ve görsel kimlik nesiller boyu hatırlanır",
-          "Sporcu ve influencer sponsorlukları marka değerini artırır",
-          "Hikaye anlatımı ile duygusal bağ kurun",
-          "Limited edition ve scarcity stratejisi talep yaratır",
-          "Sosyal sorumluluk genç nesil için önemli"
-        ]
-      },
-      {
-        name: "Microsoft",
-        score: 92,
-        industry: "Teknoloji",
-        logo: "💻",
-        factors: [
-          "Enterprise çözümleri ve B2B dominansı",
-          "Azure ve cloud liderliği",
-          "GitHub ve developer ekosistemi",
-          "AI entegrasyonu (Copilot, Bing AI)",
-          "Açık kaynak desteği ve topluluk yatırımları"
-        ],
-        strengths: [
-          "Cloud (Azure) pazarında AWS'ye rakip güçlü konum",
-          "Office 365 ve Teams ile kurumsal pazarda liderlik",
-          "GitHub ve developer araçları ile yazılımcı ekosistemi",
-          "AI ve OpenAI ortaklığı ile önde",
-          "Xbox ve gaming bölümü ile çeşitlenme",
-          "LinkedIn gibi stratejik satın almalar"
-        ],
-        weaknesses: [
-          "Tüketici pazarında Apple ve Google'a göre zayıf",
-          "Windows Phone başarısızlığı",
-          "Eski teknoloji algısı (genç nesil için)",
-          "Privacy konusunda eleştiriler",
-          "Bazı ürünler kullanıcı dostu değil (karmaşık)"
-        ],
-        competitors: [
-          { name: "Amazon (AWS)", score: 93 },
-          { name: "Google Cloud", score: 87 },
-          { name: "Apple", score: 98 },
-          { name: "IBM", score: 74 }
-        ],
-        learnings: [
-          "Enterprise odaklı stratejiler istikrarlı gelir sağlar",
-          "Cloud altyapısı geleceğin temeli",
-          "Developer ekosistemi yatırımı uzun vadeli başarı",
-          "Stratejik satın almalar (LinkedIn, GitHub) ekosistemi güçlendirir",
-          "AI entegrasyonu ile ürünleri modernleştirin"
-        ]
-      },
-      {
-        name: "Coca-Cola",
-        score: 96,
-        industry: "Gıda & İçecek",
-        logo: "🥤",
-        factors: [
-          "100+ yıllık marka mirası",
-          "Evrensel marka tanınırlığı",
-          "Duygusal pazarlama ve nostalji",
-          "Global dağıtım ağı ve her yerde bulunabilirlik",
-          "Tutarlı marka mesajı: mutluluk"
-        ],
-        strengths: [
-          "Dünyanın en tanınan markalarından biri",
-          "Güçlü dağıtım ağı (dünyanın her yerinde bulunabilir)",
-          "Reklam ve pazarlama bütçesi çok yüksek",
-          "Nostalji ve duygusal bağ",
-          "Tutarlı marka kimliği (kırmızı-beyaz, şişe tasarımı)",
-          "Sponsorluklar (Olimpiyatlar, FIFA)"
-        ],
-        weaknesses: [
-          "Sağlık trendleri şekerli içecek tüketimini azaltıyor",
-          "Çevresel etki ve plastik kullanımı eleştiriliyor",
-          "Yeni nesil sağlıklı alternatiflere yöneliyor",
-          "Su tasarrufu ve su kullanımı konusunda eleştiriler",
-          "Ürün çeşitliliği fazla ama odaklanma eksik"
-        ],
-        competitors: [
-          { name: "PepsiCo", score: 94 },
-          { name: "Red Bull", score: 83 },
-          { name: "Dr Pepper", score: 71 },
-          { name: "Monster Energy", score: 76 }
-        ],
-        learnings: [
-          "Tutarlı marka kimliği nesiller boyu değer taşır",
-          "Duygusal pazarlama ve nostalji güçlü bağ yaratır",
-          "Global dağıtım ağı ulaşılabilirlik sağlar",
-          "Sponsorluklar marka görünürlüğünü artırır",
-          "Sağlık trendlerine adapte olmak gerekiyor"
-        ]
-      },
-      {
-        name: "Amazon",
-        score: 93,
-        industry: "E-Ticaret & Teknoloji",
-        logo: "📦",
-        factors: [
-          "Müşteri odaklılık (customer obsession)",
-          "Hızlı teslimat ve lojistik mükemmelliği",
-          "AWS ile teknoloji liderliği",
-          "Marketplace ekosistemi",
-          "İnovasyon kültürü ve çeşitlilik"
-        ],
-        strengths: [
-          "Prime üyelik programı sadakat ve recurring revenue",
-          "AWS dünyanın en büyük cloud sağlayıcısı",
-          "Lojistik altyapısı rakipsiz",
-          "Alexa ve smart home ekosistemi",
-          "Whole Foods satın alımı ile fiziksel perakende",
-          "Amazon Web Services (AWS) yüksek kar marjı"
-        ],
-        weaknesses: [
-          "Çalışan hakları ve çalışma koşulları eleştiriliyor",
-          "Monopol eleştirileri ve rekabet soruşturmaları",
-          "Küçük işletmelere zarar veriyor algısı",
-          "Privacy ve veri toplama endişeleri (Alexa)",
-          "Bazı kategorilerde kendi ürünlerini önplana çıkarması"
-        ],
-        competitors: [
-          { name: "Walmart", score: 85 },
-          { name: "Alibaba", score: 88 },
-          { name: "Microsoft (Azure)", score: 92 },
-          { name: "eBay", score: 69 }
-        ],
-        learnings: [
-          "Müşteri odaklılık her şeyin merkezinde olmalı",
-          "Lojistik ve hızlı teslimat rekabet avantajı",
-          "Prime gibi abonelik modelleri sadakat yaratır",
-          "Cloud (AWS) gibi yan işler ana geliri geçebilir",
-          "Marketplace modeli ölçeklenmeyi hızlandırır"
-        ]
-      }
+      {name:"Tesla",score:95,industry:"Otomotiv",logo:"⚡",factors:["Güçlü marka ismi ve CEO vizyonu (Elon Musk)","Yüksek medya görünürlüğü ve haber değeri","Teknik dokümantasyon ve açık kaynak stratejisi","Sosyal medya dominansı ve viral pazarlama","İnovasyon odaklı marka algısı"],strengths:["Elektrikli araç pazarında öncü ve lider konumu","Teknoloji ve yazılım entegrasyonunda üstünlük","Over-the-air güncellemeler ile sürekli iyileştirme","Supercharger ağı ile altyapı avantajı","Güçlü marka sadakati ve topluluk desteği","Otonom sürüş teknolojisinde ileri seviye AR-GE"],weaknesses:["Üretim kapasitesi bazen talebi karşılamada zorlanıyor","Kalite kontrol ve müşteri hizmetlerinde şikayetler","Geleneksel otomotiv üreticilerine göre az servis noktası","CEO'nun sosyal medya kullanımı bazen markaya zarar verebiliyor","Premium fiyatlandırma geniş kitleye ulaşmayı zorlaştırıyor"],competitors:[{name:"BYD",score:87},{name:"Rivian",score:78},{name:"Lucid Motors",score:72},{name:"NIO",score:81}],learnings:["Teknoloji ve otomotivi birleştirerek yeni bir kategori yaratın","CEO'yu marka elçisi olarak kullanın ama dikkatli olun","Açık kaynak ve topluluk odaklı yaklaşım güven oluşturur","Sürekli yenilik ve güncelleme müşteri memnuniyetini artırır","Altyapı yatırımları (Supercharger gibi) rekabet avantajı sağlar"]},
+      {name:"BYD",score:87,industry:"Otomotiv",logo:"🔋",factors:["Düşük maliyetli üretim gücü","Batarya teknolojisinde dikey entegrasyon","Çin pazarında güçlü konum","Hem elektrikli hem hibrit model çeşitliliği","Hızlı global genişleme"],strengths:["Kendi bataryalarını üretme kabiliyeti (maliyet avantajı)","Geniş araç yelpazesi (otobüs, kamyon, sedan)","Hızlı üretim ve ölçeklenme kapasitesi","Fiyat-performans dengesi çok iyi","Çin devlet desteği"],weaknesses:["Global marka bilinirliği Tesla'ya göre düşük","Batı pazarlarında algı sorunu","Yazılım ve otonom sürüş geride","Premium segment algısı zayıf","Servis ağı yurtdışında yetersiz"],competitors:[{name:"Tesla",score:95},{name:"SAIC Motor",score:73},{name:"Geely",score:69},{name:"XPeng",score:75}],learnings:["Dikey entegrasyon maliyetleri düşürür ve kontrolü artırır","Geniş ürün yelpazesi farklı segmentlere hitap eder","Yerel pazar hakimiyeti global genişleme için güçlü temel","Hız ve ölçek modern pazarda kritik","Fiyat-performans dengesi kitle pazarı için önemli"]},
+      {name:"Apple",score:98,industry:"Teknoloji",logo:"🍎",factors:["Premium marka konumlandırması","Tutarlı ve minimalist marka dili","Developer community ve ekosistem","Yüksek müşteri sadakati ve advocacy","Etkinlik ve ürün lansmanlarının viral gücü"],strengths:["Ekosistem (iPhone, iPad, Mac, Watch) birbirini tamamlıyor","Privacy ve güvenlik odaklı pazarlama","Perakende deneyimi (Apple Store) eşsiz","Marka sadakati ve müşteri memnuniyeti çok yüksek","Ürün tasarımı ve kullanıcı deneyimi sektör standardı","Developer ekosistemi güçlü ve karlı"],weaknesses:["Yüksek fiyatlandırma geniş kitleye ulaşmayı zorlaştırıyor","Kapalı ekosistem bazı kullanıcıları uzaklaştırıyor","Siri gibi AI ürünleri rakiplerin gerisinde","AB'de rekabet soruşturmaları","Yenilikçilik konusunda eleştiriler (son yıllarda iteratif değişiklikler)"],competitors:[{name:"Samsung",score:91},{name:"Microsoft",score:92},{name:"Google",score:89},{name:"Huawei",score:76}],learnings:["Ekosistem stratejisi müşterileri içeride tutar","Premium fiyatlandırma kalite algısını güçlendirir","Minimalist tasarım ve kullanıcı deneyimi fark yaratır","Fiziksel perakende mekanları marka deneyimini güçlendirir","Privacy gibi değerlere vurgu yaparak farklılaşın"]},
+      {name:"Nike",score:94,industry:"Spor & Moda",logo:"👟",factors:["İkonik slogan: 'Just Do It'","Sporcu sponsorlukları ve hikaye anlatımı","Sosyal sorumluluk kampanyaları","Güçlü görsel kimlik ve logo","Global kültürel etki"],strengths:["Duygusal bağ kuran etkili pazarlama kampanyaları","Michael Jordan, Cristiano Ronaldo gibi global yıldız sponsorlukları","Nike+ ve SNKRS app ile dijital entegrasyon","Sürdürülebilirlik ve çevre dostu ürün geliştirme","Sokak kültürü ve streetwear'de güçlü konum","Limited edition stratejisi ile talep yaratma"],weaknesses:["Sweatshop skandalları ve üretim koşulları eleştirileri (geçmişte)","Yüksek fiyatlar orta gelir grubuna hitap etmiyor","Çin pazarında Adidas ile rekabet","Bazı ürün kategorilerinde kalite şikayetleri","Aşırı sponsorluk bağımlılığı"],competitors:[{name:"Adidas",score:88},{name:"Puma",score:79},{name:"Under Armour",score:71},{name:"New Balance",score:74}],learnings:["Güçlü bir slogan ve görsel kimlik nesiller boyu hatırlanır","Sporcu ve influencer sponsorlukları marka değerini artırır","Hikaye anlatımı ile duygusal bağ kurun","Limited edition ve scarcity stratejisi talep yaratır","Sosyal sorumluluk genç nesil için önemli"]},
+      {name:"Microsoft",score:92,industry:"Teknoloji",logo:"💻",factors:["Enterprise çözümleri ve B2B dominansı","Azure ve cloud liderliği","GitHub ve developer ekosistemi","AI entegrasyonu (Copilot, Bing AI)","Açık kaynak desteği ve topluluk yatırımları"],strengths:["Cloud (Azure) pazarında AWS'ye rakip güçlü konum","Office 365 ve Teams ile kurumsal pazarda liderlik","GitHub ve developer araçları ile yazılımcı ekosistemi","AI ve OpenAI ortaklığı ile önde","Xbox ve gaming bölümü ile çeşitlenme","LinkedIn gibi stratejik satın almalar"],weaknesses:["Tüketici pazarında Apple ve Google'a göre zayıf","Windows Phone başarısızlığı","Eski teknoloji algısı (genç nesil için)","Privacy konusunda eleştiriler","Bazı ürünler kullanıcı dostu değil (karmaşık)"],competitors:[{name:"Amazon (AWS)",score:93},{name:"Google Cloud",score:87},{name:"Apple",score:98},{name:"IBM",score:74}],learnings:["Enterprise odaklı stratejiler istikrarlı gelir sağlar","Cloud altyapısı geleceğin temeli","Developer ekosistemi yatırımı uzun vadeli başarı","Stratejik satın almalar (LinkedIn, GitHub) ekosistemi güçlendirir","AI entegrasyonu ile ürünleri modernleştirin"]},
+      {name:"Coca-Cola",score:96,industry:"Gıda & İçecek",logo:"🥤",factors:["100+ yıllık marka mirası","Evrensel marka tanınırlığı","Duygusal pazarlama ve nostalji","Global dağıtım ağı ve her yerde bulunabilirlik","Tutarlı marka mesajı: mutluluk"],strengths:["Dünyanın en tanınan markalarından biri","Güçlü dağıtım ağı (dünyanın her yerinde bulunabilir)","Reklam ve pazarlama bütçesi çok yüksek","Nostalji ve duygusal bağ","Tutarlı marka kimliği (kırmızı-beyaz, şişe tasarımı)","Sponsorluklar (Olimpiyatlar, FIFA)"],weaknesses:["Sağlık trendleri şekerli içecek tüketimini azaltıyor","Çevresel etki ve plastik kullanımı eleştiriliyor","Yeni nesil sağlıklı alternatiflere yöneliyor","Su tasarrufu ve su kullanımı konusunda eleştiriler","Ürün çeşitliliği fazla ama odaklanma eksik"],competitors:[{name:"PepsiCo",score:94},{name:"Red Bull",score:83},{name:"Dr Pepper",score:71},{name:"Monster Energy",score:76}],learnings:["Tutarlı marka kimliği nesiller boyu değer taşır","Duygusal pazarlama ve nostalji güçlü bağ yaratır","Global dağıtım ağı ulaşılabilirlik sağlar","Sponsorluklar marka görünürlüğünü artırır","Sağlık trendlerine adapte olmak gerekiyor"]},
+      {name:"Amazon",score:93,industry:"E-Ticaret & Teknoloji",logo:"📦",factors:["Müşteri odaklılık (customer obsession)","Hızlı teslimat ve lojistik mükemmelliği","AWS ile teknoloji liderliği","Marketplace ekosistemi","İnovasyon kültürü ve çeşitlilik"],strengths:["Prime üyelik programı sadakat ve recurring revenue","AWS dünyanın en büyük cloud sağlayıcısı","Lojistik altyapısı rakipsiz","Alexa ve smart home ekosistemi","Whole Foods satın alımı ile fiziksel perakende","Amazon Web Services (AWS) yüksek kar marjı"],weaknesses:["Çalışan hakları ve çalışma koşulları eleştiriliyor","Monopol eleştirileri ve rekabet soruşturmaları","Küçük işletmelere zarar veriyor algısı","Privacy ve veri toplama endişeleri (Alexa)","Bazı kategorilerde kendi ürünlerini önplana çıkarması"],competitors:[{name:"Walmart",score:85},{name:"Alibaba",score:88},{name:"Microsoft (Azure)",score:92},{name:"eBay",score:69}],learnings:["Müşteri odaklılık her şeyin merkezinde olmalı","Lojistik ve hızlı teslimat rekabet avantajı","Prime gibi abonelik modelleri sadakat yaratır","Cloud (AWS) gibi yan işler ana geliri geçebilir","Marketplace modeli ölçeklenmeyi hızlandırır"]}
     ];
 
-    // Sektör arama fonksiyonu
     let currentFilteredData = allMarketData;
 
     document.getElementById('sectorSearch').addEventListener('input', function(e) {
       const searchTerm = e.target.value.toLowerCase().trim();
-      
-      if (searchTerm === '') {
-        currentFilteredData = allMarketData;
-      } else {
-        currentFilteredData = allMarketData.filter(company => 
-          company.industry.toLowerCase().includes(searchTerm) ||
-          company.name.toLowerCase().includes(searchTerm)
-        );
-      }
-      
+      currentFilteredData = searchTerm === '' ? allMarketData : allMarketData.filter(c => c.industry.toLowerCase().includes(searchTerm) || c.name.toLowerCase().includes(searchTerm));
       renderMarketResearch();
     });
 
     function renderMarketResearch() {
       const container = document.getElementById('marketResearch');
-      
       if (currentFilteredData.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full text-center py-12">
-            <div class="text-6xl mb-4">🔍</div>
-            <p class="text-xl text-slate-400">Bu sektörde henüz firma bulunamadı.</p>
-            <p class="text-sm text-slate-500 mt-2">Farklı bir sektör deneyin: Otomotiv, Teknoloji, Gıda, E-Ticaret, Spor...</p>
-          </div>
-        `;
+        container.innerHTML = '<div class="col-span-full text-center py-12"><div class="text-6xl mb-4">🔍</div><p class="text-xl text-slate-400">Bu sektörde henüz firma bulunamadı.</p><p class="text-sm text-slate-500 mt-2">Farklı bir sektör deneyin: Otomotiv, Teknoloji, Gıda, E-Ticaret, Spor...</p></div>';
         return;
       }
-
-      container.innerHTML = currentFilteredData.map((company, index) => `
-        <div class="glass-card rounded-3xl p-6 fade-in hover:scale-[1.02] transition-transform cursor-pointer" onclick="window.openDetailModal(${index})">
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-3">
-              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-2xl">
-                ${company.logo}
-              </div>
-              <div>
-                <h3 class="text-xl font-bold">${company.name}</h3>
-                <p class="text-xs text-slate-500">${company.industry}</p>
-              </div>
-            </div>
-            <div class="text-right">
-              <div class="text-3xl font-black gradient-text">${company.score}</div>
-              <div class="text-[9px] text-slate-500 uppercase tracking-wider">Skor</div>
-            </div>
-          </div>
-          
-          <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700">
-            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Başarı Faktörleri</h4>
-            <ul class="space-y-2">
-              ${company.factors.slice(0, 3).map(factor => `
-                <li class="flex items-start gap-2 text-xs text-slate-300">
-                  <span class="text-green-400 shrink-0">✓</span>
-                  <span>${factor}</span>
-                </li>
-              `).join('')}
-            </ul>
-            <div class="mt-3 text-center">
-              <span class="text-xs text-blue-400 font-semibold">👉 Detaylı analiz için tıklayın</span>
-            </div>
-          </div>
-        </div>
-      `).join('');
-
+      container.innerHTML = currentFilteredData.map((c,i)=>`<div class="glass-card rounded-3xl p-6 fade-in hover:scale-[1.02] transition-transform cursor-pointer" onclick="window.openDetailModal(${i})"><div class="flex items-center justify-between mb-4"><div class="flex items-center gap-3"><div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-2xl">${c.logo}</div><div><h3 class="text-xl font-bold">${c.name}</h3><p class="text-xs text-slate-500">${c.industry}</p></div></div><div class="text-right"><div class="text-3xl font-black gradient-text">${c.score}</div><div class="text-[9px] text-slate-500 uppercase tracking-wider">Skor</div></div></div><div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700"><h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Başarı Faktörleri</h4><ul class="space-y-2">${c.factors.slice(0,3).map(f=>`<li class="flex items-start gap-2 text-xs text-slate-300"><span class="text-green-400 shrink-0">✓</span><span>${f}</span></li>`).join('')}</ul><div class="mt-3 text-center"><span class="text-xs text-blue-400 font-semibold">👉 Detaylı analiz için tıklayın</span></div></div></div>`).join('');
       lucide.createIcons();
     }
 
-    window.openDetailModal = function(index) {
-      const company = currentFilteredData[index];
-      
-      document.getElementById('modalLogo').innerText = company.logo;
-      document.getElementById('modalTitle').innerText = company.name;
-      document.getElementById('modalIndustry').innerText = company.industry;
-      document.getElementById('modalScore').innerText = company.score;
-      
-      // Başarı Faktörleri
-      document.getElementById('modalFactors').innerHTML = company.factors.map(factor => `
-        <li class="flex items-start gap-3 text-sm">
-          <span class="text-yellow-400 shrink-0 text-lg">⭐</span>
-          <span class="text-slate-300">${factor}</span>
-        </li>
-      `).join('');
-      
-      // İyi Yaptıkları
-      document.getElementById('modalStrengths').innerHTML = company.strengths.map(strength => `
-        <li class="flex items-start gap-3 text-sm">
-          <span class="text-emerald-400 shrink-0 text-lg">✓</span>
-          <span class="text-slate-300">${strength}</span>
-        </li>
-      `).join('');
-      
-      // Gelişim Alanları
-      document.getElementById('modalWeaknesses').innerHTML = company.weaknesses.map(weakness => `
-        <li class="flex items-start gap-3 text-sm">
-          <span class="text-orange-400 shrink-0 text-lg">⚠</span>
-          <span class="text-slate-300">${weakness}</span>
-        </li>
-      `).join('');
-      
-      // Rakipler
-      document.getElementById('modalCompetitors').innerHTML = company.competitors.map(comp => {
-        let scoreColor = "text-slate-400";
-        if (comp.score >= 90) scoreColor = "text-green-400";
-        else if (comp.score >= 80) scoreColor = "text-blue-400";
-        else if (comp.score >= 70) scoreColor = "text-yellow-400";
-        else scoreColor = "text-orange-400";
-        
-        return `
-          <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700 flex items-center justify-between">
-            <span class="text-sm font-semibold text-slate-300">${comp.name}</span>
-            <span class="text-xl font-bold ${scoreColor}">${comp.score}</span>
-          </div>
-        `;
-      }).join('');
-      
-      // Öğrenebilecekleriniz
-      document.getElementById('modalLearnings').innerHTML = company.learnings.map((learning, idx) => `
-        <li class="flex items-start gap-3 text-sm">
-          <span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold">${idx + 1}</span>
-          <span class="text-slate-300 leading-relaxed">${learning}</span>
-        </li>
-      `).join('');
-      
+    window.openDetailModal = function(idx) {
+      const c = currentFilteredData[idx];
+      document.getElementById('modalLogo').innerText = c.logo;
+      document.getElementById('modalTitle').innerText = c.name;
+      document.getElementById('modalIndustry').innerText = c.industry;
+      document.getElementById('modalScore').innerText = c.score;
+      document.getElementById('modalFactors').innerHTML = c.factors.map(f=>`<li class="flex items-start gap-3 text-sm"><span class="text-yellow-400 shrink-0 text-lg">⭐</span><span class="text-slate-300">${f}</span></li>`).join('');
+      document.getElementById('modalStrengths').innerHTML = c.strengths.map(s=>`<li class="flex items-start gap-3 text-sm"><span class="text-emerald-400 shrink-0 text-lg">✓</span><span class="text-slate-300">${s}</span></li>`).join('');
+      document.getElementById('modalWeaknesses').innerHTML = c.weaknesses.map(w=>`<li class="flex items-start gap-3 text-sm"><span class="text-orange-400 shrink-0 text-lg">⚠</span><span class="text-slate-300">${w}</span></li>`).join('');
+      document.getElementById('modalCompetitors').innerHTML = c.competitors.map(r=>{let color = r.score>=90?'text-green-400':r.score>=80?'text-blue-400':r.score>=70?'text-yellow-400':'text-orange-400'; return `<div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700 flex items-center justify-between"><span class="text-sm font-semibold text-slate-300">${r.name}</span><span class="text-xl font-bold ${color}">${r.score}</span></div>`;}).join('');
+      document.getElementById('modalLearnings').innerHTML = c.learnings.map((l,i)=>`<li class="flex items-start gap-3 text-sm"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold">${i+1}</span><span class="text-slate-300 leading-relaxed">${l}</span></li>`).join('');
       document.getElementById('detailModal').classList.remove('hidden');
       document.getElementById('detailModal').classList.add('flex');
       lucide.createIcons();
     }
 
-    document.getElementById('closeModal').addEventListener('click', () => {
+    document.getElementById('closeModal').addEventListener('click', ()=>{
       document.getElementById('detailModal').classList.add('hidden');
       document.getElementById('detailModal').classList.remove('flex');
     });
 
-    // Modal dışına tıklayınca kapat
-    document.getElementById('detailModal').addEventListener('click', (e) => {
-      if (e.target.id === 'detailModal') {
+    document.getElementById('detailModal').addEventListener('click', e=>{
+      if(e.target.id==='detailModal'){
         document.getElementById('detailModal').classList.add('hidden');
         document.getElementById('detailModal').classList.remove('flex');
       }
@@ -979,12 +567,9 @@
       currentFilteredData = allMarketData;
       renderMarketResearch();
     }
-    }
 
     function showSection(id) {
-      ['section-input', 'section-loading', 'section-results'].forEach(sec => {
-        document.getElementById(sec).classList.add('hidden-section');
-      });
+      ['section-input','section-loading','section-results'].forEach(s => document.getElementById(s).classList.add('hidden-section'));
       document.getElementById(id).classList.remove('hidden-section');
     }
 
@@ -997,35 +582,15 @@
     async function startAnalysis() {
       const brand = document.getElementById('brandInput').value.trim();
       const industry = document.getElementById('industryInput').value.trim();
-
-      if (!brand || !industry) {
-        alert("⚠️ Lütfen marka ve sektör bilgilerini girin!");
-        return;
-      }
-
+      if (!brand || !industry) { alert("⚠️ Lütfen marka ve sektör bilgilerini girin!"); return; }
       showSection('section-loading');
-      
-      let i = 0;
-      loadingInterval = setInterval(() => {
-        document.getElementById('loadingText').innerText = loadingMessages[i % loadingMessages.length];
-        i++;
-      }, 2500);
-
+      let i=0;
+      loadingInterval = setInterval(()=>{ document.getElementById('loadingText').innerText = loadingMessages[i%loadingMessages.length]; i++; },2500);
       try {
-        const response = await fetch(VERCEL_BACKEND_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ brand, industry }),
-        });
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || "Sunucu Hatası");
-        }
-
+        const response = await fetch(VERCEL_BACKEND_URL, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({brand,industry}) });
+        if (!response.ok) { const errorData = await response.json(); throw new Error(errorData.error || "Sunucu Hatası"); }
         const data = await response.json();
         renderResults(data, brand, industry);
-
       } catch (error) {
         console.error("Hata:", error);
         alert("❌ Analiz başarısız: " + error.message);
@@ -1037,139 +602,13 @@
 
     function renderResults(data, brand, industry) {
       document.getElementById('resBrandName').innerText = `${brand.toUpperCase()} | ${industry.toUpperCase()}`;
-      
       const score = data.score || 0;
       document.getElementById('resScore').innerText = score;
       document.getElementById('scoreCircle').style.setProperty('--score', score);
       document.getElementById('resScoreExplanation').innerText = data.scoreExplanation || "Detaylı skor açıklaması hazırlanıyor...";
-      
       const categoryBadge = document.getElementById('scoreCategory');
       const category = data.scoreCategory || "Değerlendiriliyor";
       categoryBadge.innerText = category;
-      
-      if (score >= 90) {
-        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-green-500/20 text-green-400 border border-green-500/50";
-      } else if (score >= 80) {
-        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/50";
-      } else if (score >= 60) {
-        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-yellow-500/20 text-yellow-400 border border-yellow-500/50";
-      } else if (score >= 40) {
-        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/50";
-      } else {
-        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-red-500/20 text-red-400 border border-red-500/50";
-      }
-      
-      document.getElementById('resClaimedSector').innerText = data.identityAnalysis?.claimedSector || industry;
-      document.getElementById('resDetectedSector').innerText = data.identityAnalysis?.detectedSector || industry;
-      
-      const matchStatus = document.getElementById('resMatchStatus');
-      const indicator = document.getElementById('matchIndicator');
-      const status = data.identityAnalysis?.matchStatus || "EŞLEŞME DOĞRULANDI";
-      matchStatus.innerText = status;
-      
-      if (status.includes("SAPMA") || status.includes("Yetersiz")) {
-        matchStatus.className = "text-[9px] font-bold px-2 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-900";
-        indicator.className = "absolute top-0 left-0 w-1 h-full bg-rose-600 rounded-full";
-      } else {
-        matchStatus.className = "text-[9px] font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-900";
-        indicator.className = "absolute top-0 left-0 w-1 h-full bg-emerald-500 rounded-full";
-      }
-      
-      const insightSpan = document.getElementById('resInsight').querySelector('span');
-      if (insightSpan) {
-        insightSpan.innerText = data.identityAnalysis?.insight || "AI algı analizi tamamlandı.";
-      }
-
-      const platformsDiv = document.getElementById('resPlatforms');
-      platformsDiv.innerHTML = "";
-      (data.platforms || [
-        {name: "Gemini", status: "Analiz Edildi"},
-        {name: "ChatGPT", status: "Simüle Edildi"},
-        {name: "Claude", status: "Tarandı"}
-      ]).forEach(p => {
-        platformsDiv.innerHTML += `
-          <div class="flex items-center justify-between text-sm p-2 bg-slate-800/50 rounded border border-slate-700">
-            <span class="text-xs font-semibold text-slate-300">${p.name}</span>
-            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-900">${p.status}</span>
-          </div>`;
-      });
-
-      document.getElementById('resSummary').innerText = data.strategicSummary || "Stratejik özet hazırlanıyor...";
-      
-      const strList = document.getElementById('resStrengths');
-      strList.innerHTML = "";
-      (data.strengths || ["Yükleniyor..."]).forEach(s => {
-        strList.innerHTML += `<li class="flex items-start gap-2"><span class="text-emerald-500 shrink-0">•</span><span>${s}</span></li>`;
-      });
-      
-      const weakList = document.getElementById('resWeaknesses');
-      weakList.innerHTML = "";
-      (data.weaknesses || ["Yükleniyor..."]).forEach(w => {
-        weakList.innerHTML += `<li class="flex items-start gap-2"><span class="text-rose-500 shrink-0">•</span><span>${w}</span></li>`;
-      });
-
-      const compList = document.getElementById('resCompetitors');
-      compList.innerHTML = "";
-      
-      if (data.competitors?.direct && data.competitors.direct.length > 0) {
-        compList.innerHTML += `<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">DOĞRUDAN RAKİPLER</p>`;
-        data.competitors.direct.forEach(c => {
-          const competitorScore = c.score || 0;
-          let scoreColor = "text-slate-400";
-          if (competitorScore >= 80) scoreColor = "text-green-400";
-          else if (competitorScore >= 60) scoreColor = "text-blue-400";
-          else if (competitorScore >= 40) scoreColor = "text-yellow-400";
-          else scoreColor = "text-red-400";
-          
-          compList.innerHTML += `
-            <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700 mb-2">
-              <div class="flex items-center justify-between mb-1">
-                <span class="font-semibold text-slate-300 text-sm">${c.name}</span>
-                <span class="text-lg font-bold ${scoreColor}">${competitorScore}</span>
-              </div>
-              <p class="text-[10px] text-slate-500">${c.status}</p>
-            </div>`;
-        });
-      }
-      
-      if (data.competitors?.leaders && data.competitors.leaders.length > 0) {
-        compList.innerHTML += `<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 mt-4">PAZAR LİDERLERİ</p>`;
-        data.competitors.leaders.forEach(c => {
-          const leaderScore = c.score || 0;
-          let scoreColor = "text-slate-400";
-          if (leaderScore >= 80) scoreColor = "text-green-400";
-          else if (leaderScore >= 60) scoreColor = "text-blue-400";
-          else if (leaderScore >= 40) scoreColor = "text-yellow-400";
-          else scoreColor = "text-red-400";
-          
-          compList.innerHTML += `
-            <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700 mb-2">
-              <div class="flex items-center justify-between mb-1">
-                <span class="font-semibold text-slate-300 text-sm">${c.name}</span>
-                <span class="text-lg font-bold ${scoreColor}">${leaderScore}</span>
-              </div>
-              <p class="text-[10px] text-slate-500">${c.status}</p>
-            </div>`;
-        });
-      }
-
-      document.getElementById('resOptRationale').innerText = `🎯 HEDEF: ${data.optimization?.objective || "Belirleniyor..."}\n\n📊 ANALİZ: ${data.optimization?.rationale || "Hazırlanıyor..."}`;
-      
-      const visRecList = document.getElementById('resVisibilityRecommendations');
-      visRecList.innerHTML = "";
-      (data.visibilityRecommendations || ["Tavsiyeler hazırlanıyor..."]).forEach((rec, idx) => {
-        visRecList.innerHTML += `
-          <li class="flex items-start gap-3">
-            <span class="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-xs font-bold">${idx + 1}</span>
-            <span class="leading-relaxed">${rec}</span>
-          </li>`;
-      });
-
-      lucide.createIcons();
-      showSection('section-results');
-      setTimeout(() => document.getElementById('section-results').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
-    }
-  </script>
-
-</body>
-</html>
+      if (score >= 90) categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-green-500/20 text-green-400 border border-green-500/50";
+      else if (score >= 80) categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/50";
+      else if (
