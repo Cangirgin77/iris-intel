@@ -392,8 +392,94 @@
         </p>
       </div>
 
+      <div class="max-w-2xl mx-auto mb-8">
+        <div class="glass-card rounded-2xl p-6">
+          <label class="block text-sm font-semibold text-slate-300 mb-3">🔍 Sektör Ara</label>
+          <input 
+            id="sectorSearch" 
+            type="text" 
+            placeholder="Örn: Otomotiv, Teknoloji, Gıda, E-Ticaret..."
+            class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+          >
+          <p class="text-xs text-slate-500 mt-2">Sektör yazın, önde gelen markaları keşfedin!</p>
+        </div>
+      </div>
+
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="marketResearch"></div>
 
+    </div>
+  </div>
+
+  <!-- DETAYLI ANALİZ MODAL -->
+  <div id="detailModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[1000] hidden items-center justify-center p-4">
+    <div class="glass-card rounded-3xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="sticky top-0 bg-slate-900/95 backdrop-blur-sm p-6 border-b border-slate-700 flex items-center justify-between z-10">
+        <div class="flex items-center gap-4">
+          <div id="modalLogo" class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-3xl"></div>
+          <div>
+            <h2 id="modalTitle" class="text-3xl font-black gradient-text"></h2>
+            <p id="modalIndustry" class="text-sm text-slate-400"></p>
+          </div>
+        </div>
+        <button id="closeModal" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 flex items-center justify-center transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 space-y-6">
+        
+        <!-- Skor -->
+        <div class="glass-card rounded-2xl p-6 text-center">
+          <div class="text-6xl font-black gradient-text mb-2" id="modalScore">0</div>
+          <div class="text-sm text-slate-400">AI Görünürlük Skoru</div>
+        </div>
+
+        <!-- Başarı Faktörleri -->
+        <div class="glass-card rounded-2xl p-6">
+          <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <i data-lucide="star" class="w-5 h-5 text-yellow-400"></i>
+            Başarı Faktörleri
+          </h3>
+          <ul id="modalFactors" class="space-y-3"></ul>
+        </div>
+
+        <!-- İyi Yaptıkları -->
+        <div class="glass-card rounded-2xl p-6">
+          <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <i data-lucide="thumbs-up" class="w-5 h-5 text-emerald-400"></i>
+            İyi Yaptıkları Şeyler
+          </h3>
+          <ul id="modalStrengths" class="space-y-3"></ul>
+        </div>
+
+        <!-- Kötü Yaptıkları / Gelişim Alanları -->
+        <div class="glass-card rounded-2xl p-6">
+          <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <i data-lucide="alert-triangle" class="w-5 h-5 text-orange-400"></i>
+            Gelişim Alanları
+          </h3>
+          <ul id="modalWeaknesses" class="space-y-3"></ul>
+        </div>
+
+        <!-- Rakipler -->
+        <div class="glass-card rounded-2xl p-6">
+          <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <i data-lucide="users" class="w-5 h-5 text-pink-400"></i>
+            Doğrudan Rakipleri
+          </h3>
+          <div id="modalCompetitors" class="grid md:grid-cols-2 gap-3"></div>
+        </div>
+
+        <!-- Stratejik Öneriler -->
+        <div class="glass-card rounded-2xl p-6">
+          <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+            <i data-lucide="lightbulb" class="w-5 h-5 text-yellow-400"></i>
+            Bu Markadan Öğrenebilecekleriniz
+          </h3>
+          <ul id="modalLearnings" class="space-y-3"></ul>
+        </div>
+
+      </div>
     </div>
   </div>
 
@@ -456,91 +542,329 @@
       }
     }
 
-    function loadMarketResearch() {
-      const marketData = [
-        {
-          name: "Tesla",
-          score: 95,
-          industry: "Otomotiv",
-          logo: "⚡",
-          factors: [
-            "Güçlü marka ismi ve CEO vizyonu (Elon Musk)",
-            "Yüksek medya görünürlüğü ve haber değeri",
-            "Teknik dokümantasyon ve açık kaynak stratejisi",
-            "Sosyal medya dominansı ve viral pazarlama",
-            "İnovasyon odaklı marka algısı"
-          ]
-        },
-        {
-          name: "Apple",
-          score: 98,
-          industry: "Teknoloji",
-          logo: "🍎",
-          factors: [
-            "Premium marka konumlandırması",
-            "Tutarlı ve minimalist marka dili",
-            "Developer community ve ekosistem",
-            "Yüksek müşteri sadakati ve advocacy",
-            "Etkinlik ve ürün lansmanlarının viral gücü"
-          ]
-        },
-        {
-          name: "Nike",
-          score: 94,
-          industry: "Spor & Moda",
-          logo: "👟",
-          factors: [
-            "İkonik slogan: 'Just Do It'",
-            "Sporcu sponsorlukları ve hikaye anlatımı",
-            "Sosyal sorumluluk kampanyaları",
-            "Güçlü görsel kimlik ve logo",
-            "Global kültürel etki"
-          ]
-        },
-        {
-          name: "Microsoft",
-          score: 92,
-          industry: "Teknoloji",
-          logo: "💻",
-          factors: [
-            "Enterprise çözümleri ve B2B dominansı",
-            "Azure ve cloud liderliği",
-            "GitHub ve developer ekosistemi",
-            "AI entegrasyonu (Copilot, Bing AI)",
-            "Açık kaynak desteği ve topluluk yatırımları"
-          ]
-        },
-        {
-          name: "Coca-Cola",
-          score: 96,
-          industry: "Gıda & İçecek",
-          logo: "🥤",
-          factors: [
-            "100+ yıllık marka mirası",
-            "Evrensel marka tanınırlığı",
-            "Duygusal pazarlama ve nostalji",
-            "Global dağıtım ağı ve her yerde bulunabilirlik",
-            "Tutarlı marka mesajı: mutluluk"
-          ]
-        },
-        {
-          name: "Amazon",
-          score: 93,
-          industry: "E-Ticaret & Teknoloji",
-          logo: "📦",
-          factors: [
-            "Müşteri odaklılık (customer obsession)",
-            "Hızlı teslimat ve lojistik mükemmelliği",
-            "AWS ile teknoloji liderliği",
-            "Marketplace ekosistemi",
-            "İnovasyon kültürü ve çeşitlilik"
-          ]
-        }
-      ];
+    const allMarketData = [
+      {
+        name: "Tesla",
+        score: 95,
+        industry: "Otomotiv",
+        logo: "⚡",
+        factors: [
+          "Güçlü marka ismi ve CEO vizyonu (Elon Musk)",
+          "Yüksek medya görünürlüğü ve haber değeri",
+          "Teknik dokümantasyon ve açık kaynak stratejisi",
+          "Sosyal medya dominansı ve viral pazarlama",
+          "İnovasyon odaklı marka algısı"
+        ],
+        strengths: [
+          "Elektrikli araç pazarında öncü ve lider konumu",
+          "Teknoloji ve yazılım entegrasyonunda üstünlük",
+          "Over-the-air güncellemeler ile sürekli iyileştirme",
+          "Supercharger ağı ile altyapı avantajı",
+          "Güçlü marka sadakati ve topluluk desteği",
+          "Otonom sürüş teknolojisinde ileri seviye AR-GE"
+        ],
+        weaknesses: [
+          "Üretim kapasitesi bazen talebi karşılamada zorlanıyor",
+          "Kalite kontrol ve müşteri hizmetlerinde şikayetler",
+          "Geleneksel otomotiv üreticilerine göre az servis noktası",
+          "CEO'nun sosyal medya kullanımı bazen markaya zarar verebiliyor",
+          "Premium fiyatlandırma geniş kitleye ulaşmayı zorlaştırıyor"
+        ],
+        competitors: [
+          { name: "BYD", score: 87 },
+          { name: "Rivian", score: 78 },
+          { name: "Lucid Motors", score: 72 },
+          { name: "NIO", score: 81 }
+        ],
+        learnings: [
+          "Teknoloji ve otomotivi birleştirerek yeni bir kategori yaratın",
+          "CEO'yu marka elçisi olarak kullanın ama dikkatli olun",
+          "Açık kaynak ve topluluk odaklı yaklaşım güven oluşturur",
+          "Sürekli yenilik ve güncelleme müşteri memnuniyetini artırır",
+          "Altyapı yatırımları (Supercharger gibi) rekabet avantajı sağlar"
+        ]
+      },
+      {
+        name: "BYD",
+        score: 87,
+        industry: "Otomotiv",
+        logo: "🔋",
+        factors: [
+          "Düşük maliyetli üretim gücü",
+          "Batarya teknolojisinde dikey entegrasyon",
+          "Çin pazarında güçlü konum",
+          "Hem elektrikli hem hibrit model çeşitliliği",
+          "Hızlı global genişleme"
+        ],
+        strengths: [
+          "Kendi bataryalarını üretme kabiliyeti (maliyet avantajı)",
+          "Geniş araç yelpazesi (otobüs, kamyon, sedan)",
+          "Hızlı üretim ve ölçeklenme kapasitesi",
+          "Fiyat-performans dengesi çok iyi",
+          "Çin devlet desteği"
+        ],
+        weaknesses: [
+          "Global marka bilinirliği Tesla'ya göre düşük",
+          "Batı pazarlarında algı sorunu",
+          "Yazılım ve otonom sürüş geride",
+          "Premium segment algısı zayıf",
+          "Servis ağı yurtdışında yetersiz"
+        ],
+        competitors: [
+          { name: "Tesla", score: 95 },
+          { name: "SAIC Motor", score: 73 },
+          { name: "Geely", score: 69 },
+          { name: "XPeng", score: 75 }
+        ],
+        learnings: [
+          "Dikey entegrasyon maliyetleri düşürür ve kontrolü artırır",
+          "Geniş ürün yelpazesi farklı segmentlere hitap eder",
+          "Yerel pazar hakimiyeti global genişleme için güçlü temel",
+          "Hız ve ölçek modern pazarda kritik",
+          "Fiyat-performans dengesi kitle pazarı için önemli"
+        ]
+      },
+      {
+        name: "Apple",
+        score: 98,
+        industry: "Teknoloji",
+        logo: "🍎",
+        factors: [
+          "Premium marka konumlandırması",
+          "Tutarlı ve minimalist marka dili",
+          "Developer community ve ekosistem",
+          "Yüksek müşteri sadakati ve advocacy",
+          "Etkinlik ve ürün lansmanlarının viral gücü"
+        ],
+        strengths: [
+          "Ekosistem (iPhone, iPad, Mac, Watch) birbirini tamamlıyor",
+          "Privacy ve güvenlik odaklı pazarlama",
+          "Perakende deneyimi (Apple Store) eşsiz",
+          "Marka sadakati ve müşteri memnuniyeti çok yüksek",
+          "Ürün tasarımı ve kullanıcı deneyimi sektör standardı",
+          "Developer ekosistemi güçlü ve karlı"
+        ],
+        weaknesses: [
+          "Yüksek fiyatlandırma geniş kitleye ulaşmayı zorlaştırıyor",
+          "Kapalı ekosistem bazı kullanıcıları uzaklaştırıyor",
+          "Siri gibi AI ürünleri rakiplerin gerisinde",
+          "AB'de rekabet soruşturmaları",
+          "Yenilikçilik konusunda eleştiriler (son yıllarda iteratif değişiklikler)"
+        ],
+        competitors: [
+          { name: "Samsung", score: 91 },
+          { name: "Microsoft", score: 92 },
+          { name: "Google", score: 89 },
+          { name: "Huawei", score: 76 }
+        ],
+        learnings: [
+          "Ekosistem stratejisi müşterileri içeride tutar",
+          "Premium fiyatlandırma kalite algısını güçlendirir",
+          "Minimalist tasarım ve kullanıcı deneyimi fark yaratır",
+          "Fiziksel perakende mekanları marka deneyimini güçlendirir",
+          "Privacy gibi değerlere vurgu yaparak farklılaşın"
+        ]
+      },
+      {
+        name: "Nike",
+        score: 94,
+        industry: "Spor & Moda",
+        logo: "👟",
+        factors: [
+          "İkonik slogan: 'Just Do It'",
+          "Sporcu sponsorlukları ve hikaye anlatımı",
+          "Sosyal sorumluluk kampanyaları",
+          "Güçlü görsel kimlik ve logo",
+          "Global kültürel etki"
+        ],
+        strengths: [
+          "Duygusal bağ kuran etkili pazarlama kampanyaları",
+          "Michael Jordan, Cristiano Ronaldo gibi global yıldız sponsorlukları",
+          "Nike+ ve SNKRS app ile dijital entegrasyon",
+          "Sürdürülebilirlik ve çevre dostu ürün geliştirme",
+          "Sokak kültürü ve streetwear'de güçlü konum",
+          "Limited edition stratejisi ile talep yaratma"
+        ],
+        weaknesses: [
+          "Sweatshop skandalları ve üretim koşulları eleştirileri (geçmişte)",
+          "Yüksek fiyatlar orta gelir grubuna hitap etmiyor",
+          "Çin pazarında Adidas ile rekabet",
+          "Bazı ürün kategorilerinde kalite şikayetleri",
+          "Aşırı sponsorluk bağımlılığı"
+        ],
+        competitors: [
+          { name: "Adidas", score: 88 },
+          { name: "Puma", score: 79 },
+          { name: "Under Armour", score: 71 },
+          { name: "New Balance", score: 74 }
+        ],
+        learnings: [
+          "Güçlü bir slogan ve görsel kimlik nesiller boyu hatırlanır",
+          "Sporcu ve influencer sponsorlukları marka değerini artırır",
+          "Hikaye anlatımı ile duygusal bağ kurun",
+          "Limited edition ve scarcity stratejisi talep yaratır",
+          "Sosyal sorumluluk genç nesil için önemli"
+        ]
+      },
+      {
+        name: "Microsoft",
+        score: 92,
+        industry: "Teknoloji",
+        logo: "💻",
+        factors: [
+          "Enterprise çözümleri ve B2B dominansı",
+          "Azure ve cloud liderliği",
+          "GitHub ve developer ekosistemi",
+          "AI entegrasyonu (Copilot, Bing AI)",
+          "Açık kaynak desteği ve topluluk yatırımları"
+        ],
+        strengths: [
+          "Cloud (Azure) pazarında AWS'ye rakip güçlü konum",
+          "Office 365 ve Teams ile kurumsal pazarda liderlik",
+          "GitHub ve developer araçları ile yazılımcı ekosistemi",
+          "AI ve OpenAI ortaklığı ile önde",
+          "Xbox ve gaming bölümü ile çeşitlenme",
+          "LinkedIn gibi stratejik satın almalar"
+        ],
+        weaknesses: [
+          "Tüketici pazarında Apple ve Google'a göre zayıf",
+          "Windows Phone başarısızlığı",
+          "Eski teknoloji algısı (genç nesil için)",
+          "Privacy konusunda eleştiriler",
+          "Bazı ürünler kullanıcı dostu değil (karmaşık)"
+        ],
+        competitors: [
+          { name: "Amazon (AWS)", score: 93 },
+          { name: "Google Cloud", score: 87 },
+          { name: "Apple", score: 98 },
+          { name: "IBM", score: 74 }
+        ],
+        learnings: [
+          "Enterprise odaklı stratejiler istikrarlı gelir sağlar",
+          "Cloud altyapısı geleceğin temeli",
+          "Developer ekosistemi yatırımı uzun vadeli başarı",
+          "Stratejik satın almalar (LinkedIn, GitHub) ekosistemi güçlendirir",
+          "AI entegrasyonu ile ürünleri modernleştirin"
+        ]
+      },
+      {
+        name: "Coca-Cola",
+        score: 96,
+        industry: "Gıda & İçecek",
+        logo: "🥤",
+        factors: [
+          "100+ yıllık marka mirası",
+          "Evrensel marka tanınırlığı",
+          "Duygusal pazarlama ve nostalji",
+          "Global dağıtım ağı ve her yerde bulunabilirlik",
+          "Tutarlı marka mesajı: mutluluk"
+        ],
+        strengths: [
+          "Dünyanın en tanınan markalarından biri",
+          "Güçlü dağıtım ağı (dünyanın her yerinde bulunabilir)",
+          "Reklam ve pazarlama bütçesi çok yüksek",
+          "Nostalji ve duygusal bağ",
+          "Tutarlı marka kimliği (kırmızı-beyaz, şişe tasarımı)",
+          "Sponsorluklar (Olimpiyatlar, FIFA)"
+        ],
+        weaknesses: [
+          "Sağlık trendleri şekerli içecek tüketimini azaltıyor",
+          "Çevresel etki ve plastik kullanımı eleştiriliyor",
+          "Yeni nesil sağlıklı alternatiflere yöneliyor",
+          "Su tasarrufu ve su kullanımı konusunda eleştiriler",
+          "Ürün çeşitliliği fazla ama odaklanma eksik"
+        ],
+        competitors: [
+          { name: "PepsiCo", score: 94 },
+          { name: "Red Bull", score: 83 },
+          { name: "Dr Pepper", score: 71 },
+          { name: "Monster Energy", score: 76 }
+        ],
+        learnings: [
+          "Tutarlı marka kimliği nesiller boyu değer taşır",
+          "Duygusal pazarlama ve nostalji güçlü bağ yaratır",
+          "Global dağıtım ağı ulaşılabilirlik sağlar",
+          "Sponsorluklar marka görünürlüğünü artırır",
+          "Sağlık trendlerine adapte olmak gerekiyor"
+        ]
+      },
+      {
+        name: "Amazon",
+        score: 93,
+        industry: "E-Ticaret & Teknoloji",
+        logo: "📦",
+        factors: [
+          "Müşteri odaklılık (customer obsession)",
+          "Hızlı teslimat ve lojistik mükemmelliği",
+          "AWS ile teknoloji liderliği",
+          "Marketplace ekosistemi",
+          "İnovasyon kültürü ve çeşitlilik"
+        ],
+        strengths: [
+          "Prime üyelik programı sadakat ve recurring revenue",
+          "AWS dünyanın en büyük cloud sağlayıcısı",
+          "Lojistik altyapısı rakipsiz",
+          "Alexa ve smart home ekosistemi",
+          "Whole Foods satın alımı ile fiziksel perakende",
+          "Amazon Web Services (AWS) yüksek kar marjı"
+        ],
+        weaknesses: [
+          "Çalışan hakları ve çalışma koşulları eleştiriliyor",
+          "Monopol eleştirileri ve rekabet soruşturmaları",
+          "Küçük işletmelere zarar veriyor algısı",
+          "Privacy ve veri toplama endişeleri (Alexa)",
+          "Bazı kategorilerde kendi ürünlerini önplana çıkarması"
+        ],
+        competitors: [
+          { name: "Walmart", score: 85 },
+          { name: "Alibaba", score: 88 },
+          { name: "Microsoft (Azure)", score: 92 },
+          { name: "eBay", score: 69 }
+        ],
+        learnings: [
+          "Müşteri odaklılık her şeyin merkezinde olmalı",
+          "Lojistik ve hızlı teslimat rekabet avantajı",
+          "Prime gibi abonelik modelleri sadakat yaratır",
+          "Cloud (AWS) gibi yan işler ana geliri geçebilir",
+          "Marketplace modeli ölçeklenmeyi hızlandırır"
+        ]
+      }
+    ];
 
+    // Sektör arama fonksiyonu
+    let currentFilteredData = allMarketData;
+
+    document.getElementById('sectorSearch').addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase().trim();
+      
+      if (searchTerm === '') {
+        currentFilteredData = allMarketData;
+      } else {
+        currentFilteredData = allMarketData.filter(company => 
+          company.industry.toLowerCase().includes(searchTerm) ||
+          company.name.toLowerCase().includes(searchTerm)
+        );
+      }
+      
+      renderMarketResearch();
+    });
+
+    function renderMarketResearch() {
       const container = document.getElementById('marketResearch');
-      container.innerHTML = marketData.map(company => `
-        <div class="glass-card rounded-3xl p-6 fade-in hover:scale-[1.02] transition-transform">
+      
+      if (currentFilteredData.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full text-center py-12">
+            <div class="text-6xl mb-4">🔍</div>
+            <p class="text-xl text-slate-400">Bu sektörde henüz firma bulunamadı.</p>
+            <p class="text-sm text-slate-500 mt-2">Farklı bir sektör deneyin: Otomotiv, Teknoloji, Gıda, E-Ticaret, Spor...</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = currentFilteredData.map((company, index) => `
+        <div class="glass-card rounded-3xl p-6 fade-in hover:scale-[1.02] transition-transform cursor-pointer" onclick="window.openDetailModal(${index})">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-3">
               <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-2xl">
@@ -560,18 +884,101 @@
           <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700">
             <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Başarı Faktörleri</h4>
             <ul class="space-y-2">
-              ${company.factors.map(factor => `
+              ${company.factors.slice(0, 3).map(factor => `
                 <li class="flex items-start gap-2 text-xs text-slate-300">
                   <span class="text-green-400 shrink-0">✓</span>
                   <span>${factor}</span>
                 </li>
               `).join('')}
             </ul>
+            <div class="mt-3 text-center">
+              <span class="text-xs text-blue-400 font-semibold">👉 Detaylı analiz için tıklayın</span>
+            </div>
           </div>
         </div>
       `).join('');
 
       lucide.createIcons();
+    }
+
+    window.openDetailModal = function(index) {
+      const company = currentFilteredData[index];
+      
+      document.getElementById('modalLogo').innerText = company.logo;
+      document.getElementById('modalTitle').innerText = company.name;
+      document.getElementById('modalIndustry').innerText = company.industry;
+      document.getElementById('modalScore').innerText = company.score;
+      
+      // Başarı Faktörleri
+      document.getElementById('modalFactors').innerHTML = company.factors.map(factor => `
+        <li class="flex items-start gap-3 text-sm">
+          <span class="text-yellow-400 shrink-0 text-lg">⭐</span>
+          <span class="text-slate-300">${factor}</span>
+        </li>
+      `).join('');
+      
+      // İyi Yaptıkları
+      document.getElementById('modalStrengths').innerHTML = company.strengths.map(strength => `
+        <li class="flex items-start gap-3 text-sm">
+          <span class="text-emerald-400 shrink-0 text-lg">✓</span>
+          <span class="text-slate-300">${strength}</span>
+        </li>
+      `).join('');
+      
+      // Gelişim Alanları
+      document.getElementById('modalWeaknesses').innerHTML = company.weaknesses.map(weakness => `
+        <li class="flex items-start gap-3 text-sm">
+          <span class="text-orange-400 shrink-0 text-lg">⚠</span>
+          <span class="text-slate-300">${weakness}</span>
+        </li>
+      `).join('');
+      
+      // Rakipler
+      document.getElementById('modalCompetitors').innerHTML = company.competitors.map(comp => {
+        let scoreColor = "text-slate-400";
+        if (comp.score >= 90) scoreColor = "text-green-400";
+        else if (comp.score >= 80) scoreColor = "text-blue-400";
+        else if (comp.score >= 70) scoreColor = "text-yellow-400";
+        else scoreColor = "text-orange-400";
+        
+        return `
+          <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700 flex items-center justify-between">
+            <span class="text-sm font-semibold text-slate-300">${comp.name}</span>
+            <span class="text-xl font-bold ${scoreColor}">${comp.score}</span>
+          </div>
+        `;
+      }).join('');
+      
+      // Öğrenebilecekleriniz
+      document.getElementById('modalLearnings').innerHTML = company.learnings.map((learning, idx) => `
+        <li class="flex items-start gap-3 text-sm">
+          <span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold">${idx + 1}</span>
+          <span class="text-slate-300 leading-relaxed">${learning}</span>
+        </li>
+      `).join('');
+      
+      document.getElementById('detailModal').classList.remove('hidden');
+      document.getElementById('detailModal').classList.add('flex');
+      lucide.createIcons();
+    }
+
+    document.getElementById('closeModal').addEventListener('click', () => {
+      document.getElementById('detailModal').classList.add('hidden');
+      document.getElementById('detailModal').classList.remove('flex');
+    });
+
+    // Modal dışına tıklayınca kapat
+    document.getElementById('detailModal').addEventListener('click', (e) => {
+      if (e.target.id === 'detailModal') {
+        document.getElementById('detailModal').classList.add('hidden');
+        document.getElementById('detailModal').classList.remove('flex');
+      }
+    });
+
+    function loadMarketResearch() {
+      currentFilteredData = allMarketData;
+      renderMarketResearch();
+    }
     }
 
     function showSection(id) {
