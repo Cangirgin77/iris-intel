@@ -165,7 +165,10 @@
               <div class="text-[9px] text-slate-500 uppercase tracking-wider">Skor</div>
             </div>
           </div>
-          <p id="resScoreExplanation" class="text-xs text-slate-400 max-w-xs leading-relaxed mt-2"></p>
+          <div id="scoreCategory" class="inline-block px-3 py-1 text-xs font-bold rounded-full bg-slate-800 text-slate-400 mb-2">
+            Değerlendiriliyor
+          </div>
+          <p id="resScoreExplanation" class="text-xs text-slate-400 max-w-xs leading-relaxed"></p>
         </div>
       </div>
     </div>
@@ -267,8 +270,23 @@
             </div>
             <h3 class="text-lg font-bold">Rakip Analizi</h3>
           </div>
-          <div id="resCompetitors" class="space-y-2">
+          <div id="resCompetitors" class="space-y-3">
             <!-- Dinamik içerik -->
+          </div>
+        </div>
+
+        <!-- Daha Görünür Olmak İçin Tavsiyeler -->
+        <div class="glass-card rounded-3xl p-6 fade-in">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center">
+              <i data-lucide="lightbulb" class="w-5 h-5 text-yellow-400"></i>
+            </div>
+            <h3 class="text-lg font-bold">Daha Görünür Olmak İçin Tavsiyeler</h3>
+          </div>
+          <div class="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-lg p-4 border border-yellow-500/20">
+            <ul id="resVisibilityRecommendations" class="space-y-2 text-xs text-slate-200">
+              <!-- Dinamik içerik -->
+            </ul>
           </div>
         </div>
 
@@ -281,36 +299,9 @@
             <h3 class="text-lg font-bold">Algı Optimizasyonu</h3>
           </div>
           
-          <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700 mb-4">
+          <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
             <p id="resOptRationale" class="text-xs text-slate-400 leading-relaxed whitespace-pre-line">
               Optimizasyon hedefi hazırlanıyor...
-            </p>
-          </div>
-
-          <div class="bg-gradient-to-br from-green-500/10 to-blue-500/10 rounded-lg p-4 border border-green-500/20">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Tavsiyeler</span>
-              <button onclick="copyOptText()" class="text-xs px-2 py-1 bg-slate-800 hover:bg-slate-700 rounded border border-slate-600 transition">
-                <i data-lucide="copy" class="w-3 h-3 inline"></i> Kopyala
-              </button>
-            </div>
-            <p id="resOptText" class="text-xs text-slate-200 leading-relaxed whitespace-pre-line">
-              Detaylı tavsiyeler hazırlanıyor...
-            </p>
-          </div>
-        </div>
-
-        <!-- Gemini AI Cevabı -->
-        <div class="glass-card rounded-3xl p-6 fade-in">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-xl bg-indigo-500/20 flex items-center justify-center">
-              <i data-lucide="brain" class="w-5 h-5 text-indigo-400"></i>
-            </div>
-            <h3 class="text-lg font-bold">Gemini AI Değerlendirmesi</h3>
-          </div>
-          <div class="bg-slate-800/30 rounded-lg p-4 border border-slate-700">
-            <p id="resGeminiResponse" class="text-xs text-slate-300 leading-relaxed italic">
-              Gemini AI'ın detaylı değerlendirmesi yükleniyor...
             </p>
           </div>
         </div>
@@ -360,11 +351,7 @@
       showSection('section-input');
     }
 
-    function copyOptText() {
-      const text = document.getElementById('resOptText').innerText;
-      navigator.clipboard.writeText(text);
-      alert("✅ Metin kopyalandı!");
-    }
+
 
     async function startAnalysis() {
       const brand = document.getElementById('brandInput').value.trim();
@@ -414,6 +401,23 @@
       document.getElementById('resScore').innerText = score;
       document.getElementById('scoreCircle').style.setProperty('--score', score);
       document.getElementById('resScoreExplanation').innerText = data.scoreExplanation || "Detaylı skor açıklaması hazırlanıyor...";
+      
+      // Score Category Badge
+      const categoryBadge = document.getElementById('scoreCategory');
+      const category = data.scoreCategory || "Değerlendiriliyor";
+      categoryBadge.innerText = category;
+      
+      if (score >= 90) {
+        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-green-500/20 text-green-400 border border-green-500/50";
+      } else if (score >= 80) {
+        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/50";
+      } else if (score >= 60) {
+        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-yellow-500/20 text-yellow-400 border border-yellow-500/50";
+      } else if (score >= 40) {
+        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/50";
+      } else {
+        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-red-500/20 text-red-400 border border-red-500/50";
+      }
       
       document.getElementById('resClaimedSector').innerText = data.identityAnalysis?.claimedSector || industry;
       document.getElementById('resDetectedSector').innerText = data.identityAnalysis?.detectedSector || industry;
@@ -468,31 +472,59 @@
       compList.innerHTML = "";
       
       if (data.competitors?.direct && data.competitors.direct.length > 0) {
-        compList.innerHTML += `<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">DOĞRUDAN RAKİPLER</p>`;
+        compList.innerHTML += `<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">DOĞRUDAN RAKİPLER</p>`;
         data.competitors.direct.forEach(c => {
+          const competitorScore = c.score || 0;
+          let scoreColor = "text-slate-400";
+          if (competitorScore >= 80) scoreColor = "text-green-400";
+          else if (competitorScore >= 60) scoreColor = "text-blue-400";
+          else if (competitorScore >= 40) scoreColor = "text-yellow-400";
+          else scoreColor = "text-red-400";
+          
           compList.innerHTML += `
-            <div class="flex justify-between text-sm p-3 bg-slate-800/50 rounded border border-slate-700 mb-2">
-              <span class="font-semibold text-slate-300 text-xs">${c.name}</span>
-              <span class="text-[10px] text-slate-500 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">${c.status}</span>
+            <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700 mb-2">
+              <div class="flex items-center justify-between mb-1">
+                <span class="font-semibold text-slate-300 text-sm">${c.name}</span>
+                <span class="text-lg font-bold ${scoreColor}">${competitorScore}</span>
+              </div>
+              <p class="text-[10px] text-slate-500">${c.status}</p>
             </div>`;
         });
       }
       
       if (data.competitors?.leaders && data.competitors.leaders.length > 0) {
-        compList.innerHTML += `<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 mt-4">PAZAR LİDERLERİ</p>`;
+        compList.innerHTML += `<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 mt-4">PAZAR LİDERLERİ</p>`;
         data.competitors.leaders.forEach(c => {
+          const leaderScore = c.score || 0;
+          let scoreColor = "text-slate-400";
+          if (leaderScore >= 80) scoreColor = "text-green-400";
+          else if (leaderScore >= 60) scoreColor = "text-blue-400";
+          else if (leaderScore >= 40) scoreColor = "text-yellow-400";
+          else scoreColor = "text-red-400";
+          
           compList.innerHTML += `
-            <div class="flex justify-between text-sm p-3 bg-slate-800/50 rounded border border-slate-700 mb-2">
-              <span class="font-semibold text-slate-300 text-xs">${c.name}</span>
-              <span class="text-[10px] text-slate-500 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">${c.status}</span>
+            <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700 mb-2">
+              <div class="flex items-center justify-between mb-1">
+                <span class="font-semibold text-slate-300 text-sm">${c.name}</span>
+                <span class="text-lg font-bold ${scoreColor}">${leaderScore}</span>
+              </div>
+              <p class="text-[10px] text-slate-500">${c.status}</p>
             </div>`;
         });
       }
 
-      document.getElementById('resOptRationale').innerText = `HEDEF: ${data.optimization?.objective || "Belirleniyor..."}\n\nANALİZ: ${data.optimization?.rationale || "Hazırlanıyor..."}`;
-      document.getElementById('resOptText').innerText = data.optimization?.text || "Optimizasyon metni yükleniyor...";
+      document.getElementById('resOptRationale').innerText = `🎯 HEDEF: ${data.optimization?.objective || "Belirleniyor..."}\n\n📊 ANALİZ: ${data.optimization?.rationale || "Hazırlanıyor..."}`;
       
-      document.getElementById('resGeminiResponse').innerText = data.geminiRawResponse || data.strategicSummary || "Gemini AI'ın detaylı değerlendirmesi burada görünecek...";
+      // Visibility Recommendations
+      const visRecList = document.getElementById('resVisibilityRecommendations');
+      visRecList.innerHTML = "";
+      (data.visibilityRecommendations || ["Tavsiyeler hazırlanıyor..."]).forEach((rec, idx) => {
+        visRecList.innerHTML += `
+          <li class="flex items-start gap-3">
+            <span class="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-xs font-bold">${idx + 1}</span>
+            <span class="leading-relaxed">${rec}</span>
+          </li>`;
+      });
 
       lucide.createIcons();
       showSection('section-results');
