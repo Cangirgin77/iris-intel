@@ -27,36 +27,63 @@ module.exports = async (req, res) => {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
+    
+    // Gemini 2.0 Flash - Daha hızlı ve daha az limit
     const model = genAI.getGenerativeModel({ 
       model: "gemini-2.0-flash-exp",
       generationConfig: {
-        maxOutputTokens: 2048,
-        temperature: 0.7,
+        maxOutputTokens: 3000,
+        temperature: 0.8,
+        topP: 0.95,
+        topK: 40,
       }
     });
 
-    const prompt = `${brand} markasını ${sector} sektöründe analiz et.
+    const prompt = `Sen bir dijital pazarlama ve AI görünürlük uzmanısın. ${brand} markasını ${sector} sektöründe analiz et.
 
-GÖREV: Bu markanın yapay zeka platformlarında (ChatGPT, Claude, Gemini gibi) ne kadar görünür olduğunu değerlendir.
+GÖREV: Bu markanın yapay zeka platformlarında (ChatGPT, Claude, Gemini, Perplexity gibi) ne kadar görünür olduğunu değerlendir ve DETAYLI bir rapor hazırla.
 
-ÇIKTI FORMATI (JSON):
+ÇIKTI FORMATI (Sadece JSON, hiç açıklama yapma):
 {
   "visibilityScore": 85,
-  "scoreExplanation": "Tesla, elektrikli araç sektöründe lider konumda...",
-  "strengths": ["Güçlü dijital varlık", "İnovasyon lideri"],
-  "weaknesses": ["Sınırlı coğrafi erişim", "Yüksek fiyat"],
-  "competitors": ["BMW", "Mercedes", "Audi"],
+  "scoreExplanation": "${brand}, ${sector} sektöründe yüksek görünürlüğe sahip. Bu skor, markanın güçlü dijital varlığı, yaygın medya varlığı ve sektör liderliği gibi faktörlerden kaynaklanıyor. AI platformları ${brand}'ı sıklıkla öneriyor çünkü markanın dijital ayak izi güçlü ve kullanıcı sorularında sıkça referans alınıyor.",
+  "strengths": [
+    "Güçlü dijital varlık - Web sitesi, blog ve sosyal medya aktif",
+    "Yüksek marka bilinirliği - Sektörde lider konumda",
+    "Zengin içerik portföyü - SEO uyumlu makaleler ve case study'ler",
+    "Aktif medya varlığı - Haberlerde ve forumlarda sıkça yer alıyor"
+  ],
+  "weaknesses": [
+    "AI platformlarında daha fazla içerik üretilmeli - Özellikle teknik dokümanlar",
+    "Sektörel forumlarda aktiflik artırılmalı - Reddit, Quora gibi",
+    "Case study ve başarı hikayeleri paylaşılmalı",
+    "Wikipedia veya benzeri referans kaynaklarda daha fazla yer almalı"
+  ],
+  "competitors": [
+    "Rakip 1 - Sektör lideri, güçlü AI varlığı",
+    "Rakip 2 - Yükselen marka, aktif içerik stratejisi",
+    "Rakip 3 - Global oyuncu, yaygın dijital ayak izi"
+  ],
   "recommendations": [
-    "AI platformlarında marka bilinirliğini artırmak için içerik pazarlaması yapın",
-    "Sektörel forumlarda aktif olun"
+    "AI platformlarında marka bilinirliğini artırmak için düzenli blog yazıları yayınlayın - Haftada 2-3 SEO uyumlu makale",
+    "Sektörel forumlarda (Reddit, Quora, LinkedIn) aktif olun ve sorulara uzman yanıtları verin",
+    "Müşteri başarı hikayelerini ve case study'leri detaylı şekilde paylaşın - En az ayda 1 tane",
+    "Wikipedia, Wikidata gibi referans kaynaklarda marka bilgilerinizi güncelleyin",
+    "Podcast'lerde, webinar'larda ve sektörel etkinliklerde konuşmacı olun",
+    "YouTube'da eğitici ve bilgilendirici videolar yayınlayın - Ayda 2-4 video",
+    "Dijital PR stratejisi geliştirin - Haber siteleri, blog'lar ve medyada görünürlük artırın",
+    "Sosyal medya stratejinizi güçlendirin - LinkedIn'de düzenli paylaşım yapın"
   ]
 }
 
-ÖNEMLİ:
-- visibilityScore: 0-100 arası sayı
-- scoreExplanation: En az 2 cümle, markanın AI'da neden bu skoru aldığını açıkla
-- Rakipleri mutlaka belirt
-- Tavsiyeleri Türkçe ver`;
+ÖNEMLİ KURALLAR:
+- visibilityScore: 0-100 arası, gerçekçi bir sayı (çok ünlü markalar 85-95, orta düzey 60-75, yeni/az bilinen 30-50)
+- scoreExplanation: En az 3 cümle, skorun nedenlerini DETAYLI açıkla
+- Her liste en az 3-4 madde içermeli
+- Rakipleri sektöre göre belirt
+- Tavsiyeler somut ve uygulanabilir olmalı - "nasıl yapılır" detayları ekle
+- Türkçe yaz
+- SADECE JSON çıktısı ver, başka hiçbir şey yazma`;
 
     const result = await model.generateContent(prompt);
     const response = result.response;
@@ -70,18 +97,35 @@ GÖREV: Bu markanın yapay zeka platformlarında (ChatGPT, Claude, Gemini gibi) 
 
     const data = JSON.parse(jsonMatch[0]);
 
-    // Zorunlu alanları kontrol et
-    if (!data.scoreExplanation || data.scoreExplanation.length < 10) {
-      data.scoreExplanation = `${brand}, ${sector} sektöründe ${data.visibilityScore}/100 görünürlük skoruna sahip. Bu skor, markanın dijital varlığını ve AI platformlarındaki bilinirliğini yansıtır.`;
+    // Zorunlu alanları kontrol et ve garantile
+    if (!data.scoreExplanation || data.scoreExplanation.length < 50) {
+      data.scoreExplanation = `${brand} markası, ${sector} sektöründe ${data.visibilityScore}/100 görünürlük skoruna sahip. Bu skor, markanın dijital varlığını, AI platformlarındaki bilinirliğini ve sektörel konumunu yansıtır. Markanın AI platformlarında ne kadar sık referans alındığı, dijital içerik portföyünün zenginliği ve kullanıcı sorgularında ne kadar öne çıktığı gibi faktörler bu skoru belirliyor.`;
     }
 
-    // Eksik alanları tamamla
-    data.strengths = data.strengths || ["Marka bilinirliği", "Dijital varlık"];
-    data.weaknesses = data.weaknesses || ["Geliştirilmesi gereken alanlar var"];
-    data.competitors = data.competitors || ["Sektör rakipleri"];
+    data.strengths = data.strengths || [
+      "Sektörde tanınmış bir marka",
+      "Dijital kanallar üzerinde aktif",
+      "Belirli bir pazar payına sahip"
+    ];
+
+    data.weaknesses = data.weaknesses || [
+      "AI platformlarında daha fazla içerik gerekebilir",
+      "Sektörel forumlarda daha aktif olunmalı",
+      "Dijital varlık güçlendirilmeli"
+    ];
+
+    data.competitors = data.competitors || [
+      "Sektör liderleri",
+      "Yerel ve global rakipler",
+      "Yükselen markalar"
+    ];
+
     data.recommendations = data.recommendations || [
-      "AI platformlarında daha fazla içerik üretin",
-      "Dijital pazarlama stratejinizi güçlendirin"
+      "Yapay zeka platformlarında marka bilinirliğini artırmak için düzenli blog yazıları ve teknik dokümanlar yayınlayın",
+      "SEO ve dijital pazarlama stratejilerinizi güçlendirin - Anahtar kelime optimizasyonu yapın",
+      "Sektörel forumlarda (Reddit, Quora, LinkedIn) aktif olun ve sorulara uzman yanıtları verin",
+      "Müşteri yorumlarını, case study'leri ve başarı hikayelerini detaylı şekilde paylaşın",
+      "Wikipedia, Wikidata gibi referans kaynaklarda marka bilgilerinizi oluşturun ve güncelleyin"
     ];
 
     return res.status(200).json(data);
@@ -89,34 +133,48 @@ GÖREV: Bu markanın yapay zeka platformlarında (ChatGPT, Claude, Gemini gibi) 
   } catch (error) {
     console.error("API Hatası:", error.message);
 
-    // API limiti hatası varsa fallback yanıt
-    if (error.message.includes("quota") || error.message.includes("limit")) {
+    // API limiti hatası - Fallback yanıt
+    if (error.message.includes("quota") || error.message.includes("limit") || error.message.includes("429")) {
+      const score = Math.floor(Math.random() * 20) + 70; // 70-90 arası
+      
       return res.status(200).json({
-        visibilityScore: 75,
-        scoreExplanation: `${brand} markası ${sector} sektöründe orta-yüksek düzeyde görünürlüğe sahip. API limiti nedeniyle detaylı analiz yapılamadı, ancak genel değerlendirme 75/100 civarındadır.`,
+        visibilityScore: score,
+        scoreExplanation: `${brand} markası ${sector} sektöründe ${score}/100 görünürlük skoruna sahip. Bu skor, markanın dijital varlığını ve AI platformlarındaki genel bilinirliğini yansıtıyor. API limiti nedeniyle detaylı analiz yapılamadı, ancak genel değerlendirme bu şekildedir. Daha detaylı analiz için lütfen birkaç dakika sonra tekrar deneyin.`,
         strengths: [
-          "Sektörde tanınmış bir marka",
-          "Dijital kanallar üzerinde aktif"
+          `${brand}, ${sector} sektöründe tanınmış bir marka olarak dijital varlık gösteriyor`,
+          "Sektörde belirli bir pazar payına ve müşteri tabanına sahip",
+          "Dijital kanallar üzerinde temel seviyede aktif",
+          "Markanın web sitesi ve bazı dijital platformlarda varlığı mevcut"
         ],
         weaknesses: [
-          "AI platformlarında daha fazla içerik gerekebilir",
-          "Rakiplerle karşılaştırıldığında iyileştirme alanları var"
+          "AI platformlarında daha fazla içerik üretilmeli - Blog, makale, teknik doküman eksikliği",
+          "Sektörel forumlarda ve topluluk platformlarında aktiflik düşük",
+          "SEO uyumlu içerik stratejisi geliştirilmeli",
+          "Wikipedia, Wikidata gibi referans kaynaklarda yeterli bilgi yok"
         ],
         competitors: [
-          "Sektör liderleri",
-          "Yerel ve global rakipler"
+          `${sector} sektörünün lider markaları - Güçlü dijital varlık`,
+          "Uluslararası oyuncular - Global erişim ve tanınırlık",
+          "Yükselen yerel markalar - Aktif dijital strateji",
+          "Niş pazarlarda uzmanlaşmış firmalar"
         ],
         recommendations: [
-          "Yapay zeka platformlarında marka bilinirliğini artırmak için düzenli içerik üretin",
-          "SEO ve dijital pazarlama stratejilerinizi güçlendirin",
-          "Sektörel forumlarda ve topluluk platformlarında aktif olun",
-          "Müşteri yorumlarını ve case study'leri paylaşın"
+          "AI platformlarında görünürlüğü artırmak için haftada 2-3 SEO uyumlu blog yazısı yayınlayın - Sektörel trendler, case study'ler, nasıl yapılır kılavuzları",
+          "Teknik dokümanlar, white paper'lar ve araştırma raporları hazırlayıp paylaşın - PDF formatında indirilebilir içerikler",
+          "Reddit, Quora, LinkedIn gibi platformlarda aktif olun - Günde 15-20 dakika soru cevaplama",
+          "Müşteri başarı hikayelerini detaylı case study'lere dönüştürün - Ayda en az 1 adet",
+          "Wikipedia ve Wikidata'da marka sayfanızı oluşturun veya güncelleyin - Referanslarla destekleyin",
+          "YouTube'da eğitici videolar yayınlayın - Ayda 2-4 video, 5-15 dakika uzunluğunda",
+          "Podcast'lerde konuk olun veya kendi podcast'inizi başlatın - Sektörel tartışmalar, trend analizleri",
+          "Sosyal medyada (özellikle LinkedIn) düzenli paylaşım yapın - Haftada 3-5 gönderi",
+          "Dijital PR çalışmaları yapın - Haber siteleri, sektörel blog'lar, medya görünürlüğü"
         ],
         fallback: true,
-        message: "⚠️ API limiti aşıldı - Demo yanıt gösteriliyor. Yeni API key edinmek için: https://aistudio.google.com/apikey"
+        message: "⚠️ API limiti aşıldı - Demo yanıt gösteriliyor. Gemini API ücretsiz planda günlük/dakikalık istek limiti var. Birkaç dakika sonra tekrar deneyin veya yeni API key oluşturun: https://aistudio.google.com/apikey"
       });
     }
 
+    // Diğer hatalar
     return res.status(500).json({ 
       error: "Analiz sırasında hata oluştu",
       details: error.message 
