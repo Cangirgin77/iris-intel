@@ -109,23 +109,12 @@
       background: rgba(59, 130, 246, 0.15);
       border-left-color: #3b82f6;
     }
-
-    .menu-btn {
-      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-      box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
-      animation: pulse-glow 2s infinite;
-    }
-
-    @keyframes pulse-glow {
-      0%, 100% { box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3); }
-      50% { box-shadow: 0 8px 48px rgba(59, 130, 246, 0.5); }
-    }
   </style>
 </head>
 <body class="min-h-screen text-white">
 
-  <button id="menuToggle" class="menu-btn fixed top-6 left-6 z-50 w-14 h-14 backdrop-blur-sm rounded-2xl flex items-center justify-center hover:scale-110 transition-transform">
-    <i data-lucide="menu" class="w-7 h-7 text-white"></i>
+  <button id="menuToggle" class="fixed top-6 left-6 z-50 w-12 h-12 bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-xl flex items-center justify-center hover:bg-slate-700 transition">
+    <i data-lucide="eye" class="w-6 h-6 text-white"></i>
   </button>
 
   <div id="menuOverlay" class="menu-overlay"></div>
@@ -477,10 +466,18 @@
 
   <script>
     lucide.createIcons();
+    
     const VERCEL_BACKEND_URL = "https://iris-intel.vercel.app/api/analyze";
-    const loadingMessages = ["🔍 AI platformları taranıyor...","🤖 ChatGPT, Claude, Gemini sorgulanıyor...","📊 Rakip analizi yapılıyor...","💡 Detaylı öneriler hazırlanıyor...","🎯 Veriler işleniyor..."];
+    const loadingMessages = [
+      "🔍 AI platformları taranıyor...",
+      "🤖 ChatGPT, Claude, Gemini sorgulanıyor...",
+      "📊 Rakip analizi yapılıyor...",
+      "💡 Detaylı öneriler hazırlanıyor...",
+      "🎯 Veriler işleniyor..."
+    ];
     let loadingInterval;
 
+    // MENÜ
     document.getElementById('menuToggle').addEventListener('click', toggleMenu);
     document.getElementById('menuOverlay').addEventListener('click', toggleMenu);
     document.querySelectorAll('.menu-item').forEach(item => {
@@ -488,6 +485,8 @@
         navigateTo(this.getAttribute('data-page'));
       });
     });
+
+    // ANALİZ BUTONU - ÇALIŞAN VERSİYON
     document.getElementById('analyzeBtn').addEventListener('click', startAnalysis);
     document.getElementById('brandInput').addEventListener('keypress', e => { if(e.key==='Enter') startAnalysis(); });
     document.getElementById('industryInput').addEventListener('keypress', e => { if(e.key==='Enter') startAnalysis(); });
@@ -510,11 +509,11 @@
     const allMarketData = [
       {name:"Tesla",score:95,industry:"Otomotiv",logo:"⚡",factors:["Güçlü marka ismi ve CEO vizyonu (Elon Musk)","Yüksek medya görünürlüğü ve haber değeri","Teknik dokümantasyon ve açık kaynak stratejisi","Sosyal medya dominansı ve viral pazarlama","İnovasyon odaklı marka algısı"],strengths:["Elektrikli araç pazarında öncü ve lider konumu","Teknoloji ve yazılım entegrasyonunda üstünlük","Over-the-air güncellemeler ile sürekli iyileştirme","Supercharger ağı ile altyapı avantajı","Güçlü marka sadakati ve topluluk desteği","Otonom sürüş teknolojisinde ileri seviye AR-GE"],weaknesses:["Üretim kapasitesi bazen talebi karşılamada zorlanıyor","Kalite kontrol ve müşteri hizmetlerinde şikayetler","Geleneksel otomotiv üreticilerine göre az servis noktası","CEO'nun sosyal medya kullanımı bazen markaya zarar verebiliyor","Premium fiyatlandırma geniş kitleye ulaşmayı zorlaştırıyor"],competitors:[{name:"BYD",score:87},{name:"Rivian",score:78},{name:"Lucid Motors",score:72},{name:"NIO",score:81}],learnings:["Teknoloji ve otomotivi birleştirerek yeni bir kategori yaratın","CEO'yu marka elçisi olarak kullanın ama dikkatli olun","Açık kaynak ve topluluk odaklı yaklaşım güven oluşturur","Sürekli yenilik ve güncelleme müşteri memnuniyetini artırır","Altyapı yatırımları (Supercharger gibi) rekabet avantajı sağlar"]},
       {name:"BYD",score:87,industry:"Otomotiv",logo:"🔋",factors:["Düşük maliyetli üretim gücü","Batarya teknolojisinde dikey entegrasyon","Çin pazarında güçlü konum","Hem elektrikli hem hibrit model çeşitliliği","Hızlı global genişleme"],strengths:["Kendi bataryalarını üretme kabiliyeti (maliyet avantajı)","Geniş araç yelpazesi (otobüs, kamyon, sedan)","Hızlı üretim ve ölçeklenme kapasitesi","Fiyat-performans dengesi çok iyi","Çin devlet desteği"],weaknesses:["Global marka bilinirliği Tesla'ya göre düşük","Batı pazarlarında algı sorunu","Yazılım ve otonom sürüş geride","Premium segment algısı zayıf","Servis ağı yurtdışında yetersiz"],competitors:[{name:"Tesla",score:95},{name:"SAIC Motor",score:73},{name:"Geely",score:69},{name:"XPeng",score:75}],learnings:["Dikey entegrasyon maliyetleri düşürür ve kontrolü artırır","Geniş ürün yelpazesi farklı segmentlere hitap eder","Yerel pazar hakimiyeti global genişleme için güçlü temel","Hız ve ölçek modern pazarda kritik","Fiyat-performans dengesi kitle pazarı için önemli"]},
-      {name:"Apple",score:98,industry:"Teknoloji",logo:"🍎",factors:["Premium marka konumlandırması","Tutarlı ve minimalist marka dili","Developer community ve ekosistem","Yüksek müşteri sadakati ve advocacy","Etkinlik ve ürün lansmanlarının viral gücü"],strengths:["Ekosistem (iPhone, iPad, Mac, Watch) birbirini tamamlıyor","Privacy ve güvenlik odaklı pazarlama","Perakende deneyimi (Apple Store) eşsiz","Marka sadakati ve müşteri memnuniyeti çok yüksek","Ürün tasarımı ve kullanıcı deneyimi sektör standardı","Developer ekosistemi güçlü ve karlı"],weaknesses:["Yüksek fiyatlandırma geniş kitleye ulaşmayı zorlaştırıyor","Kapalı ekosistem bazı kullanıcıları uzaklaştırıyor","Siri gibi AI ürünleri rakiplerin gerisinde","AB'de rekabet soruşturmaları","Yenilikçilik konusunda eleştiriler (son yıllarda iteratif değişiklikler)"],competitors:[{name:"Samsung",score:91},{name:"Microsoft",score:92},{name:"Google",score:89},{name:"Huawei",score:76}],learnings:["Ekosistem stratejisi müşterileri içeride tutar","Premium fiyatlandırma kalite algısını güçlendirir","Minimalist tasarım ve kullanıcı deneyimi fark yaratır","Fiziksel perakende mekanları marka deneyimini güçlendirir","Privacy gibi değerlere vurgu yaparak farklılaşın"]},
-      {name:"Nike",score:94,industry:"Spor & Moda",logo:"👟",factors:["İkonik slogan: 'Just Do It'","Sporcu sponsorlukları ve hikaye anlatımı","Sosyal sorumluluk kampanyaları","Güçlü görsel kimlik ve logo","Global kültürel etki"],strengths:["Duygusal bağ kuran etkili pazarlama kampanyaları","Michael Jordan, Cristiano Ronaldo gibi global yıldız sponsorlukları","Nike+ ve SNKRS app ile dijital entegrasyon","Sürdürülebilirlik ve çevre dostu ürün geliştirme","Sokak kültürü ve streetwear'de güçlü konum","Limited edition stratejisi ile talep yaratma"],weaknesses:["Sweatshop skandalları ve üretim koşulları eleştirileri (geçmişte)","Yüksek fiyatlar orta gelir grubuna hitap etmiyor","Çin pazarında Adidas ile rekabet","Bazı ürün kategorilerinde kalite şikayetleri","Aşırı sponsorluk bağımlılığı"],competitors:[{name:"Adidas",score:88},{name:"Puma",score:79},{name:"Under Armour",score:71},{name:"New Balance",score:74}],learnings:["Güçlü bir slogan ve görsel kimlik nesiller boyu hatırlanır","Sporcu ve influencer sponsorlukları marka değerini artırır","Hikaye anlatımı ile duygusal bağ kurun","Limited edition ve scarcity stratejisi talep yaratır","Sosyal sorumluluk genç nesil için önemli"]},
-      {name:"Microsoft",score:92,industry:"Teknoloji",logo:"💻",factors:["Enterprise çözümleri ve B2B dominansı","Azure ve cloud liderliği","GitHub ve developer ekosistemi","AI entegrasyonu (Copilot, Bing AI)","Açık kaynak desteği ve topluluk yatırımları"],strengths:["Cloud (Azure) pazarında AWS'ye rakip güçlü konum","Office 365 ve Teams ile kurumsal pazarda liderlik","GitHub ve developer araçları ile yazılımcı ekosistemi","AI ve OpenAI ortaklığı ile önde","Xbox ve gaming bölümü ile çeşitlenme","LinkedIn gibi stratejik satın almalar"],weaknesses:["Tüketici pazarında Apple ve Google'a göre zayıf","Windows Phone başarısızlığı","Eski teknoloji algısı (genç nesil için)","Privacy konusunda eleştiriler","Bazı ürünler kullanıcı dostu değil (karmaşık)"],competitors:[{name:"Amazon (AWS)",score:93},{name:"Google Cloud",score:87},{name:"Apple",score:98},{name:"IBM",score:74}],learnings:["Enterprise odaklı stratejiler istikrarlı gelir sağlar","Cloud altyapısı geleceğin temeli","Developer ekosistemi yatırımı uzun vadeli başarı","Stratejik satın almalar (LinkedIn, GitHub) ekosistemi güçlendirir","AI entegrasyonu ile ürünleri modernleştirin"]},
-      {name:"Coca-Cola",score:96,industry:"Gıda & İçecek",logo:"🥤",factors:["100+ yıllık marka mirası","Evrensel marka tanınırlığı","Duygusal pazarlama ve nostalji","Global dağıtım ağı ve her yerde bulunabilirlik","Tutarlı marka mesajı: mutluluk"],strengths:["Dünyanın en tanınan markalarından biri","Güçlü dağıtım ağı (dünyanın her yerinde bulunabilir)","Reklam ve pazarlama bütçesi çok yüksek","Nostalji ve duygusal bağ","Tutarlı marka kimliği (kırmızı-beyaz, şişe tasarımı)","Sponsorluklar (Olimpiyatlar, FIFA)"],weaknesses:["Sağlık trendleri şekerli içecek tüketimini azaltıyor","Çevresel etki ve plastik kullanımı eleştiriliyor","Yeni nesil sağlıklı alternatiflere yöneliyor","Su tasarrufu ve su kullanımı konusunda eleştiriler","Ürün çeşitliliği fazla ama odaklanma eksik"],competitors:[{name:"PepsiCo",score:94},{name:"Red Bull",score:83},{name:"Dr Pepper",score:71},{name:"Monster Energy",score:76}],learnings:["Tutarlı marka kimliği nesiller boyu değer taşır","Duygusal pazarlama ve nostalji güçlü bağ yaratır","Global dağıtım ağı ulaşılabilirlik sağlar","Sponsorluklar marka görünürlüğünü artırır","Sağlık trendlerine adapte olmak gerekiyor"]},
-      {name:"Amazon",score:93,industry:"E-Ticaret & Teknoloji",logo:"📦",factors:["Müşteri odaklılık (customer obsession)","Hızlı teslimat ve lojistik mükemmelliği","AWS ile teknoloji liderliği","Marketplace ekosistemi","İnovasyon kültürü ve çeşitlilik"],strengths:["Prime üyelik programı sadakat ve recurring revenue","AWS dünyanın en büyük cloud sağlayıcısı","Lojistik altyapısı rakipsiz","Alexa ve smart home ekosistemi","Whole Foods satın alımı ile fiziksel perakende","Amazon Web Services (AWS) yüksek kar marjı"],weaknesses:["Çalışan hakları ve çalışma koşulları eleştiriliyor","Monopol eleştirileri ve rekabet soruşturmaları","Küçük işletmelere zarar veriyor algısı","Privacy ve veri toplama endişeleri (Alexa)","Bazı kategorilerde kendi ürünlerini önplana çıkarması"],competitors:[{name:"Walmart",score:85},{name:"Alibaba",score:88},{name:"Microsoft (Azure)",score:92},{name:"eBay",score:69}],learnings:["Müşteri odaklılık her şeyin merkezinde olmalı","Lojistik ve hızlı teslimat rekabet avantajı","Prime gibi abonelik modelleri sadakat yaratır","Cloud (AWS) gibi yan işler ana geliri geçebilir","Marketplace modeli ölçeklenmeyi hızlandırır"]}
+      {name:"Apple",score:98,industry:"Teknoloji",logo:"🍎",factors:["Premium marka konumlandırması","Tutarlı ve minimalist marka dili","Developer community ve ekosistem","Yüksek müşteri sadakati ve advocacy","Etkinlik ve ürün lansmanlarının viral gücü"],strengths:["Ekosistem (iPhone, iPad, Mac, Watch) birbirini tamamlıyor","Privacy ve güvenlik odaklı pazarlama","Perakende deneyimi (Apple Store) eşsiz","Marka sadakati ve müşteri memnuniyeti çok yüksek","Ürün tasarımı ve kullanıcı deneyimi sektör standardı","Developer ekosistemi güçlü ve karlı"],weaknesses:["Yüksek fiyatlandırma geniş kitleye ulaşmayı zorlaştırıyor","Kapalı ekosistem bazı kullanıcıları uzaklaştırıyor","Siri gibi AI ürünleri rakiplerin gerisinde","AB'de rekabet soruşturmaları","Yenilikçilik konusunda eleştiriler"],competitors:[{name:"Samsung",score:91},{name:"Microsoft",score:92},{name:"Google",score:89},{name:"Huawei",score:76}],learnings:["Ekosistem stratejisi müşterileri içeride tutar","Premium fiyatlandırma kalite algısını güçlendirir","Minimalist tasarım ve kullanıcı deneyimi fark yaratır","Fiziksel perakende mekanları marka deneyimini güçlendirir","Privacy gibi değerlere vurgu yaparak farklılaşın"]},
+      {name:"Nike",score:94,industry:"Spor & Moda",logo:"👟",factors:["İkonik slogan: 'Just Do It'","Sporcu sponsorlukları ve hikaye anlatımı","Sosyal sorumluluk kampanyaları","Güçlü görsel kimlik ve logo","Global kültürel etki"],strengths:["Duygusal bağ kuran etkili pazarlama kampanyaları","Michael Jordan, Cristiano Ronaldo gibi global yıldız sponsorlukları","Nike+ ve SNKRS app ile dijital entegrasyon","Sürdürülebilirlik ve çevre dostu ürün geliştirme","Sokak kültürü ve streetwear'de güçlü konum","Limited edition stratejisi ile talep yaratma"],weaknesses:["Sweatshop skandalları ve üretim koşulları eleştirileri","Yüksek fiyatlar orta gelir grubuna hitap etmiyor","Çin pazarında Adidas ile rekabet","Bazı ürün kategorilerinde kalite şikayetleri","Aşırı sponsorluk bağımlılığı"],competitors:[{name:"Adidas",score:88},{name:"Puma",score:79},{name:"Under Armour",score:71},{name:"New Balance",score:74}],learnings:["Güçlü bir slogan ve görsel kimlik nesiller boyu hatırlanır","Sporcu ve influencer sponsorlukları marka değerini artırır","Hikaye anlatımı ile duygusal bağ kurun","Limited edition ve scarcity stratejisi talep yaratır","Sosyal sorumluluk genç nesil için önemli"]},
+      {name:"Microsoft",score:92,industry:"Teknoloji",logo:"💻",factors:["Enterprise çözümleri ve B2B dominansı","Azure ve cloud liderliği","GitHub ve developer ekosistemi","AI entegrasyonu (Copilot, Bing AI)","Açık kaynak desteği"],strengths:["Cloud (Azure) pazarında AWS'ye rakip güçlü konum","Office 365 ve Teams ile kurumsal pazarda liderlik","GitHub ve developer araçları ile yazılımcı ekosistemi","AI ve OpenAI ortaklığı ile önde","Xbox ve gaming bölümü ile çeşitlenme","LinkedIn gibi stratejik satın almalar"],weaknesses:["Tüketici pazarında Apple ve Google'a göre zayıf","Windows Phone başarısızlığı","Eski teknoloji algısı (genç nesil için)","Privacy konusunda eleştiriler","Bazı ürünler kullanıcı dostu değil"],competitors:[{name:"Amazon (AWS)",score:93},{name:"Google Cloud",score:87},{name:"Apple",score:98},{name:"IBM",score:74}],learnings:["Enterprise odaklı stratejiler istikrarlı gelir sağlar","Cloud altyapısı geleceğin temeli","Developer ekosistemi yatırımı uzun vadeli başarı","Stratejik satın almalar ekosistemi güçlendirir","AI entegrasyonu ile ürünleri modernleştirin"]},
+      {name:"Coca-Cola",score:96,industry:"Gıda & İçecek",logo:"🥤",factors:["100+ yıllık marka mirası","Evrensel marka tanınırlığı","Duygusal pazarlama ve nostalji","Global dağıtım ağı","Tutarlı marka mesajı: mutluluk"],strengths:["Dünyanın en tanınan markalarından biri","Güçlü dağıtım ağı (dünyanın her yerinde bulunabilir)","Reklam ve pazarlama bütçesi çok yüksek","Nostalji ve duygusal bağ","Tutarlı marka kimliği (kırmızı-beyaz, şişe tasarımı)","Sponsorluklar (Olimpiyatlar, FIFA)"],weaknesses:["Sağlık trendleri şekerli içecek tüketimini azaltıyor","Çevresel etki ve plastik kullanımı eleştiriliyor","Yeni nesil sağlıklı alternatiflere yöneliyor","Su tasarrufu konusunda eleştiriler","Ürün çeşitliliği fazla ama odaklanma eksik"],competitors:[{name:"PepsiCo",score:94},{name:"Red Bull",score:83},{name:"Dr Pepper",score:71},{name:"Monster Energy",score:76}],learnings:["Tutarlı marka kimliği nesiller boyu değer taşır","Duygusal pazarlama ve nostalji güçlü bağ yaratır","Global dağıtım ağı ulaşılabilirlik sağlar","Sponsorluklar marka görünürlüğünü artırır","Sağlık trendlerine adapte olmak gerekiyor"]},
+      {name:"Amazon",score:93,industry:"E-Ticaret & Teknoloji",logo:"📦",factors:["Müşteri odaklılık (customer obsession)","Hızlı teslimat ve lojistik mükemmelliği","AWS ile teknoloji liderliği","Marketplace ekosistemi","İnovasyon kültürü"],strengths:["Prime üyelik programı sadakat ve recurring revenue","AWS dünyanın en büyük cloud sağlayıcısı","Lojistik altyapısı rakipsiz","Alexa ve smart home ekosistemi","Whole Foods satın alımı ile fiziksel perakende","AWS yüksek kar marjı"],weaknesses:["Çalışan hakları ve çalışma koşulları eleştiriliyor","Monopol eleştirileri ve rekabet soruşturmaları","Küçük işletmelere zarar veriyor algısı","Privacy ve veri toplama endişeleri (Alexa)","Bazı kategorilerde kendi ürünlerini önplana çıkarması"],competitors:[{name:"Walmart",score:85},{name:"Alibaba",score:88},{name:"Microsoft (Azure)",score:92},{name:"eBay",score:69}],learnings:["Müşteri odaklılık her şeyin merkezinde olmalı","Lojistik ve hızlı teslimat rekabet avantajı","Prime gibi abonelik modelleri sadakat yaratır","Cloud gibi yan işler ana geliri geçebilir","Marketplace modeli ölçeklenmeyi hızlandırır"]}
     ];
 
     let currentFilteredData = allMarketData;
@@ -544,7 +543,7 @@
       document.getElementById('modalFactors').innerHTML = c.factors.map(f=>`<li class="flex items-start gap-3 text-sm"><span class="text-yellow-400 shrink-0 text-lg">⭐</span><span class="text-slate-300">${f}</span></li>`).join('');
       document.getElementById('modalStrengths').innerHTML = c.strengths.map(s=>`<li class="flex items-start gap-3 text-sm"><span class="text-emerald-400 shrink-0 text-lg">✓</span><span class="text-slate-300">${s}</span></li>`).join('');
       document.getElementById('modalWeaknesses').innerHTML = c.weaknesses.map(w=>`<li class="flex items-start gap-3 text-sm"><span class="text-orange-400 shrink-0 text-lg">⚠</span><span class="text-slate-300">${w}</span></li>`).join('');
-      document.getElementById('modalCompetitors').innerHTML = c.competitors.map(r=>{let color = r.score>=90?'text-green-400':r.score>=80?'text-blue-400':r.score>=70?'text-yellow-400':'text-orange-400'; return `<div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700 flex items-center justify-between"><span class="text-sm font-semibold text-slate-300">${r.name}</span><span class="text-xl font-bold ${color}">${r.score}</span></div>`;}).join('');
+      document.getElementById('modalCompetitors').innerHTML = c.competitors.map(r=>{let color=r.score>=90?'text-green-400':r.score>=80?'text-blue-400':r.score>=70?'text-yellow-400':'text-orange-400';return`<div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700 flex items-center justify-between"><span class="text-sm font-semibold text-slate-300">${r.name}</span><span class="text-xl font-bold ${color}">${r.score}</span></div>`;}).join('');
       document.getElementById('modalLearnings').innerHTML = c.learnings.map((l,i)=>`<li class="flex items-start gap-3 text-sm"><span class="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold">${i+1}</span><span class="text-slate-300 leading-relaxed">${l}</span></li>`).join('');
       document.getElementById('detailModal').classList.remove('hidden');
       document.getElementById('detailModal').classList.add('flex');
@@ -569,46 +568,50 @@
     }
 
     function showSection(id) {
-      ['section-input','section-loading','section-results'].forEach(s => document.getElementById(s).classList.add('hidden-section'));
+      ['section-input','section-loading','section-results'].forEach(s=>document.getElementById(s).classList.add('hidden-section'));
       document.getElementById(id).classList.remove('hidden-section');
     }
 
     function resetApp() {
-      document.getElementById('brandInput').value = '';
-      document.getElementById('industryInput').value = '';
+      document.getElementById('brandInput').value='';
+      document.getElementById('industryInput').value='';
       showSection('section-input');
     }
 
     async function startAnalysis() {
       const brand = document.getElementById('brandInput').value.trim();
       const industry = document.getElementById('industryInput').value.trim();
-      if (!brand || !industry) { alert("⚠️ Lütfen marka ve sektör bilgilerini girin!"); return; }
+      if(!brand||!industry){alert("⚠️ Lütfen marka ve sektör bilgilerini girin!");return;}
       showSection('section-loading');
       let i=0;
-      loadingInterval = setInterval(()=>{ document.getElementById('loadingText').innerText = loadingMessages[i%loadingMessages.length]; i++; },2500);
-      try {
-        const response = await fetch(VERCEL_BACKEND_URL, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({brand,industry}) });
-        if (!response.ok) { const errorData = await response.json(); throw new Error(errorData.error || "Sunucu Hatası"); }
-        const data = await response.json();
-        renderResults(data, brand, industry);
-      } catch (error) {
-        console.error("Hata:", error);
-        alert("❌ Analiz başarısız: " + error.message);
+      loadingInterval=setInterval(()=>{document.getElementById('loadingText').innerText=loadingMessages[i%loadingMessages.length];i++;},2500);
+      try{
+        const response=await fetch(VERCEL_BACKEND_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({brand,industry})});
+        if(!response.ok){const errorData=await response.json();throw new Error(errorData.error||"Sunucu Hatası");}
+        const data=await response.json();
+        renderResults(data,brand,industry);
+      }catch(error){
+        console.error("Hata:",error);
+        alert("❌ Analiz başarısız: "+error.message);
         resetApp();
-      } finally {
+      }finally{
         clearInterval(loadingInterval);
       }
     }
 
-    function renderResults(data, brand, industry) {
-      document.getElementById('resBrandName').innerText = `${brand.toUpperCase()} | ${industry.toUpperCase()}`;
-      const score = data.score || 0;
-      document.getElementById('resScore').innerText = score;
-      document.getElementById('scoreCircle').style.setProperty('--score', score);
-      document.getElementById('resScoreExplanation').innerText = data.scoreExplanation || "Detaylı skor açıklaması hazırlanıyor...";
-      const categoryBadge = document.getElementById('scoreCategory');
-      const category = data.scoreCategory || "Değerlendiriliyor";
-      categoryBadge.innerText = category;
-      if (score >= 90) categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-green-500/20 text-green-400 border border-green-500/50";
-      else if (score >= 80) categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/50";
-      else if (
+    function renderResults(data,brand,industry){
+      document.getElementById('resBrandName').innerText=`${brand.toUpperCase()} | ${industry.toUpperCase()}`;
+      const score=data.score||0;
+      document.getElementById('resScore').innerText=score;
+      document.getElementById('scoreCircle').style.setProperty('--score',score);
+      document.getElementById('resScoreExplanation').innerText=data.scoreExplanation||"Detaylı skor açıklaması hazırlanıyor...";
+      const categoryBadge=document.getElementById('scoreCategory');
+      const category=data.scoreCategory||"Değerlendiriliyor";
+      categoryBadge.innerText=category;
+      if(score>=90)categoryBadge.className="inline-block px-3 py-1 text-xs font-bold rounded-full bg-green-500/20 text-green-400 border border-green-500/50";
+      else if(score>=80)categoryBadge.className="inline-block px-3 py-1 text-xs font-bold rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/50";
+      else if(score>=60)categoryBadge.className="inline-block px-3 py-1 text-xs font-bold rounded-full bg-yellow-500/20 text-yellow-400 border border-yellow-500/50";
+      else if(score>=40)categoryBadge.className="inline-block px-3 py-1 text-xs font-bold rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/50";
+      else categoryBadge.className="inline-block px-3 py-1 text-xs font-bold rounded-full bg-red-500/20 text-red-400 border border-red-500/50";
+      
+      document.getElementById('resClaimedSector').innerText=data.identityAnalysis?.claimedSector||industry;
