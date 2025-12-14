@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IRIS • AI Marka Görünürlük Analizi</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
     * { font-family: 'Inter', sans-serif; }
@@ -15,7 +14,6 @@
       background: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
     
     .glass-card {
@@ -25,15 +23,10 @@
     }
     
     .hidden-section { display: none; }
-    
     .shimmer { animation: shimmer 2s infinite; }
-    @keyframes shimmer {
-      0%, 100% { opacity: 0.3; }
-      50% { opacity: 1; }
-    }
+    @keyframes shimmer { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
     
     .pulse-slow { animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-    
     .fade-in { animation: fadeIn 0.5s ease-in; }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
@@ -51,455 +44,385 @@
       display: flex; align-items: center; justify-content: center; flex-direction: column;
     }
 
-    /* GÖZ ANİMASYONU */
+    /* GÖZ */
     @keyframes lookAround {
       0%, 100% { transform: translateX(0) translateY(0); }
       40% { transform: translateX(-8px) translateY(2px); }
       80% { transform: translateX(8px) translateY(-2px); }
     }
-    
     @keyframes blink {
       0%, 45%, 55%, 100% { transform: scaleY(1); }
       50% { transform: scaleY(0.05); }
     }
-    
-    .digital-eye-pupil {
-      animation: lookAround 8s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    .digital-eye-pupil { animation: lookAround 8s infinite cubic-bezier(0.4, 0, 0.2, 1); }
+    .digital-eye-lid { animation: blink 6s infinite ease-in-out; }
+    .matrix-glow { box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); }
+
+    /* MENU */
+    .menu-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
+      z-index: 998; display: none;
     }
+    .menu-overlay.active { display: block; }
     
-    .digital-eye-lid {
-      animation: blink 6s infinite ease-in-out;
+    .menu-sidebar {
+      position: fixed; top: 0; left: -320px; width: 320px; height: 100%;
+      background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+      border-right: 1px solid rgba(148, 163, 184, 0.2);
+      z-index: 999; transition: left 0.3s ease; overflow-y: auto;
     }
+    .menu-sidebar.active { left: 0; }
     
-    .matrix-glow {
-      box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    .menu-item {
+      padding: 16px 24px; display: flex; align-items: center; gap: 12px;
+      cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent;
     }
+    .menu-item:hover { background: rgba(59, 130, 246, 0.1); border-left-color: #3b82f6; }
+    .menu-item.active { background: rgba(59, 130, 246, 0.15); border-left-color: #3b82f6; }
+
+    .page-content { display: none; }
+    .page-content.active { display: block; }
   </style>
 </head>
 <body class="min-h-screen text-white">
 
-  <!-- INPUT SECTION -->
-  <div id="section-input" class="container mx-auto px-4 py-12 max-w-6xl">
-    
-    <div class="text-center mb-16 fade-in">
-      <!-- GÖZ ANİMASYONU -->
-      <div class="mb-10 relative group cursor-default inline-block">
-        <div class="absolute -inset-8 bg-emerald-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
-        <div class="w-32 h-32 bg-[#020617] rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl border-[4px] border-slate-800 digital-eye-lid matrix-glow">
-          <div class="absolute inset-0 opacity-20" style="background-image:radial-gradient(#10b981 1px,transparent 1px);background-size:8px 8px"></div>
-          <div class="w-10 h-10 bg-emerald-600 rounded-full relative digital-eye-pupil shadow-[0_0_20px_rgba(16,185,129,0.8)] flex items-center justify-center border border-emerald-400">
-            <div class="w-4 h-4 bg-black rounded-full opacity-60"></div>
-            <div class="absolute top-2 right-2 w-1.5 h-1.5 bg-white rounded-full opacity-90"></div>
-          </div>
-        </div>
-      </div>
+  <!-- MENU BUTTON -->
+  <button id="menuToggle" class="fixed top-6 left-6 z-50 w-12 h-12 bg-slate-800/80 backdrop-blur-sm border border-slate-700 rounded-xl flex items-center justify-center hover:bg-slate-700 transition">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
 
-      <h1 class="text-6xl font-black mb-4">
-        <span class="gradient-text">IRIS</span>
-      </h1>
-      <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
-        Markanızın <strong>ChatGPT, Gemini, Claude</strong> gibi yapay zeka platformlarında ne kadar görünür olduğunu keşfedin.
-      </p>
-      <div class="flex items-center justify-center gap-2 mt-6">
-        <span class="inline-block w-2 h-2 bg-green-500 rounded-full pulse-slow"></span>
-        <span class="text-xs text-slate-500 uppercase tracking-wider">Gemini 2.0 Flash Teknolojisi</span>
-      </div>
+  <!-- MENU OVERLAY -->
+  <div id="menuOverlay" class="menu-overlay"></div>
+
+  <!-- MENU SIDEBAR -->
+  <div id="menuSidebar" class="menu-sidebar">
+    <div class="p-6 border-b border-slate-700">
+      <h2 class="text-2xl font-black gradient-text">IRIS</h2>
+      <p class="text-xs text-slate-400 mt-1">AI Marka İstihbaratı</p>
     </div>
-
-    <div class="glass-card rounded-3xl p-8 mb-12 max-w-2xl mx-auto fade-in">
-      <div class="mb-6">
-        <label class="block text-sm font-semibold text-slate-300 mb-2">Marka Adı</label>
-        <input 
-          id="brandInput" 
-          type="text" 
-          placeholder="Örn: Tesla, Apple, Nike..."
-          class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-        >
+    
+    <nav class="py-4">
+      <div class="menu-item active" data-page="analysis">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-400">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+        <div>
+          <div class="font-semibold text-sm">Marka Analizi</div>
+          <div class="text-xs text-slate-500">Markanızı analiz edin</div>
+        </div>
       </div>
       
-      <div class="mb-6">
-        <label class="block text-sm font-semibold text-slate-300 mb-2">Sektör</label>
-        <input 
-          id="industryInput" 
-          type="text" 
-          placeholder="Örn: Otomotiv, Teknoloji, Gıda..."
-          class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-        >
-      </div>
-
-      <button 
-        onclick="startAnalysis()"
-        class="w-full py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl font-bold text-white hover:scale-[1.02] transition-transform shadow-lg"
-      >
-        🔍 ANALİZİ BAŞLAT
-      </button>
-    </div>
-
-  </div>
-
-  <!-- LOADING SECTION -->
-  <div id="section-loading" class="hidden-section container mx-auto px-4 py-12 max-w-2xl">
-    <div class="glass-card rounded-3xl p-12 text-center fade-in">
-      <div class="score-circle mx-auto mb-6" style="--score: 50;">
-        <div class="score-inner"><div class="text-2xl font-bold shimmer">⚡</div></div>
-      </div>
-      <h3 class="text-2xl font-bold mb-3">Analiz Yapılıyor...</h3>
-      <p id="loadingText" class="text-slate-400 text-sm mb-6">
-        🔍 AI platformları taranıyor...
-      </p>
-      <div class="flex justify-center gap-2">
-        <span class="w-2 h-2 bg-blue-500 rounded-full shimmer" style="animation-delay: 0s"></span>
-        <span class="w-2 h-2 bg-purple-500 rounded-full shimmer" style="animation-delay: 0.2s"></span>
-        <span class="w-2 h-2 bg-pink-500 rounded-full shimmer" style="animation-delay: 0.4s"></span>
-      </div>
-    </div>
-  </div>
-
-  <!-- RESULTS SECTION -->
-  <div id="section-results" class="hidden-section container mx-auto px-4 py-12 max-w-7xl">
-    
-    <!-- Header -->
-    <div class="glass-card rounded-3xl p-8 mb-6 fade-in">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-        <div class="flex-1">
-          <h2 class="text-3xl font-black mb-2">
-            Analiz Raporu
-            <span class="inline-block px-3 py-1 ml-3 text-xs font-bold bg-green-500/20 text-green-400 rounded-full">CONFIDENTIAL</span>
-          </h2>
-          <p id="resBrandName" class="text-slate-400 text-lg">-</p>
+      <div class="menu-item" data-page="market">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-green-400">
+          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+          <polyline points="16 7 22 7 22 13"></polyline>
+        </svg>
+        <div>
+          <div class="font-semibold text-sm">Pazar Araştırması</div>
+          <div class="text-xs text-slate-500">Başarılı markaları inceleyin</div>
         </div>
-        <div class="text-center">
-          <div class="score-circle mx-auto mb-2" id="scoreCircle" style="--score: 0;">
-            <div class="score-inner">
-              <div id="resScore" class="text-4xl font-black text-white">0</div>
-              <div class="text-[9px] text-slate-500 uppercase tracking-wider">Skor</div>
+      </div>
+    </nav>
+
+    <div class="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-700">
+      <p class="text-xs text-slate-500 leading-relaxed">Gemini 2.0 Flash teknolojisi ile güçlendirilmiştir.</p>
+    </div>
+  </div>
+
+  <!-- PAGE 1: MARKA ANALİZİ -->
+  <div id="page-analysis" class="page-content active">
+    
+    <div id="section-input" class="container mx-auto px-4 py-12 max-w-6xl">
+      
+      <div class="text-center mb-16 fade-in ml-16">
+        <div class="mb-10 relative group cursor-default inline-block">
+          <div class="absolute -inset-8 bg-emerald-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+          <div class="w-32 h-32 bg-[#020617] rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl border-[4px] border-slate-800 digital-eye-lid matrix-glow">
+            <div class="absolute inset-0 opacity-20" style="background-image:radial-gradient(#10b981 1px,transparent 1px);background-size:8px 8px"></div>
+            <div class="w-10 h-10 bg-emerald-600 rounded-full relative digital-eye-pupil shadow-[0_0_20px_rgba(16,185,129,0.8)] flex items-center justify-center border border-emerald-400">
+              <div class="w-4 h-4 bg-black rounded-full opacity-60"></div>
+              <div class="absolute top-2 right-2 w-1.5 h-1.5 bg-white rounded-full opacity-90"></div>
             </div>
           </div>
-          <div id="scoreCategory" class="inline-block px-3 py-1 text-xs font-bold rounded-full bg-slate-800 text-slate-400 mb-2">-</div>
-          <p id="resScoreExplanation" class="text-xs text-slate-400 max-w-xs leading-relaxed"></p>
+        </div>
+
+        <h1 class="text-6xl font-black mb-4">
+          <span class="gradient-text">IRIS</span>
+        </h1>
+        <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
+          Markanızın <strong>ChatGPT, Gemini, Claude</strong> gibi yapay zeka platformlarında ne kadar görünür olduğunu keşfedin.
+        </p>
+        <div class="flex items-center justify-center gap-2 mt-6">
+          <span class="inline-block w-2 h-2 bg-green-500 rounded-full pulse-slow"></span>
+          <span class="text-xs text-slate-500 uppercase tracking-wider">Gemini 2.0 Flash Teknolojisi</span>
         </div>
       </div>
-    </div>
 
-    <!-- Main Grid -->
-    <div class="grid lg:grid-cols-2 gap-6">
-      
-      <!-- LEFT COLUMN -->
-      <div class="space-y-6">
+      <div class="glass-card rounded-3xl p-8 mb-12 max-w-2xl mx-auto fade-in">
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-slate-300 mb-2">Marka Adı</label>
+          <input 
+            id="brandInput" 
+            type="text" 
+            placeholder="Örn: Tesla, Apple, Nike..."
+            class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+          >
+        </div>
         
-        <!-- Kimlik Tespiti -->
-        <div class="glass-card rounded-3xl p-6 fade-in">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center">
-              <i data-lucide="fingerprint" class="w-5 h-5 text-blue-400"></i>
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-slate-300 mb-2">Sektör</label>
+          <input 
+            id="industryInput" 
+            type="text" 
+            placeholder="Örn: Otomotiv, Teknoloji, Gıda..."
+            class="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+          >
+        </div>
+
+        <button 
+          id="analyzeBtn"
+          class="w-full py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl font-bold text-white hover:scale-[1.02] transition-transform shadow-lg"
+        >
+          🔍 ANALİZİ BAŞLAT
+        </button>
+      </div>
+
+    </div>
+
+    <div id="section-loading" class="hidden-section container mx-auto px-4 py-12 max-w-2xl">
+      <div class="glass-card rounded-3xl p-12 text-center fade-in">
+        <div class="score-circle mx-auto mb-6" style="--score: 50;">
+          <div class="score-inner"><div class="text-2xl font-bold shimmer">⚡</div></div>
+        </div>
+        <h3 class="text-2xl font-bold mb-3">Analiz Yapılıyor...</h3>
+        <p id="loadingText" class="text-slate-400 text-sm mb-6">🔍 AI platformları taranıyor...</p>
+        <div class="flex justify-center gap-2">
+          <span class="w-2 h-2 bg-blue-500 rounded-full shimmer"></span>
+          <span class="w-2 h-2 bg-purple-500 rounded-full shimmer"></span>
+          <span class="w-2 h-2 bg-pink-500 rounded-full shimmer"></span>
+        </div>
+      </div>
+    </div>
+
+    <div id="section-results" class="hidden-section container mx-auto px-4 py-12 max-w-7xl ml-20">
+      <div class="glass-card rounded-3xl p-8 mb-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-3xl font-black mb-2">Analiz Raporu</h2>
+            <p id="resBrandName" class="text-slate-400 text-lg">-</p>
+          </div>
+          <div class="text-center">
+            <div class="score-circle mx-auto mb-2" id="scoreCircle" style="--score: 0;">
+              <div class="score-inner">
+                <div id="resScore" class="text-4xl font-black text-white">0</div>
+                <div class="text-[9px] text-slate-500 uppercase">Skor</div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-8">
+        <button id="resetBtn" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl font-semibold text-white transition">
+          🔄 Yeni Analiz Yap
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PAGE 2: PAZAR ARAŞTIRMASI -->
+  <div id="page-market" class="page-content">
+    <div class="container mx-auto px-4 py-12 max-w-7xl ml-20">
+      
+      <div class="text-center mb-12 fade-in">
+        <h1 class="text-5xl font-black mb-4 gradient-text">Pazar Araştırması</h1>
+        <p class="text-slate-400 text-lg max-w-3xl mx-auto">
+          Yüksek AI görünürlük skoruna sahip markaları inceleyin. Başarı sırlarını keşfedin.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Mercedes -->
+        <div class="glass-card rounded-3xl p-6 fade-in hover:scale-[1.02] transition cursor-pointer" onclick="showDetail('Mercedes')">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-3xl">⭐</div>
             <div>
-              <h3 class="text-lg font-bold">Kimlik Tespiti</h3>
-              <p class="text-xs text-slate-500">Beyan vs. AI Algısı</p>
+              <h3 class="text-xl font-bold">Mercedes-Benz</h3>
+              <p class="text-xs text-slate-500">Otomotiv</p>
             </div>
           </div>
-          
-          <div class="relative pl-4 mb-4">
-            <div id="matchIndicator" class="absolute top-0 left-0 w-1 h-full bg-emerald-500 rounded-full"></div>
-            <div class="grid grid-cols-2 gap-3">
-              <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
-                <div class="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Beyan</div>
-                <div id="resClaimedSector" class="text-sm font-semibold text-slate-300">-</div>
-              </div>
-              <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
-                <div class="text-[9px] text-slate-500 uppercase tracking-wider mb-1">AI Tespiti</div>
-                <div id="resDetectedSector" class="text-sm font-semibold text-slate-300">-</div>
-              </div>
-            </div>
-            <div class="mt-3 flex items-center justify-between">
-              <span class="text-xs text-slate-500">Durum:</span>
-              <span id="resMatchStatus" class="text-[9px] font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-900">-</span>
-            </div>
+          <div class="text-center mb-4">
+            <div class="text-4xl font-black gradient-text">94</div>
+            <div class="text-xs text-slate-500">AI Görünürlük Skoru</div>
           </div>
-
-          <div id="resInsight" class="bg-slate-800/30 rounded-lg p-3 border-l-2 border-blue-500 text-xs text-slate-300 leading-relaxed">
-            <span>-</span>
+          <div class="space-y-2 text-sm text-slate-300">
+            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Lüks marka konumlandırması</span></div>
+            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Güçlü mühendislik hikayesi</span></div>
+            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Premium müşteri deneyimi</span></div>
           </div>
         </div>
 
-        <!-- Platforms -->
-        <div class="glass-card rounded-3xl p-6 fade-in">
-          <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Taranan Platformlar</h3>
-          <div id="resPlatforms" class="space-y-2"></div>
-        </div>
-
-        <!-- Yönetici Özeti -->
-        <div class="glass-card rounded-3xl p-6 fade-in">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
-              <i data-lucide="file-text" class="w-5 h-5 text-purple-400"></i>
+        <!-- Apple -->
+        <div class="glass-card rounded-3xl p-6 fade-in hover:scale-[1.02] transition cursor-pointer" onclick="showDetail('Apple')">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-3xl">🍎</div>
+            <div>
+              <h3 class="text-xl font-bold">Apple</h3>
+              <p class="text-xs text-slate-500">Teknoloji</p>
             </div>
-            <h3 class="text-lg font-bold">Yönetici Özeti</h3>
           </div>
-          <p id="resSummary" class="text-sm text-slate-300 leading-relaxed">-</p>
+          <div class="text-center mb-4">
+            <div class="text-4xl font-black gradient-text">98</div>
+            <div class="text-xs text-slate-500">AI Görünürlük Skoru</div>
+          </div>
+          <div class="space-y-2 text-sm text-slate-300">
+            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Minimalist tasarım dili</span></div>
+            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Ekosistem stratejisi</span></div>
+            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Gizlilik odaklı pazarlama</span></div>
+          </div>
         </div>
 
-        <!-- Güçlü/Zayıf Yönler -->
-        <div class="grid grid-cols-2 gap-4">
-          <div class="glass-card rounded-2xl p-4 fade-in">
-            <h3 class="text-sm font-bold mb-3 flex items-center gap-2">
-              <i data-lucide="thumbs-up" class="w-4 h-4 text-emerald-400"></i>
-              <span>Güçlü Yönler</span>
-            </h3>
-            <ul id="resStrengths" class="space-y-2 text-xs text-slate-400"></ul>
+        <!-- Nike -->
+        <div class="glass-card rounded-3xl p-6 fade-in hover:scale-[1.02] transition cursor-pointer" onclick="showDetail('Nike')">
+          <div class="flex items-center gap-4 mb-4">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500/20 to-red-500/20 flex items-center justify-center text-3xl">👟</div>
+            <div>
+              <h3 class="text-xl font-bold">Nike</h3>
+              <p class="text-xs text-slate-500">Spor</p>
+            </div>
           </div>
-          <div class="glass-card rounded-2xl p-4 fade-in">
-            <h3 class="text-sm font-bold mb-3 flex items-center gap-2">
-              <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400"></i>
-              <span>Zayıf Yönler</span>
-            </h3>
-            <ul id="resWeaknesses" class="space-y-2 text-xs text-slate-400"></ul>
+          <div class="text-center mb-4">
+            <div class="text-4xl font-black gradient-text">95</div>
+            <div class="text-xs text-slate-500">AI Görünürlük Skoru</div>
+          </div>
+          <div class="space-y-2 text-sm text-slate-300">
+            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>"Just Do It" slogan gücü</span></div>
+            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Sporcu sponsorlukları</span></div>
+            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Duygusal hikaye anlatımı</span></div>
           </div>
         </div>
 
       </div>
+    </div>
+  </div>
 
-      <!-- RIGHT COLUMN -->
-      <div class="space-y-6">
-        
-        <!-- Rakipler -->
-        <div class="glass-card rounded-3xl p-6 fade-in">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-xl bg-pink-500/20 flex items-center justify-center">
-              <i data-lucide="users" class="w-5 h-5 text-pink-400"></i>
-            </div>
-            <h3 class="text-lg font-bold">Rakip Analizi</h3>
-          </div>
-          <div id="resCompetitors" class="space-y-3"></div>
-        </div>
-
-        <!-- Daha Görünür Olmak İçin Tavsiyeler -->
-        <div class="glass-card rounded-3xl p-6 fade-in">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center">
-              <i data-lucide="lightbulb" class="w-5 h-5 text-yellow-400"></i>
-            </div>
-            <h3 class="text-lg font-bold">Daha Görünür Olmak İçin Tavsiyeler</h3>
-          </div>
-          <div class="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-lg p-4 border border-yellow-500/20">
-            <ul id="resVisibilityRecommendations" class="space-y-2 text-xs text-slate-200"></ul>
-          </div>
-        </div>
-
-        <!-- Algı Optimizasyonu -->
-        <div class="glass-card rounded-3xl p-6 fade-in">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center">
-              <i data-lucide="target" class="w-5 h-5 text-green-400"></i>
-            </div>
-            <h3 class="text-lg font-bold">Algı Optimizasyonu</h3>
-          </div>
-          
-          <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
-            <p id="resOptRationale" class="text-xs text-slate-400 leading-relaxed whitespace-pre-line">-</p>
-          </div>
-        </div>
-
+  <!-- MODAL -->
+  <div id="detailModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[1000] hidden items-center justify-center p-4">
+    <div class="glass-card rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="sticky top-0 bg-slate-900/95 p-6 border-b border-slate-700 flex justify-between items-center">
+        <h2 id="modalTitle" class="text-3xl font-black gradient-text"></h2>
+        <button onclick="closeDetail()" class="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 flex items-center justify-center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
-
+      <div class="p-6" id="modalContent"></div>
     </div>
-
-    <!-- Reset Button -->
-    <div class="text-center mt-8">
-      <button 
-        onclick="resetApp()"
-        class="px-6 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl font-semibold text-white transition"
-      >
-        🔄 Yeni Analiz Yap
-      </button>
-    </div>
-
   </div>
 
   <script>
-    lucide.createIcons();
+    const BACKEND_URL = "https://iris-intel.vercel.app/api/analyze";
+    const loadingMsgs = ["🔍 AI platformları taranıyor...","🤖 ChatGPT, Claude, Gemini sorgulanıyor...","📊 Rakip analizi yapılıyor..."];
+    let loadingInt;
 
-    const VERCEL_BACKEND_URL = "https://iris-intel.vercel.app/api/analyze";
+    // MENU
+    document.getElementById('menuToggle').addEventListener('click', () => {
+      document.getElementById('menuSidebar').classList.toggle('active');
+      document.getElementById('menuOverlay').classList.toggle('active');
+    });
 
-    const loadingMessages = [
-      "🔍 AI platformları taranıyor...",
-      "🤖 ChatGPT, Claude, Gemini sorgulanıyor...",
-      "📊 Rakip analizi yapılıyor...",
-      "💡 Detaylı öneriler hazırlanıyor...",
-      "🎯 Veriler işleniyor..."
-    ];
+    document.getElementById('menuOverlay').addEventListener('click', () => {
+      document.getElementById('menuSidebar').classList.remove('active');
+      document.getElementById('menuOverlay').classList.remove('active');
+    });
 
-    let loadingInterval;
-
-    function showSection(id) {
-      ['section-input', 'section-loading', 'section-results'].forEach(sec => {
-        document.getElementById(sec).classList.add('hidden-section');
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', function() {
+        const page = this.getAttribute('data-page');
+        document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+        document.getElementById(`page-${page}`).classList.add('active');
+        document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+        this.classList.add('active');
+        document.getElementById('menuSidebar').classList.remove('active');
+        document.getElementById('menuOverlay').classList.remove('active');
       });
-      document.getElementById(id).classList.remove('hidden-section');
-    }
+    });
 
-    function resetApp() {
-      document.getElementById('brandInput').value = '';
-      document.getElementById('industryInput').value = '';
-      showSection('section-input');
-    }
-
-    async function startAnalysis() {
+    // ANALYZE
+    document.getElementById('analyzeBtn').addEventListener('click', async () => {
       const brand = document.getElementById('brandInput').value.trim();
       const industry = document.getElementById('industryInput').value.trim();
+      if (!brand || !industry) { alert("⚠️ Lütfen marka ve sektör girin!"); return; }
 
-      if (!brand || !industry) {
-        alert("⚠️ Lütfen marka ve sektör bilgilerini girin!");
-        return;
-      }
+      document.getElementById('section-input').classList.add('hidden-section');
+      document.getElementById('section-loading').classList.remove('hidden-section');
 
-      showSection('section-loading');
-      
       let i = 0;
-      loadingInterval = setInterval(() => {
-        document.getElementById('loadingText').innerText = loadingMessages[i % loadingMessages.length];
-        i++;
+      loadingInt = setInterval(() => {
+        document.getElementById('loadingText').innerText = loadingMsgs[i++ % loadingMsgs.length];
       }, 2500);
 
       try {
-        const response = await fetch(VERCEL_BACKEND_URL, {
+        const res = await fetch(BACKEND_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ brand, industry }),
         });
-
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}`);
-        }
-
-        const data = await response.json();
-        renderResults(data, brand, industry);
-
-      } catch (error) {
-        console.error("Hata:", error);
-        alert("❌ Analiz başarısız: " + error.message);
-        resetApp();
+        const data = await res.json();
+        
+        document.getElementById('resBrandName').innerText = `${brand.toUpperCase()} | ${industry.toUpperCase()}`;
+        document.getElementById('resScore').innerText = data.score || 0;
+        document.getElementById('scoreCircle').style.setProperty('--score', data.score || 0);
+        
+        document.getElementById('section-loading').classList.add('hidden-section');
+        document.getElementById('section-results').classList.remove('hidden-section');
+      } catch (err) {
+        alert("❌ Hata: " + err.message);
+        document.getElementById('section-loading').classList.add('hidden-section');
+        document.getElementById('section-input').classList.remove('hidden-section');
       } finally {
-        clearInterval(loadingInterval);
+        clearInterval(loadingInt);
       }
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      document.getElementById('section-results').classList.add('hidden-section');
+      document.getElementById('section-input').classList.remove('hidden-section');
+      document.getElementById('brandInput').value = '';
+      document.getElementById('industryInput').value = '';
+    });
+
+    // ENTER KEY
+    ['brandInput', 'industryInput'].forEach(id => {
+      document.getElementById(id).addEventListener('keypress', e => {
+        if (e.key === 'Enter') document.getElementById('analyzeBtn').click();
+      });
+    });
+
+    // MARKET DETAIL
+    function showDetail(brand) {
+      const data = {
+        'Mercedes': {title: 'Mercedes-Benz', html: '<div class="glass-card rounded-2xl p-6"><h3 class="text-xl font-bold mb-4">Başarı Faktörleri</h3><ul class="space-y-3 text-sm"><li>→ <strong>Lüks Konumlandırma:</strong> Premium segment lideri</li><li>→ <strong>Mühendislik:</strong> 130+ yıllık deneyim</li><li>→ <strong>Güvenlik:</strong> Sektör standardı</li></ul></div>'},
+        'Apple': {title: 'Apple', html: '<div class="glass-card rounded-2xl p-6"><h3 class="text-xl font-bold mb-4">Başarı Faktörleri</h3><ul class="space-y-3 text-sm"><li>→ <strong>Ekosistem:</strong> Entegre ürünler</li><li>→ <strong>Minimalizm:</strong> Sade tasarım</li><li>→ <strong>Gizlilik:</strong> Privacy odaklı</li></ul></div>'},
+        'Nike': {title: 'Nike', html: '<div class="glass-card rounded-2xl p-6"><h3 class="text-xl font-bold mb-4">Başarı Faktörleri</h3><ul class="space-y-3 text-sm"><li>→ <strong>Just Do It:</strong> Güçlü slogan</li><li>→ <strong>Sponsorluk:</strong> Dünya yıldızları</li><li>→ <strong>Hikaye:</strong> Duygusal bağ</li></ul></div>'}
+      };
+      document.getElementById('modalTitle').textContent = data[brand].title;
+      document.getElementById('modalContent').innerHTML = data[brand].html;
+      document.getElementById('detailModal').style.display = 'flex';
     }
 
-    function renderResults(data, brand, industry) {
-      document.getElementById('resBrandName').innerText = `${brand.toUpperCase()} | ${industry.toUpperCase()}`;
-      
-      const score = data.score || 0;
-      document.getElementById('resScore').innerText = score;
-      document.getElementById('scoreCircle').style.setProperty('--score', score);
-      document.getElementById('resScoreExplanation').innerText = data.scoreExplanation || "";
-      
-      const categoryBadge = document.getElementById('scoreCategory');
-      const category = data.scoreCategory || "Değerlendiriliyor";
-      categoryBadge.innerText = category;
-      
-      if (score >= 90) {
-        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-green-500/20 text-green-400 border border-green-500/50";
-      } else if (score >= 80) {
-        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/50";
-      } else if (score >= 60) {
-        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-yellow-500/20 text-yellow-400 border border-yellow-500/50";
-      } else if (score >= 40) {
-        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-orange-500/20 text-orange-400 border border-orange-500/50";
-      } else {
-        categoryBadge.className = "inline-block px-3 py-1 text-xs font-bold rounded-full bg-red-500/20 text-red-400 border border-red-500/50";
-      }
-      
-      document.getElementById('resClaimedSector').innerText = data.identityAnalysis?.claimedSector || industry;
-      document.getElementById('resDetectedSector').innerText = data.identityAnalysis?.detectedSector || industry;
-      
-      const matchStatus = document.getElementById('resMatchStatus');
-      const indicator = document.getElementById('matchIndicator');
-      const status = data.identityAnalysis?.matchStatus || "EŞLEŞME DOĞRULANDI";
-      matchStatus.innerText = status;
-      
-      if (status.includes("SAPMA") || status.includes("Yetersiz")) {
-        matchStatus.className = "text-[9px] font-bold px-2 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-900";
-        indicator.className = "absolute top-0 left-0 w-1 h-full bg-rose-600 rounded-full";
-      } else {
-        matchStatus.className = "text-[9px] font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-900";
-        indicator.className = "absolute top-0 left-0 w-1 h-full bg-emerald-500 rounded-full";
-      }
-      
-      document.getElementById('resInsight').querySelector('span').innerText = data.identityAnalysis?.insight || "-";
-
-      const platformsDiv = document.getElementById('resPlatforms');
-      platformsDiv.innerHTML = "";
-      (data.platforms || []).forEach(p => {
-        platformsDiv.innerHTML += `
-          <div class="flex items-center justify-between text-sm p-2 bg-slate-800/50 rounded border border-slate-700">
-            <span class="text-xs font-semibold text-slate-300">${p.name}</span>
-            <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-900">${p.status}</span>
-          </div>`;
-      });
-
-      document.getElementById('resSummary').innerText = data.strategicSummary || "-";
-      
-      const strList = document.getElementById('resStrengths');
-      strList.innerHTML = "";
-      (data.strengths || []).forEach(s => {
-        strList.innerHTML += `<li class="flex items-start gap-2"><span class="text-emerald-500 shrink-0">•</span><span>${s}</span></li>`;
-      });
-      
-      const weakList = document.getElementById('resWeaknesses');
-      weakList.innerHTML = "";
-      (data.weaknesses || []).forEach(w => {
-        weakList.innerHTML += `<li class="flex items-start gap-2"><span class="text-rose-500 shrink-0">•</span><span>${w}</span></li>`;
-      });
-
-      const compList = document.getElementById('resCompetitors');
-      compList.innerHTML = "";
-      
-      if (data.competitors?.direct && data.competitors.direct.length > 0) {
-        compList.innerHTML += `<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">DOĞRUDAN RAKİPLER</p>`;
-        data.competitors.direct.forEach(c => {
-          compList.innerHTML += `
-            <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700 mb-2">
-              <div class="flex items-center justify-between mb-1">
-                <span class="font-semibold text-slate-300 text-sm">${c.name}</span>
-                <span class="text-lg font-bold text-blue-400">${c.score}</span>
-              </div>
-              <p class="text-[10px] text-slate-500">${c.status}</p>
-            </div>`;
-        });
-      }
-      
-      if (data.competitors?.leaders && data.competitors.leaders.length > 0) {
-        compList.innerHTML += `<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 mt-4">PAZAR LİDERLERİ</p>`;
-        data.competitors.leaders.forEach(c => {
-          compList.innerHTML += `
-            <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700 mb-2">
-              <div class="flex items-center justify-between mb-1">
-                <span class="font-semibold text-slate-300 text-sm">${c.name}</span>
-                <span class="text-lg font-bold text-green-400">${c.score}</span>
-              </div>
-              <p class="text-[10px] text-slate-500">${c.status}</p>
-            </div>`;
-        });
-      }
-
-      document.getElementById('resOptRationale').innerText = `🎯 HEDEF: ${data.optimization?.objective || "-"}\n\n📊 ANALİZ: ${data.optimization?.rationale || "-"}`;
-      
-      const visRecList = document.getElementById('resVisibilityRecommendations');
-      visRecList.innerHTML = "";
-      (data.visibilityRecommendations || []).forEach((rec, idx) => {
-        visRecList.innerHTML += `
-          <li class="flex items-start gap-3">
-            <span class="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-xs font-bold">${idx + 1}</span>
-            <span class="leading-relaxed">${rec}</span>
-          </li>`;
-      });
-
-      lucide.createIcons();
-      showSection('section-results');
-      setTimeout(() => document.getElementById('section-results').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    function closeDetail() {
+      document.getElementById('detailModal').style.display = 'none';
     }
-
-    document.getElementById('brandInput').addEventListener('keypress', e => { if (e.key === 'Enter') startAnalysis(); });
-    document.getElementById('industryInput').addEventListener('keypress', e => { if (e.key === 'Enter') startAnalysis(); });
   </script>
 
 </body>
