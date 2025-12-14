@@ -9,10 +9,8 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
     * { font-family: 'Inter', sans-serif; }
-    /* Dark Blue Gradient Background */
     body { background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%); }
     
-    /* Gradient Text for Titles */
     .gradient-text { 
       background: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
       -webkit-background-clip: text;
@@ -20,7 +18,6 @@
       background-clip: text;
     }
     
-    /* Glassmorphism Effect for Cards */
     .glass-card {
       background: rgba(15, 23, 42, 0.6);
       border: 1px solid rgba(148, 163, 184, 0.1);
@@ -29,7 +26,6 @@
     
     .hidden-section { display: none; }
     
-    /* Loading/Shimmer Effects (Kullanıcı arayüzü estetiği) */
     .shimmer { animation: shimmer 2s infinite; }
     @keyframes shimmer {
       0%, 100% { opacity: 0.3; }
@@ -44,9 +40,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
     
-    /* Score Circle for Analysis Results */
     .score-circle {
-      /* --score değişkenine göre gradyanı ayarlar (0-100) */
       width: 140px;
       height: 140px;
       border-radius: 50%;
@@ -67,7 +61,6 @@
       flex-direction: column;
     }
 
-    /* Menu Sidebar Styles */
     .menu-overlay {
       position: fixed;
       top: 0;
@@ -85,7 +78,7 @@
     .menu-sidebar {
       position: fixed;
       top: 0;
-      left: -320px; /* Başlangıçta gizli */
+      left: -320px;
       width: 320px;
       height: 100%;
       background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
@@ -95,7 +88,7 @@
       overflow-y: auto;
     }
     
-    .menu-sidebar.active { left: 0; } /* Açıkken görünecek */
+    .menu-sidebar.active { left: 0; }
     
     .menu-item {
       padding: 16px 24px;
@@ -116,6 +109,23 @@
       background: rgba(59, 130, 246, 0.15);
       border-left-color: #3b82f6;
     }
+
+    /* Ana İçeriği Menü Açıkken İtme Stili (Yeni eklendi) */
+    #main-content-wrapper {
+        transition: margin-left 0.3s ease;
+        padding-top: 24px; /* Üst kısımdaki menü butonunun altına inmek için */
+    }
+
+    #main-content-wrapper.menu-active {
+        margin-left: 320px; /* Menü genişliği kadar sağa kaydır */
+    }
+
+    /* Mobil Cihazlarda Menü Açıkken İtmeyi Devre Dışı Bırak */
+    @media (max-width: 768px) {
+        #main-content-wrapper.menu-active {
+            margin-left: 0;
+        }
+    }
   </style>
 </head>
 <body class="min-h-screen text-white">
@@ -146,7 +156,7 @@
           <div class="font-semibold text-sm">Pazar Araştırması</div>
           <div class="text-xs text-slate-500">Başarılı markaları inceleyin</div>
         </div>
-      </div>
+        </div>
     </nav>
     
     <div class="absolute bottom-0 left-0 right-0 p-6 border-t border-slate-700">
@@ -156,12 +166,13 @@
     </div>
   </div>
 
+<div id="main-content-wrapper">
+
   <div id="page-analysis" class="page-content">
     
     <div id="section-input" class="container mx-auto px-4 py-12 max-w-6xl">
       
-      <div class="text-center mb-16 fade-in ml-16">
-        <h1 class="text-6xl font-black mb-4">
+      <div class="text-center mb-16 fade-in max-w-2xl mx-auto">         <h1 class="text-6xl font-black mb-4">
           <span class="gradient-text">IRIS</span>
         </h1>
         <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
@@ -194,7 +205,7 @@
           >
         </div>
 
-                <button 
+        <button 
           id="analyzeBtn"
           class="w-full py-4 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl font-bold text-white hover:scale-[1.02] transition-transform shadow-lg"
         >
@@ -223,8 +234,7 @@
       </div>
     </div>
 
-    <div id="section-results" class="hidden-section container mx-auto px-4 py-12 max-w-7xl ml-20">
-      
+    <div id="section-results" class="hidden-section container mx-auto px-4 py-12 max-w-7xl">       
       <div class="glass-card rounded-3xl p-8 mb-6 fade-in">
         <div class="flex flex-col md:flex-row items-center justify-between gap-6">
           <div class="flex-1">
@@ -374,8 +384,7 @@
   </div>
 
   <div id="page-market" class="page-content hidden-section">
-    <div class="container mx-auto px-4 py-12 max-w-7xl ml-20">
-      
+    <div class="container mx-auto px-4 py-12 max-w-7xl">       
       <div class="text-center mb-12 fade-in">
         <h1 class="text-5xl font-black mb-4 gradient-text">Pazar Araştırması</h1>
         <p class="text-slate-400 text-lg max-w-3xl mx-auto leading-relaxed">
@@ -404,6 +413,7 @@
     </div>
   </div>
 
+</div>
   <div id="detailModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[1000] hidden items-center justify-center p-4">
     <div class="glass-card rounded-3xl max-w-5xl w-full max-h-[90vh] overflow-y-auto">
       <div class="sticky top-0 bg-slate-900/95 backdrop-blur-sm p-6 border-b border-slate-700 flex items-center justify-between z-10">
@@ -483,6 +493,9 @@
     ];
     let loadingInterval;
 
+    // Ana İçerik Wrapper
+    const mainContentWrapper = document.getElementById('main-content-wrapper');
+
     // ==========================================
     // 1. MENÜ İŞLEVLERİ (Düzeltildi ve Aktif Edildi)
     // ==========================================
@@ -503,8 +516,13 @@
     document.getElementById('resetBtn').addEventListener('click', resetApp);
 
     function toggleMenu() {
-      document.getElementById('menuSidebar').classList.toggle('active');
+      const isMenuOpen = document.getElementById('menuSidebar').classList.toggle('active');
       document.getElementById('menuOverlay').classList.toggle('active');
+      
+      // Ana içeriği menü açıkken it/çek (Sadece masaüstünde)
+      if (window.innerWidth >= 768) {
+        mainContentWrapper.classList.toggle('menu-active', isMenuOpen);
+      }
     }
 
     function navigateTo(page) {
@@ -512,16 +530,16 @@
       document.getElementById(`page-${page}`).classList.remove('hidden-section');
       document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
       document.querySelector(`[data-page="${page}"]`).classList.add('active');
-      // Menü sadece mobilde açıksa kapatılır. Büyük ekranlarda sol tarafta sabit kalacak şekilde tasarlandığı varsayılmıştır.
-      // Basitlik için her zaman kapatılır:
-      if(document.getElementById('menuSidebar').classList.contains('active')) {
+      
+      // Navigasyon sonrası menüyü kapat
+      if(document.getElementById('menuSidebar').classList.contains('active')) {
         toggleMenu(); 
       }
       if (page === 'market') loadMarketResearch();
     }
 
     // ==========================================
-    // PAZAR ARAŞTIRMASI İŞLEVLERİ (Tamamlandı)
+    // PAZAR ARAŞTIRMASI İŞLEVLERİ (Data korundu)
     // ==========================================
 
     const allMarketData = [
@@ -667,7 +685,21 @@
     // Uygulama Başladığında Pazar Araştırması verilerini yükle
     document.addEventListener('DOMContentLoaded', () => {
       loadMarketResearch();
+      // Sayfa yüklendiğinde menü kapalı (default) olmalı ve içerik soldan itilmemeli.
+      if (document.getElementById('menuSidebar').classList.contains('active')) {
+        toggleMenu(); // Başlangıçta açıksa kapat
+      }
     });
+
+    // Pencere boyutu değiştiğinde itme ayarını güncelle (responsive)
+    window.addEventListener('resize', () => {
+        if (window.innerWidth < 768) {
+            mainContentWrapper.classList.remove('menu-active');
+        } else if (document.getElementById('menuSidebar').classList.contains('active')) {
+             mainContentWrapper.classList.add('menu-active');
+        }
+    });
+
   </script>
 
 </body>
