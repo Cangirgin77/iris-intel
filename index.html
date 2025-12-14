@@ -26,52 +26,53 @@
     
     .hidden-section { display: none; }
     
-    .shimmer {
-      animation: shimmer 2s infinite;
-    }
+    .shimmer { animation: shimmer 2s infinite; }
     @keyframes shimmer {
       0%, 100% { opacity: 0.3; }
       50% { opacity: 1; }
     }
     
-    .pulse-slow {
-      animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
+    .pulse-slow { animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
     
-    .fade-in {
-      animation: fadeIn 0.5s ease-in;
-    }
+    .fade-in { animation: fadeIn 0.5s ease-in; }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
     
     .score-circle {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      background: conic-gradient(
-        from 0deg,
-        #ef4444 0deg,
-        #f59e0b calc(var(--score) * 3.6deg),
-        #10b981 calc(var(--score) * 3.6deg),
-        #334155 360deg
-      );
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
+      width: 140px; height: 140px; border-radius: 50%;
+      background: conic-gradient(from 0deg, #ef4444 0deg, #f59e0b calc(var(--score) * 3.6deg), #10b981 calc(var(--score) * 3.6deg), #334155 360deg);
+      display: flex; align-items: center; justify-content: center; position: relative;
     }
     
     .score-inner {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: #0f172a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
+      width: 120px; height: 120px; border-radius: 50%; background: #0f172a;
+      display: flex; align-items: center; justify-content: center; flex-direction: column;
+    }
+
+    /* GÖZ ANİMASYONU */
+    @keyframes lookAround {
+      0%, 100% { transform: translateX(0) translateY(0); }
+      40% { transform: translateX(-8px) translateY(2px); }
+      80% { transform: translateX(8px) translateY(-2px); }
+    }
+    
+    @keyframes blink {
+      0%, 45%, 55%, 100% { transform: scaleY(1); }
+      50% { transform: scaleY(0.05); }
+    }
+    
+    .digital-eye-pupil {
+      animation: lookAround 8s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .digital-eye-lid {
+      animation: blink 6s infinite ease-in-out;
+    }
+    
+    .matrix-glow {
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
     }
   </style>
 </head>
@@ -81,12 +82,23 @@
   <div id="section-input" class="container mx-auto px-4 py-12 max-w-6xl">
     
     <div class="text-center mb-16 fade-in">
+      <!-- GÖZ ANİMASYONU -->
+      <div class="mb-10 relative group cursor-default inline-block">
+        <div class="absolute -inset-8 bg-emerald-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+        <div class="w-32 h-32 bg-[#020617] rounded-full flex items-center justify-center relative overflow-hidden shadow-2xl border-[4px] border-slate-800 digital-eye-lid matrix-glow">
+          <div class="absolute inset-0 opacity-20" style="background-image:radial-gradient(#10b981 1px,transparent 1px);background-size:8px 8px"></div>
+          <div class="w-10 h-10 bg-emerald-600 rounded-full relative digital-eye-pupil shadow-[0_0_20px_rgba(16,185,129,0.8)] flex items-center justify-center border border-emerald-400">
+            <div class="w-4 h-4 bg-black rounded-full opacity-60"></div>
+            <div class="absolute top-2 right-2 w-1.5 h-1.5 bg-white rounded-full opacity-90"></div>
+          </div>
+        </div>
+      </div>
+
       <h1 class="text-6xl font-black mb-4">
         <span class="gradient-text">IRIS</span>
       </h1>
       <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
-        Markanızın <strong>ChatGPT, Gemini, Claude</strong> gibi yapay zeka platformlarında ne kadar görünür olduğunu keşfedin. 
-        Rakiplerinizi analiz edin ve <strong>AI çağında öne çıkmanız için</strong> stratejik öneriler alın.
+        Markanızın <strong>ChatGPT, Gemini, Claude</strong> gibi yapay zeka platformlarında ne kadar görünür olduğunu keşfedin.
       </p>
       <div class="flex items-center justify-center gap-2 mt-6">
         <span class="inline-block w-2 h-2 bg-green-500 rounded-full pulse-slow"></span>
@@ -129,9 +141,7 @@
   <div id="section-loading" class="hidden-section container mx-auto px-4 py-12 max-w-2xl">
     <div class="glass-card rounded-3xl p-12 text-center fade-in">
       <div class="score-circle mx-auto mb-6" style="--score: 50;">
-        <div class="score-inner">
-          <div class="text-2xl font-bold shimmer">⚡</div>
-        </div>
+        <div class="score-inner"><div class="text-2xl font-bold shimmer">⚡</div></div>
       </div>
       <h3 class="text-2xl font-bold mb-3">Analiz Yapılıyor...</h3>
       <p id="loadingText" class="text-slate-400 text-sm mb-6">
@@ -156,7 +166,7 @@
             Analiz Raporu
             <span class="inline-block px-3 py-1 ml-3 text-xs font-bold bg-green-500/20 text-green-400 rounded-full">CONFIDENTIAL</span>
           </h2>
-          <p id="resBrandName" class="text-slate-400 text-lg">TESLA | OTOMOTİV</p>
+          <p id="resBrandName" class="text-slate-400 text-lg">-</p>
         </div>
         <div class="text-center">
           <div class="score-circle mx-auto mb-2" id="scoreCircle" style="--score: 0;">
@@ -165,9 +175,7 @@
               <div class="text-[9px] text-slate-500 uppercase tracking-wider">Skor</div>
             </div>
           </div>
-          <div id="scoreCategory" class="inline-block px-3 py-1 text-xs font-bold rounded-full bg-slate-800 text-slate-400 mb-2">
-            Değerlendiriliyor
-          </div>
+          <div id="scoreCategory" class="inline-block px-3 py-1 text-xs font-bold rounded-full bg-slate-800 text-slate-400 mb-2">-</div>
           <p id="resScoreExplanation" class="text-xs text-slate-400 max-w-xs leading-relaxed"></p>
         </div>
       </div>
@@ -196,30 +204,28 @@
             <div class="grid grid-cols-2 gap-3">
               <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
                 <div class="text-[9px] text-slate-500 uppercase tracking-wider mb-1">Beyan</div>
-                <div id="resClaimedSector" class="text-sm font-semibold text-slate-300">Otomotiv</div>
+                <div id="resClaimedSector" class="text-sm font-semibold text-slate-300">-</div>
               </div>
               <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700">
                 <div class="text-[9px] text-slate-500 uppercase tracking-wider mb-1">AI Tespiti</div>
-                <div id="resDetectedSector" class="text-sm font-semibold text-slate-300">Elektrikli Araçlar</div>
+                <div id="resDetectedSector" class="text-sm font-semibold text-slate-300">-</div>
               </div>
             </div>
             <div class="mt-3 flex items-center justify-between">
               <span class="text-xs text-slate-500">Durum:</span>
-              <span id="resMatchStatus" class="text-[9px] font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-900">EŞLEŞME DOĞRULANDI</span>
+              <span id="resMatchStatus" class="text-[9px] font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-900">-</span>
             </div>
           </div>
 
           <div id="resInsight" class="bg-slate-800/30 rounded-lg p-3 border-l-2 border-blue-500 text-xs text-slate-300 leading-relaxed">
-            <span>AI platformlarının marka algısı analiz ediliyor...</span>
+            <span>-</span>
           </div>
         </div>
 
         <!-- Platforms -->
         <div class="glass-card rounded-3xl p-6 fade-in">
           <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Taranan Platformlar</h3>
-          <div id="resPlatforms" class="space-y-2">
-            <!-- Dinamik içerik -->
-          </div>
+          <div id="resPlatforms" class="space-y-2"></div>
         </div>
 
         <!-- Yönetici Özeti -->
@@ -230,9 +236,7 @@
             </div>
             <h3 class="text-lg font-bold">Yönetici Özeti</h3>
           </div>
-          <p id="resSummary" class="text-sm text-slate-300 leading-relaxed">
-            Stratejik özet hazırlanıyor...
-          </p>
+          <p id="resSummary" class="text-sm text-slate-300 leading-relaxed">-</p>
         </div>
 
         <!-- Güçlü/Zayıf Yönler -->
@@ -242,18 +246,14 @@
               <i data-lucide="thumbs-up" class="w-4 h-4 text-emerald-400"></i>
               <span>Güçlü Yönler</span>
             </h3>
-            <ul id="resStrengths" class="space-y-2 text-xs text-slate-400">
-              <!-- Dinamik içerik -->
-            </ul>
+            <ul id="resStrengths" class="space-y-2 text-xs text-slate-400"></ul>
           </div>
           <div class="glass-card rounded-2xl p-4 fade-in">
             <h3 class="text-sm font-bold mb-3 flex items-center gap-2">
               <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-400"></i>
               <span>Zayıf Yönler</span>
             </h3>
-            <ul id="resWeaknesses" class="space-y-2 text-xs text-slate-400">
-              <!-- Dinamik içerik -->
-            </ul>
+            <ul id="resWeaknesses" class="space-y-2 text-xs text-slate-400"></ul>
           </div>
         </div>
 
@@ -270,9 +270,7 @@
             </div>
             <h3 class="text-lg font-bold">Rakip Analizi</h3>
           </div>
-          <div id="resCompetitors" class="space-y-3">
-            <!-- Dinamik içerik -->
-          </div>
+          <div id="resCompetitors" class="space-y-3"></div>
         </div>
 
         <!-- Daha Görünür Olmak İçin Tavsiyeler -->
@@ -284,9 +282,7 @@
             <h3 class="text-lg font-bold">Daha Görünür Olmak İçin Tavsiyeler</h3>
           </div>
           <div class="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-lg p-4 border border-yellow-500/20">
-            <ul id="resVisibilityRecommendations" class="space-y-2 text-xs text-slate-200">
-              <!-- Dinamik içerik -->
-            </ul>
+            <ul id="resVisibilityRecommendations" class="space-y-2 text-xs text-slate-200"></ul>
           </div>
         </div>
 
@@ -300,9 +296,7 @@
           </div>
           
           <div class="bg-slate-800/50 rounded-lg p-4 border border-slate-700">
-            <p id="resOptRationale" class="text-xs text-slate-400 leading-relaxed whitespace-pre-line">
-              Optimizasyon hedefi hazırlanıyor...
-            </p>
+            <p id="resOptRationale" class="text-xs text-slate-400 leading-relaxed whitespace-pre-line">-</p>
           </div>
         </div>
 
@@ -323,7 +317,6 @@
   </div>
 
   <script>
-    // Initialize Lucide icons
     lucide.createIcons();
 
     const VERCEL_BACKEND_URL = "https://iris-intel.vercel.app/api/analyze";
@@ -351,8 +344,6 @@
       showSection('section-input');
     }
 
-
-
     async function startAnalysis() {
       const brand = document.getElementById('brandInput').value.trim();
       const industry = document.getElementById('industryInput').value.trim();
@@ -378,8 +369,7 @@
         });
 
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || "Sunucu Hatası");
+          throw new Error(`HTTP ${response.status}`);
         }
 
         const data = await response.json();
@@ -400,9 +390,8 @@
       const score = data.score || 0;
       document.getElementById('resScore').innerText = score;
       document.getElementById('scoreCircle').style.setProperty('--score', score);
-      document.getElementById('resScoreExplanation').innerText = data.scoreExplanation || "Detaylı skor açıklaması hazırlanıyor...";
+      document.getElementById('resScoreExplanation').innerText = data.scoreExplanation || "";
       
-      // Score Category Badge
       const categoryBadge = document.getElementById('scoreCategory');
       const category = data.scoreCategory || "Değerlendiriliyor";
       categoryBadge.innerText = category;
@@ -435,18 +424,11 @@
         indicator.className = "absolute top-0 left-0 w-1 h-full bg-emerald-500 rounded-full";
       }
       
-      const insightSpan = document.getElementById('resInsight').querySelector('span');
-      if (insightSpan) {
-        insightSpan.innerText = data.identityAnalysis?.insight || "AI algı analizi tamamlandı.";
-      }
+      document.getElementById('resInsight').querySelector('span').innerText = data.identityAnalysis?.insight || "-";
 
       const platformsDiv = document.getElementById('resPlatforms');
       platformsDiv.innerHTML = "";
-      (data.platforms || [
-        {name: "Gemini", status: "Analiz Edildi"},
-        {name: "ChatGPT", status: "Simüle Edildi"},
-        {name: "Claude", status: "Tarandı"}
-      ]).forEach(p => {
+      (data.platforms || []).forEach(p => {
         platformsDiv.innerHTML += `
           <div class="flex items-center justify-between text-sm p-2 bg-slate-800/50 rounded border border-slate-700">
             <span class="text-xs font-semibold text-slate-300">${p.name}</span>
@@ -454,17 +436,17 @@
           </div>`;
       });
 
-      document.getElementById('resSummary').innerText = data.strategicSummary || "Stratejik özet hazırlanıyor...";
+      document.getElementById('resSummary').innerText = data.strategicSummary || "-";
       
       const strList = document.getElementById('resStrengths');
       strList.innerHTML = "";
-      (data.strengths || ["Yükleniyor..."]).forEach(s => {
+      (data.strengths || []).forEach(s => {
         strList.innerHTML += `<li class="flex items-start gap-2"><span class="text-emerald-500 shrink-0">•</span><span>${s}</span></li>`;
       });
       
       const weakList = document.getElementById('resWeaknesses');
       weakList.innerHTML = "";
-      (data.weaknesses || ["Yükleniyor..."]).forEach(w => {
+      (data.weaknesses || []).forEach(w => {
         weakList.innerHTML += `<li class="flex items-start gap-2"><span class="text-rose-500 shrink-0">•</span><span>${w}</span></li>`;
       });
 
@@ -474,18 +456,11 @@
       if (data.competitors?.direct && data.competitors.direct.length > 0) {
         compList.innerHTML += `<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3">DOĞRUDAN RAKİPLER</p>`;
         data.competitors.direct.forEach(c => {
-          const competitorScore = c.score || 0;
-          let scoreColor = "text-slate-400";
-          if (competitorScore >= 80) scoreColor = "text-green-400";
-          else if (competitorScore >= 60) scoreColor = "text-blue-400";
-          else if (competitorScore >= 40) scoreColor = "text-yellow-400";
-          else scoreColor = "text-red-400";
-          
           compList.innerHTML += `
             <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700 mb-2">
               <div class="flex items-center justify-between mb-1">
                 <span class="font-semibold text-slate-300 text-sm">${c.name}</span>
-                <span class="text-lg font-bold ${scoreColor}">${competitorScore}</span>
+                <span class="text-lg font-bold text-blue-400">${c.score}</span>
               </div>
               <p class="text-[10px] text-slate-500">${c.status}</p>
             </div>`;
@@ -495,30 +470,22 @@
       if (data.competitors?.leaders && data.competitors.leaders.length > 0) {
         compList.innerHTML += `<p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-3 mt-4">PAZAR LİDERLERİ</p>`;
         data.competitors.leaders.forEach(c => {
-          const leaderScore = c.score || 0;
-          let scoreColor = "text-slate-400";
-          if (leaderScore >= 80) scoreColor = "text-green-400";
-          else if (leaderScore >= 60) scoreColor = "text-blue-400";
-          else if (leaderScore >= 40) scoreColor = "text-yellow-400";
-          else scoreColor = "text-red-400";
-          
           compList.innerHTML += `
             <div class="bg-slate-800/50 rounded-lg p-3 border border-slate-700 mb-2">
               <div class="flex items-center justify-between mb-1">
                 <span class="font-semibold text-slate-300 text-sm">${c.name}</span>
-                <span class="text-lg font-bold ${scoreColor}">${leaderScore}</span>
+                <span class="text-lg font-bold text-green-400">${c.score}</span>
               </div>
               <p class="text-[10px] text-slate-500">${c.status}</p>
             </div>`;
         });
       }
 
-      document.getElementById('resOptRationale').innerText = `🎯 HEDEF: ${data.optimization?.objective || "Belirleniyor..."}\n\n📊 ANALİZ: ${data.optimization?.rationale || "Hazırlanıyor..."}`;
+      document.getElementById('resOptRationale').innerText = `🎯 HEDEF: ${data.optimization?.objective || "-"}\n\n📊 ANALİZ: ${data.optimization?.rationale || "-"}`;
       
-      // Visibility Recommendations
       const visRecList = document.getElementById('resVisibilityRecommendations');
       visRecList.innerHTML = "";
-      (data.visibilityRecommendations || ["Tavsiyeler hazırlanıyor..."]).forEach((rec, idx) => {
+      (data.visibilityRecommendations || []).forEach((rec, idx) => {
         visRecList.innerHTML += `
           <li class="flex items-start gap-3">
             <span class="flex-shrink-0 w-6 h-6 rounded-full bg-yellow-500/20 text-yellow-400 flex items-center justify-center text-xs font-bold">${idx + 1}</span>
@@ -531,13 +498,8 @@
       setTimeout(() => document.getElementById('section-results').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
     }
 
-    // Enter tuşu ile form gönderimi
-    document.getElementById('brandInput').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') startAnalysis();
-    });
-    document.getElementById('industryInput').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') startAnalysis();
-    });
+    document.getElementById('brandInput').addEventListener('keypress', e => { if (e.key === 'Enter') startAnalysis(); });
+    document.getElementById('industryInput').addEventListener('keypress', e => { if (e.key === 'Enter') startAnalysis(); });
   </script>
 
 </body>
