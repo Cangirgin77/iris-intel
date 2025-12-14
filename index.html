@@ -399,74 +399,197 @@
       
       <div class="text-center mb-12 fade-in">
         <h1 class="text-5xl font-black mb-4 gradient-text">Pazar Araştırması</h1>
-        <p class="text-slate-400 text-lg max-w-3xl mx-auto">
-          Yüksek AI görünürlük skoruna sahip markaları inceleyin. Başarı sırlarını keşfedin.
+        <p class="text-slate-400 text-lg max-w-3xl mx-auto leading-relaxed">
+          Yüksek AI görünürlük skoruna sahip markaları inceleyin. <strong>Onların başarı sırlarını</strong> keşfedin ve kendi stratejinizi geliştirin.
         </p>
+        <div class="mt-6 flex items-center justify-center gap-4">
+          <div class="glass-card rounded-full px-6 py-2 text-sm">
+            <span class="text-slate-500">Toplam Marka:</span>
+            <span class="font-bold text-white ml-2">3</span>
+          </div>
+          <div class="glass-card rounded-full px-6 py-2 text-sm">
+            <span class="text-slate-500">Ortalama Skor:</span>
+            <span class="font-bold text-green-400 ml-2">95.7</span>
+          </div>
+        </div>
       </div>
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         
         <!-- Mercedes -->
-        <div class="glass-card rounded-3xl p-6 fade-in hover:scale-[1.02] transition cursor-pointer" onclick="showDetail('Mercedes')">
+        <div class="glass-card rounded-3xl p-6 fade-in hover:scale-[1.02] transition cursor-pointer group" onclick="showDetail('Mercedes')">
           <div class="flex items-center gap-4 mb-4">
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-3xl">⭐</div>
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-3xl group-hover:scale-110 transition">⭐</div>
             <div>
               <h3 class="text-xl font-bold">Mercedes-Benz</h3>
-              <p class="text-xs text-slate-500">Otomotiv</p>
+              <p class="text-xs text-slate-500">Otomotiv • Premium</p>
             </div>
           </div>
-          <div class="text-center mb-4">
-            <div class="text-4xl font-black gradient-text">94</div>
-            <div class="text-xs text-slate-500">AI Görünürlük Skoru</div>
+          
+          <div class="text-center mb-4 py-4 bg-slate-800/30 rounded-xl">
+            <div class="text-5xl font-black gradient-text mb-1">94</div>
+            <div class="text-xs text-slate-500 uppercase tracking-wider">AI Görünürlük Skoru</div>
+            <div class="mt-2 inline-block px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-bold">
+              Mükemmel
+            </div>
           </div>
-          <div class="space-y-2 text-sm text-slate-300">
-            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Lüks marka konumlandırması</span></div>
-            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Güçlü mühendislik hikayesi</span></div>
-            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Premium müşteri deneyimi</span></div>
+
+          <div class="space-y-2 text-sm text-slate-300 mb-4">
+            <div class="flex items-start gap-2 p-2 bg-slate-800/30 rounded-lg">
+              <span class="text-green-400 text-lg">✓</span>
+              <div>
+                <div class="font-semibold text-white">Lüks Konumlandırma</div>
+                <div class="text-xs text-slate-500">"The Best or Nothing" felsefesi</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-2 p-2 bg-slate-800/30 rounded-lg">
+              <span class="text-green-400 text-lg">✓</span>
+              <div>
+                <div class="font-semibold text-white">Mühendislik Mirası</div>
+                <div class="text-xs text-slate-500">130+ yıllık inovasyon</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-2 p-2 bg-slate-800/30 rounded-lg">
+              <span class="text-green-400 text-lg">✓</span>
+              <div>
+                <div class="font-semibold text-white">Formula 1 Dominasyonu</div>
+                <div class="text-xs text-slate-500">Motorsporlarında lider</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-700 flex items-center justify-between">
+            <div class="text-xs text-slate-500">
+              <span class="font-semibold text-slate-400">Sektör:</span> Otomotiv
+            </div>
+            <div class="text-xs font-semibold text-blue-400 group-hover:text-blue-300 transition">
+              Detaylı İncele →
+            </div>
           </div>
         </div>
 
         <!-- Apple -->
-        <div class="glass-card rounded-3xl p-6 fade-in hover:scale-[1.02] transition cursor-pointer" onclick="showDetail('Apple')">
+        <div class="glass-card rounded-3xl p-6 fade-in hover:scale-[1.02] transition cursor-pointer group" onclick="showDetail('Apple')">
           <div class="flex items-center gap-4 mb-4">
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-3xl">🍎</div>
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-3xl group-hover:scale-110 transition">🍎</div>
             <div>
               <h3 class="text-xl font-bold">Apple</h3>
-              <p class="text-xs text-slate-500">Teknoloji</p>
+              <p class="text-xs text-slate-500">Teknoloji • Consumer</p>
             </div>
           </div>
-          <div class="text-center mb-4">
-            <div class="text-4xl font-black gradient-text">98</div>
-            <div class="text-xs text-slate-500">AI Görünürlük Skoru</div>
+          
+          <div class="text-center mb-4 py-4 bg-slate-800/30 rounded-xl">
+            <div class="text-5xl font-black gradient-text mb-1">98</div>
+            <div class="text-xs text-slate-500 uppercase tracking-wider">AI Görünürlük Skoru</div>
+            <div class="mt-2 inline-block px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-bold">
+              Efsane
+            </div>
           </div>
-          <div class="space-y-2 text-sm text-slate-300">
-            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Minimalist tasarım dili</span></div>
-            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Ekosistem stratejisi</span></div>
-            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Gizlilik odaklı pazarlama</span></div>
+
+          <div class="space-y-2 text-sm text-slate-300 mb-4">
+            <div class="flex items-start gap-2 p-2 bg-slate-800/30 rounded-lg">
+              <span class="text-green-400 text-lg">✓</span>
+              <div>
+                <div class="font-semibold text-white">Ekosistem Stratejisi</div>
+                <div class="text-xs text-slate-500">Ürünler birbirine entegre</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-2 p-2 bg-slate-800/30 rounded-lg">
+              <span class="text-green-400 text-lg">✓</span>
+              <div>
+                <div class="font-semibold text-white">Minimalist Tasarım</div>
+                <div class="text-xs text-slate-500">Sade ve işlevsel</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-2 p-2 bg-slate-800/30 rounded-lg">
+              <span class="text-green-400 text-lg">✓</span>
+              <div>
+                <div class="font-semibold text-white">Gizlilik Odaklı</div>
+                <div class="text-xs text-slate-500">"Privacy is a human right"</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-700 flex items-center justify-between">
+            <div class="text-xs text-slate-500">
+              <span class="font-semibold text-slate-400">Sektör:</span> Teknoloji
+            </div>
+            <div class="text-xs font-semibold text-blue-400 group-hover:text-blue-300 transition">
+              Detaylı İncele →
+            </div>
           </div>
         </div>
 
         <!-- Nike -->
-        <div class="glass-card rounded-3xl p-6 fade-in hover:scale-[1.02] transition cursor-pointer" onclick="showDetail('Nike')">
+        <div class="glass-card rounded-3xl p-6 fade-in hover:scale-[1.02] transition cursor-pointer group" onclick="showDetail('Nike')">
           <div class="flex items-center gap-4 mb-4">
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500/20 to-red-500/20 flex items-center justify-center text-3xl">👟</div>
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500/20 to-red-500/20 flex items-center justify-center text-3xl group-hover:scale-110 transition">👟</div>
             <div>
               <h3 class="text-xl font-bold">Nike</h3>
-              <p class="text-xs text-slate-500">Spor</p>
+              <p class="text-xs text-slate-500">Spor • Lifestyle</p>
             </div>
           </div>
-          <div class="text-center mb-4">
-            <div class="text-4xl font-black gradient-text">95</div>
-            <div class="text-xs text-slate-500">AI Görünürlük Skoru</div>
+          
+          <div class="text-center mb-4 py-4 bg-slate-800/30 rounded-xl">
+            <div class="text-5xl font-black gradient-text mb-1">95</div>
+            <div class="text-xs text-slate-500 uppercase tracking-wider">AI Görünürlük Skoru</div>
+            <div class="mt-2 inline-block px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-bold">
+              Mükemmel
+            </div>
           </div>
-          <div class="space-y-2 text-sm text-slate-300">
-            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>"Just Do It" slogan gücü</span></div>
-            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Sporcu sponsorlukları</span></div>
-            <div class="flex items-start gap-2"><span class="text-green-400">✓</span><span>Duygusal hikaye anlatımı</span></div>
+
+          <div class="space-y-2 text-sm text-slate-300 mb-4">
+            <div class="flex items-start gap-2 p-2 bg-slate-800/30 rounded-lg">
+              <span class="text-green-400 text-lg">✓</span>
+              <div>
+                <div class="font-semibold text-white">"Just Do It" Gücü</div>
+                <div class="text-xs text-slate-500">Dünyanın en tanınan sloganı</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-2 p-2 bg-slate-800/30 rounded-lg">
+              <span class="text-green-400 text-lg">✓</span>
+              <div>
+                <div class="font-semibold text-white">Sporcu Sponsorlukları</div>
+                <div class="text-xs text-slate-500">Jordan, Ronaldo, Williams</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-2 p-2 bg-slate-800/30 rounded-lg">
+              <span class="text-green-400 text-lg">✓</span>
+              <div>
+                <div class="font-semibold text-white">Hikaye Anlatımı</div>
+                <div class="text-xs text-slate-500">Duygusal bağ kurma</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-700 flex items-center justify-between">
+            <div class="text-xs text-slate-500">
+              <span class="font-semibold text-slate-400">Sektör:</span> Spor
+            </div>
+            <div class="text-xs font-semibold text-blue-400 group-hover:text-blue-300 transition">
+              Detaylı İncele →
+            </div>
           </div>
         </div>
 
       </div>
+
+      <!-- İstatistikler -->
+      <div class="grid md:grid-cols-3 gap-6 mt-12">
+        <div class="glass-card rounded-2xl p-6 text-center">
+          <div class="text-3xl font-black text-blue-400 mb-2">130+</div>
+          <div class="text-sm text-slate-400">Yıllık Ortalama Deneyim</div>
+        </div>
+        <div class="glass-card rounded-2xl p-6 text-center">
+          <div class="text-3xl font-black text-green-400 mb-2">95%+</div>
+          <div class="text-sm text-slate-400">Müşteri Memnuniyeti</div>
+        </div>
+        <div class="glass-card rounded-2xl p-6 text-center">
+          <div class="text-3xl font-black text-purple-400 mb-2">$2T+</div>
+          <div class="text-sm text-slate-400">Toplam Piyasa Değeri</div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -650,11 +773,196 @@
     // MARKET DETAIL
     function showDetail(brand) {
       const data = {
-        'Mercedes': {title: 'Mercedes-Benz', html: '<div class="glass-card rounded-2xl p-6"><h3 class="text-xl font-bold mb-4">Başarı Faktörleri</h3><ul class="space-y-3 text-sm"><li>→ <strong>Lüks Konumlandırma:</strong> Premium segment lideri</li><li>→ <strong>Mühendislik:</strong> 130+ yıllık deneyim</li><li>→ <strong>Güvenlik:</strong> Sektör standardı</li></ul></div>'},
-        'Apple': {title: 'Apple', html: '<div class="glass-card rounded-2xl p-6"><h3 class="text-xl font-bold mb-4">Başarı Faktörleri</h3><ul class="space-y-3 text-sm"><li>→ <strong>Ekosistem:</strong> Entegre ürünler</li><li>→ <strong>Minimalizm:</strong> Sade tasarım</li><li>→ <strong>Gizlilik:</strong> Privacy odaklı</li></ul></div>'},
-        'Nike': {title: 'Nike', html: '<div class="glass-card rounded-2xl p-6"><h3 class="text-xl font-bold mb-4">Başarı Faktörleri</h3><ul class="space-y-3 text-sm"><li>→ <strong>Just Do It:</strong> Güçlü slogan</li><li>→ <strong>Sponsorluk:</strong> Dünya yıldızları</li><li>→ <strong>Hikaye:</strong> Duygusal bağ</li></ul></div>'}
+        'Mercedes': {
+          title: 'Mercedes-Benz', 
+          score: 94,
+          html: `
+            <div class="space-y-6">
+              <div class="glass-card rounded-2xl p-6">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-yellow-400">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                  </svg>
+                  Başarı Faktörleri
+                </h3>
+                <ul class="space-y-3 text-sm text-slate-300">
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-green-400 text-xl">→</span>
+                    <div>
+                      <strong class="text-white">Lüks Konumlandırma:</strong> "The Best or Nothing" sloganı ile premium segment lideri. Her detayda kalite ve mükemmellik vurgusu.
+                    </div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-green-400 text-xl">→</span>
+                    <div>
+                      <strong class="text-white">Mühendislik Mirası:</strong> 130+ yıllık otomotiv deneyimi. İlk benzinli otomobili üreten firma olarak sektörün öncüsü.
+                    </div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-green-400 text-xl">→</span>
+                    <div>
+                      <strong class="text-white">Güvenlik Standardı:</strong> Euro NCAP testlerinde sürekli 5 yıldız. Sektörün güvenlik referansı.
+                    </div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-green-400 text-xl">→</span>
+                    <div>
+                      <strong class="text-white">Formula 1 Dominasyonu:</strong> 2014-2021 arası 8 şampiyonluk. Motorsporlarındaki başarı marka değerini güçlendiriyor.
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="glass-card rounded-2xl p-6 bg-gradient-to-br from-blue-500/5 to-purple-500/5">
+                <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-400">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                  Sizin İçin Dersler
+                </h3>
+                <ul class="space-y-3 text-sm text-slate-300">
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-blue-400 font-bold">1.</span>
+                    <div><strong>Marka Hikayenizi Anlatın:</strong> 130 yıllık geçmişinizi vurgulayın. Müşteriler deneyim ve güven arıyor.</div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-blue-400 font-bold">2.</span>
+                    <div><strong>Premium Konumlanma:</strong> Kaliteyi ön plana çıkarın. "En iyisi" olmak için detaylara odaklanın.</div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-blue-400 font-bold">3.</span>
+                    <div><strong>Sponsorluk ve Ortaklıklar:</strong> Formula 1 gibi prestijli etkinliklerle marka değerinizi artırın.</div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-blue-400 font-bold">4.</span>
+                    <div><strong>Güvenlik Vurgusu:</strong> Ürün güvenliğinizi test sonuçlarıyla kanıtlayın.</div>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="glass-card rounded-2xl p-6">
+                <h3 class="text-xl font-bold mb-4">Rakipleri</h3>
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="p-3 bg-slate-800/30 rounded-lg text-center">
+                    <div class="font-bold text-white">BMW</div>
+                    <div class="text-xs text-slate-500">Skor: 91</div>
+                  </div>
+                  <div class="p-3 bg-slate-800/30 rounded-lg text-center">
+                    <div class="font-bold text-white">Audi</div>
+                    <div class="text-xs text-slate-500">Skor: 89</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `
+        },
+        'Apple': {
+          title: 'Apple', 
+          score: 98,
+          html: `
+            <div class="space-y-6">
+              <div class="glass-card rounded-2xl p-6">
+                <h3 class="text-xl font-bold mb-4">Başarı Faktörleri</h3>
+                <ul class="space-y-3 text-sm text-slate-300">
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-green-400 text-xl">→</span>
+                    <div><strong>Ekosistem:</strong> iPhone, Mac, iPad, Apple Watch birbirine entegre. Bir ürün alan müşteri, diğerlerini de alıyor.</div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-green-400 text-xl">→</span>
+                    <div><strong>Minimalizm:</strong> Sade tasarım, kolay kullanım. "Less is more" felsefesi.</div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-green-400 text-xl">→</span>
+                    <div><strong>Gizlilik:</strong> "Privacy is a human right" mesajı. Kullanıcı verilerini koruyan sistem.</div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-green-400 text-xl">→</span>
+                    <div><strong>Apple Store:</strong> Fiziksel mağaza deneyimi sektörün standardı. Genius Bar ile müşteri desteği.</div>
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="glass-card rounded-2xl p-6 bg-gradient-to-br from-blue-500/5 to-purple-500/5">
+                <h3 class="text-xl font-bold mb-4">Sizin İçin Dersler</h3>
+                <ul class="space-y-3 text-sm text-slate-300">
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-blue-400 font-bold">1.</span>
+                    <div><strong>Ürün Entegrasyonu:</strong> Ürünlerinizi birbirine bağlayarak müşteri sadakati yaratın.</div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-blue-400 font-bold">2.</span>
+                    <div><strong>Sadelik:</strong> Karmaşık teknolojileri basit arayüzlerle sunun.</div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-blue-400 font-bold">3.</span>
+                    <div><strong>Gizlilik Vurgusu:</strong> Müşteri verilerini koruyarak güven oluşturun.</div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-blue-400 font-bold">4.</span>
+                    <div><strong>Fiziksel Deneyim:</strong> Mağaza veya showroom'a yatırım yapın.</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          `
+        },
+        'Nike': {
+          title: 'Nike', 
+          score: 95,
+          html: `
+            <div class="space-y-6">
+              <div class="glass-card rounded-2xl p-6">
+                <h3 class="text-xl font-bold mb-4">Başarı Faktörleri</h3>
+                <ul class="space-y-3 text-sm text-slate-300">
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-green-400 text-xl">→</span>
+                    <div><strong>"Just Do It":</strong> 1988'den beri kullanılan, dünyanın en tanınan sloganlarından biri. Motivasyon ve harekete geçirme gücü.</div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-green-400 text-xl">→</span>
+                    <div><strong>Sporcu Sponsorlukları:</strong> Michael Jordan, Cristiano Ronaldo, Serena Williams gibi dünya yıldızları.</div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-green-400 text-xl">→</span>
+                    <div><strong>Hikaye Anlatımı:</strong> Sadece ürün değil, duygu ve hikaye satıyor. "Find Your Greatness" kampanyası.</div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-green-400 text-xl">→</span>
+                    <div><strong>Sosyal Sorumluluk:</strong> Colin Kaepernick kampanyası gibi cesur duruşlar.</div>
+                  </li>
+                </ul>
+              </div>
+              
+              <div class="glass-card rounded-2xl p-6 bg-gradient-to-br from-orange-500/5 to-red-500/5">
+                <h3 class="text-xl font-bold mb-4">Sizin İçin Dersler</h3>
+                <ul class="space-y-3 text-sm text-slate-300">
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-blue-400 font-bold">1.</span>
+                    <div><strong>Güçlü Slogan:</strong> Kısa, akılda kalıcı ve motivasyonel bir slogan yaratın.</div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-blue-400 font-bold">2.</span>
+                    <div><strong>İlham Veren Hikayeler:</strong> Ürün özellikleri yerine duygusal hikayeler anlatın.</div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-blue-400 font-bold">3.</span>
+                    <div><strong>Sponsorluklar:</strong> Sektörünüzün yıldızlarıyla ortaklık kurun.</div>
+                  </li>
+                  <li class="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
+                    <span class="text-blue-400 font-bold">4.</span>
+                    <div><strong>Sosyal Duruş:</strong> Toplumsal konularda taraf olmaktan korkmayın.</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          `
+        }
       };
-      document.getElementById('modalTitle').textContent = data[brand].title;
+      
+      document.getElementById('modalTitle').textContent = data[brand].title + ' • Skor: ' + data[brand].score;
       document.getElementById('modalContent').innerHTML = data[brand].html;
       document.getElementById('detailModal').style.display = 'flex';
     }
